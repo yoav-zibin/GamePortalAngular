@@ -6,6 +6,9 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import {AuthService} from './auth.service';
+import { EmailLoginComponent } from './email-login/email-login.component';
+import {AppRoutingModule} from './app-routing.module';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
@@ -18,7 +21,8 @@ export const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    EmailLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -26,7 +30,8 @@ export const firebaseConfig = {
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AppRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
