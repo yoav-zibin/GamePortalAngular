@@ -6,6 +6,9 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import { PhoneLoginComponent } from './phone-login/phone-login.component';
+import {AppRoutingModule} from './app-routing.module';
+import {WindowService} from './window.service';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
@@ -18,7 +21,8 @@ export const firebaseConfig = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PhoneLoginComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +30,10 @@ export const firebaseConfig = {
     HttpModule,
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    AppRoutingModule
   ],
-  providers: [],
+  providers: [WindowService],
   bootstrap: [AppComponent]
 })
 

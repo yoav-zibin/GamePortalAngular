@@ -1,7 +1,13 @@
+<!DOCTYPE html>
+<h1>Welcome to {{title}}</h1>
+
 <!--The content below is only a placeholder and can be replaced.-->
 <div class="login">Please Login!</div>
+<nav>
 <button (click)="loginWithGoogle()" *ngIf="!(user | async)?.uid">Login via Google</button>
 <button (click)="loginWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
 <button (click)="loginWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
 <button (click)="loginAnonymous()" *ngIf="!(user | async)?.uid">Login Anonymously</button>
+</nav>
 <button (click)="logout()">Logout</button>
+<router-outlet></router-outlet>
