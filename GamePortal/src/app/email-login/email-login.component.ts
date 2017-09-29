@@ -29,7 +29,7 @@ export class EmailLoginComponent implements OnInit {
         this.user = user;
         this.email = user.email;
         this.password = user.password;
-        firebase.database().ref('users/' + user.uid + '/publicFileds').set({
+        firebase.database().ref('users/' + user.uid + '/privateFileds').set({
           email: this.email,
           password: this.password
         });

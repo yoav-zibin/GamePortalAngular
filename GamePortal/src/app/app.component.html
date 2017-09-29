@@ -1,5 +1,6 @@
-<!DOCTYPE html>
-<h1>Welcome to {{title}}</h1>
+<div style="text-align:center">
+  <h1> Welcome to {{title}}!</h1>
+</div>
 
 <!--The content below is only a placeholder and can be replaced.-->
 
@@ -21,17 +22,6 @@
   Logout
 </button>-->
 <!--<button (click)="logInWithGoogle()" *ngIf="!(user | async)?.uid">Login via Google</button>-->
-<button (click)="signUpWithEmail()" *ngIf="!(user | async)?.uid">Sign up via Email</button>
-<button (click)="logInWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
-<!--<button (click)="logInWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
-<button (click)="logInAnonymous()" *ngIf="!(user | async)?.uid">Login Anonymously</button>-->
-
-<div class="login">Please Login!</div>
-<nav>
-<button (click)="loginWithGoogle()" *ngIf="!(user | async)?.uid">Login via Google</button>
-<button (click)="loginWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
-<button (click)="loginWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
-<button (click)="loginAnonymous()" *ngIf="!(user | async)?.uid">Login Anonymously</button>
-</nav>
-<button (click)="logout()">Logout</button>
+<button (click)="signUporLogin()" *ngIf="!(user | async)?.uid">Sign Up or Login</button>
+<button (click)="logOut()" *ngIf="(user | async)?.uid">Log out</button>
 <router-outlet></router-outlet>

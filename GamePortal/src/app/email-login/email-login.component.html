@@ -5,7 +5,7 @@
   <input type="text" [(ngModel)]="email" placeholder="email">
   <span *ngIf="errEmail.length > 0" class="error">{{errEmail}}</span>
 
-  <input type="password" [(ngModel)]="password" placeholder="email">
+  <input type="password" [(ngModel)]="password" placeholder="password">
   <span *ngIf="errEmail.length > 0" class="error">{{errPassWord}}</span>
 
   <button (click)="signUp()" [disabled]="!email || !password">

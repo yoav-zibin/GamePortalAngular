@@ -4,14 +4,16 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
 import { Observable } from 'rxjs/Observable';
+import {Router} from '@angular/router';
 
 @Injectable()
 export class AuthService {
-  user: Observable<firebase.User>;
+  public user: Observable<firebase.User>;
   items: FirebaseListObservable<any[]>;
+  errMessage = '';
   msg = '';
 
-  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private router: Router) {
     this.items = af.list('/messages', {
       query: {
         limitToLast: 50
@@ -20,76 +22,44 @@ export class AuthService {
     this.user = this.afAuth.authState;
   }
 
-  createUserIfNotExists(user: any) {
-    if (this.user) {
-      const usersRef = firebase.database().ref('users');
-      const userData = {
-        'privateFields': {
-
-        },
-        'publicFields': {
-          'avatarImageUrl': user.photoURL || '',
-          'displayName': user.displayName || user.email,
-          'email': user.email
-        }
-      };
-
-      usersRef.child(user.uid).transaction(function(currentUserData) {
-        if (currentUserData === null || !currentUserData.email) {
-          return userData;
-        }
-      });
-    }
-  }
-
-  loginWithGoogle() {
+  logInWithGoogle() {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(result) {
       console.log(result);
-      // This gives you a Google Access Token. You can use it to access the Google API.
-      const token = result.credential.accessToken;
       // The signed-in user info.
-      const user = result.user;
+      this.user = result.user;
       // ...
-      this.createUserIfNotExists(user);
-    }).catch(function(error) {
-      console.error(error);
-    });
-  }
-  signupWithEmail(email: string, password: string) {
-    this.afAuth
-      .auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Success!', value);
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
+      firebase.database().ref('users/' + this.user.uid + '/publicFileds').set({
+        avatarImageUrl: this.user.photoURL,
+        displayName: this.user.displayName,
+        email: this.user.email
+      });
+      console.log('success');
+    })
+      .catch(error => {
+        console.log(error);
+        this.errMessage = error.message;
       });
   }
 
-  loginWithEmail(email: string, password: string) {
-    this.afAuth
-      .auth
-      .signInWithEmailAndPassword(email, password)
-      .then(value => {
-        console.log('Nice, it worked!');
-      })
-      .catch(err => {
-        console.log('Something went wrong:', err.message);
-      });
+  signUpWithEmail() {
+    this.router.navigate(['/emaillogin']);
   }
 
-  loginWithPhone() {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.PhoneAuthProvider());
+  logInWithEmail() {
+    this.router.navigate(['/emaillogin']);
   }
 
-  loginAnonymous() {
+  logInWithPhone() {
+    this.router.navigate(['/phonelogin']);
+  }
+
+  logInAnonymous() {
     this.afAuth.auth.signInAnonymously();
   }
 
-  logout() {
+/*  logOut() {
     this.afAuth.auth.signOut();
-  }
+  }*/
 
   Send(desc: string) {
     this.items.push({ message: desc});
