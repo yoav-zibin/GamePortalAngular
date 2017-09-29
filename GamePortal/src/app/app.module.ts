@@ -6,6 +6,8 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
+import {AuthService} from './auth.service';
+import {EmailLoginComponent } from './email-login/email-login.component';
 import { PhoneLoginComponent } from './phone-login/phone-login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {WindowService} from './window.service';
@@ -22,6 +24,7 @@ export const firebaseConfig = {
 @NgModule({
   declarations: [
     AppComponent,
+    EmailLoginComponent,
     PhoneLoginComponent
   ],
   imports: [

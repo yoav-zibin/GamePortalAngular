@@ -1,33 +1,17 @@
-import { Component } from '@angular/core';
+import {Injectable, Provider} from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
-import {AuthService} from './auth.service';
-import {Router} from '@angular/router';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
-})
-export class AppComponent {
-  title: 'app';
-  email: string;
-  password: string;
+import { Observable } from 'rxjs/Observable';
 
-  constructor(public afAuth: AngularFireAuth, public router: Router) {}
-
-  signUpWithEmail() {
-    this.router.navigate(['emaillogin']);
-  title: 'Game Portal';
+@Injectable()
+export class AuthService {
   user: Observable<firebase.User>;
   items: FirebaseListObservable<any[]>;
   msg = '';
 
-  constructor(public afAuth: AngularFireAuth,
-              public af: AngularFireDatabase,
-              private router: Router) {
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
     this.items = af.list('/messages', {
       query: {
         limitToLast: 50
@@ -36,9 +20,9 @@ export class AppComponent {
     this.user = this.afAuth.authState;
   }
 
-  createUserIfNotExists(user) {
+  createUserIfNotExists(user: any) {
     if (this.user) {
-      const usersRef = this.af.database.ref('users')
+      const usersRef = firebase.database().ref('users');
       const userData = {
         'privateFields': {
 
@@ -71,22 +55,44 @@ export class AppComponent {
       console.error(error);
     });
   }
+  signupWithEmail(email: string, password: string) {
+    this.afAuth
+      .auth
+      .createUserWithEmailAndPassword(email, password)
+      .then(value => {
+        console.log('Success!', value);
+      })
+      .catch(err => {
+        console.log('Something went wrong:', err.message);
+      });
+  }
 
-  loginWithEmail() {
-    this.afAuth.auth.signInWithPopup(new firebase.auth.EmailAuthProvider());
+  loginWithEmail(email: string, password: string) {
+    this.afAuth
+      .auth
+      .signInWithEmailAndPassword(email, password)
+      .then(value => {
+        console.log('Nice, it worked!');
+      })
+      .catch(err => {
+        console.log('Something went wrong:', err.message);
+      });
   }
 
   loginWithPhone() {
-    // this.afAuth.auth.signInWithPopup(new firebase.auth.PhoneAuthProvider());
-    this.router.navigate(['/phonelogin']);
+    this.afAuth.auth.signInWithPopup(new firebase.auth.PhoneAuthProvider());
   }
 
-  logInWithEmail() {
-    this.router.navigate(['emaillogin']);
+  loginAnonymous() {
+    this.afAuth.auth.signInAnonymously();
   }
 
   logout() {
     this.afAuth.auth.signOut();
   }
-}
 
+  Send(desc: string) {
+    this.items.push({ message: desc});
+    this.msg = '';
+  }
+}
