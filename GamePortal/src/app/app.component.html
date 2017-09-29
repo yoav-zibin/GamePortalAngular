@@ -1,4 +1,8 @@
+<!DOCTYPE html>
+<h1>Welcome to {{title}}</h1>
+
 <!--The content below is only a placeholder and can be replaced.-->
+
 <!--<h1 *ngIf="authService.user | async">Welcome {{ (authService.user | async)?.email }}!</h1>
 <div *ngIf="!(authService.user | async)">
   <input type="text" [(ngModel)]="email" placeholder="email">
@@ -21,5 +25,13 @@
 <button (click)="logInWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
 <!--<button (click)="logInWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
 <button (click)="logInAnonymous()" *ngIf="!(user | async)?.uid">Login Anonymously</button>-->
+
+<div class="login">Please Login!</div>
+<nav>
+<button (click)="loginWithGoogle()" *ngIf="!(user | async)?.uid">Login via Google</button>
+<button (click)="loginWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
+<button (click)="loginWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
+<button (click)="loginAnonymous()" *ngIf="!(user | async)?.uid">Login Anonymously</button>
+</nav>
 <button (click)="logout()">Logout</button>
 <router-outlet></router-outlet>

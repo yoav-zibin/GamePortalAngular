@@ -1,0 +1,10 @@
+
+{
+  "apiKey": "AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA",
+  "authDomain": "gameportalangular.firebaseapp.com",
+  "databaseURL": "https://gameportalangular.firebaseio.com",
+  "projectId": "gameportalangular",
+  "storageBucket": "gameportalangular.appspot.com",
+  "messagingSenderId": "678129730438",
+  "basename": "GamePortalAngular"
+}
