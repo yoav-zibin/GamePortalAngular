@@ -11,6 +11,7 @@ import {EmailLoginComponent } from './email-login/email-login.component';
 import { PhoneLoginComponent } from './phone-login/phone-login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {WindowService} from './window.service';
+import { LoginIndexComponent } from './login-index/login-index.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
@@ -25,7 +26,8 @@ export const firebaseConfig = {
   declarations: [
     AppComponent,
     EmailLoginComponent,
-    PhoneLoginComponent
+    PhoneLoginComponent,
+    LoginIndexComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +38,7 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     AppRoutingModule
   ],
-  providers: [WindowService],
+  providers: [AuthService, WindowService],
   bootstrap: [AppComponent]
 })
 
