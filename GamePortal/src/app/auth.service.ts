@@ -24,10 +24,6 @@ export class AuthService {
 
   logInWithGoogle() {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(function(result) {
-      console.log(result);
-      // The signed-in user info.
-      this.user = result.user;
-      // ...
       firebase.database().ref('users/' + this.user.uid + '/publicFileds').set({
         avatarImageUrl: this.user.photoURL,
         displayName: this.user.displayName,
@@ -56,10 +52,6 @@ export class AuthService {
   logInAnonymous() {
     this.afAuth.auth.signInAnonymously();
   }
-
-/*  logOut() {
-    this.afAuth.auth.signOut();
-  }*/
 
   Send(desc: string) {
     this.items.push({ message: desc});
