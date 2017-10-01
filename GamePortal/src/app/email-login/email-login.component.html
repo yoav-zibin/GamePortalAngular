@@ -3,10 +3,10 @@
 <div *ngIf="!(user | async)">
   <span *ngIf="errMessage.length > 0" class="error">{{errMessage}}</span>
   <input type="text" [(ngModel)]="email" placeholder="email">
-  <span *ngIf="errEmail.length > 0" class="error">{{errEmail}}</span>
+
 
   <input type="password" [(ngModel)]="password" placeholder="password">
-  <span *ngIf="errEmail.length > 0" class="error">{{errPassWord}}</span>
+
 
   <button (click)="signUp()" [disabled]="!email || !password">
     Signup
@@ -16,7 +16,3 @@
     Login
   </button>
 </div>
-
-<button (click)="signOut()" *ngIf="user | async">
-  Logout
-</button>

@@ -1,6 +1,5 @@
-<div *ngIf="!(user | async)">Please login or sign up!</div>
+<div *ngIf="!(user | async)?.uid">Please login or sign up!</div>
 <nav>
-  <button (click)="signUpWithEmail()" *ngIf="!(user | async)?.uid">Sign up via Email</button>
   <button (click)="logInWithGoogle()" *ngIf="!(user | async)?.uid">Login via Google</button>
   <button (click)="logInWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
   <button (click)="logInWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
