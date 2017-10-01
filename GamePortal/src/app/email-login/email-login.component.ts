@@ -26,8 +26,8 @@ export class EmailLoginComponent implements OnInit {
   signUp() {
     this.afAuth.auth.createUserWithEmailAndPassword(this.email, this.password)
       .then((result) => {
-        this.email = result.user.email;
-        this.password = result.user.password;
+/*        this.email = result.user.email;
+        this.password = result.user.password;*/
         this.af.database.ref('users/' + result.uid + '/privateFileds').set({
           email: this.email,
           password: this.password
