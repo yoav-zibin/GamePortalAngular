@@ -9,7 +9,7 @@ import {Router} from '@angular/router';
 @Injectable()
 export class AuthService {
   // public user: Observable<firebase.User>;
-  public authState: any;
+  public authState: any; // actually user
   items: AngularFireList<any>;
   errMessage = '';
   msg = '';
@@ -21,21 +21,21 @@ export class AuthService {
     this.items = af.list('items');
   }
 
-  createUserInfo(result: any): any {
+  public createUserInfo(user: any): any {
 
     const userInfo = {
       'publicFields': {
-        'avatarImageUrl': (result.user.photoURL || ''),
-        'displayName':  (result.user.displayName || ''),
+        'avatarImageUrl': (user.photoURL || ''),
+        'displayName':  (user.displayName || ''),
         'isConnected':  true,
         'lastSeen':  firebase.database.ServerValue.TIMESTAMP,
       },
       'privateFields' : {
-        'email':  (result.user.email || ''),
+        'email':  (user.email || ''),
         'createdOn':  firebase.database.ServerValue.TIMESTAMP,
         'phoneNumber': '',
         'facebookId': '',
-        'googleId': result.user.email,
+        'googleId': user.email,
         'twitterId': '',
         'githubId': '',
         'friends': '',
@@ -47,9 +47,11 @@ export class AuthService {
 
   logInWithGoogle() {
     this.afAuth.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).then(result => {
-      this.authState = result;
-      const userInfo = this.createUserInfo(result);
+      this.authState = result.user;
+      const userInfo = this.createUserInfo(result.user);
+      // note using firebase.database instead of this.af.database!!!
       firebase.database().ref('users/' + result.user.uid).update(userInfo);
+      this.router.navigate(['/']);
       console.log('success');
     })
       .catch(error => {

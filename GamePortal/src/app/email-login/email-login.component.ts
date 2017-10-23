@@ -4,6 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs/Observable';
+import {AuthService} from '../auth.service';
 
 @Component({
   selector: 'app-email-login',
@@ -11,15 +12,18 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./email-login.component.css']
 })
 export class EmailLoginComponent implements OnInit {
-  user: Observable<firebase.User>;
+  public authState: any;
   email: string;
   password: string;
   errMessage = '';
 
   constructor(public afAuth: AngularFireAuth,
               public af: AngularFireDatabase,
-              private router: Router) {
-    this.user = this.afAuth.authState;
+              private router: Router,
+              public authservice: AuthService) {
+    this.afAuth.authState.subscribe((auth) => {
+      this.authState = auth;
+    });
   }
   ngOnInit() {
   }
@@ -28,10 +32,12 @@ export class EmailLoginComponent implements OnInit {
       .then((result) => {
 /*        this.email = result.user.email;
         this.password = result.user.password;*/
-        this.af.database.ref('users/' + result.uid + '/privateFileds').set({
-          email: this.email,
-          password: this.password
-        });
+        // console.log('user: ', result, 'created');
+        // note in this callback function, result is actually user!!!
+        this.authState = result;
+        const userInfo = this.authservice.createUserInfo(result);
+        // this.af.database.ref('users/' + result.uid).update(userInfo);
+        firebase.database().ref('users/' + result.uid).update(userInfo); // permission denied!
         this.router.navigate(['/']);
         console.log('success');
       })

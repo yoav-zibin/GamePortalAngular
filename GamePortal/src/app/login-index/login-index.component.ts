@@ -12,10 +12,13 @@ import {Router} from '@angular/router';
 })
 export class LoginIndexComponent implements OnInit {
 
-  user: Observable<firebase.User>;
+  // user: Observable<firebase.User>;
+  public authState: any;
 
   constructor(public afAuth: AngularFireAuth, public router: Router, public authservice: AuthService) {
-    this.user = this.afAuth.authState;
+    this.afAuth.authState.subscribe((auth) => {
+      this.authState = auth;
+    });
   }
   ngOnInit() {
   }

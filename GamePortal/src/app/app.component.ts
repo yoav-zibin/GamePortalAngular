@@ -11,10 +11,12 @@ import {Router} from '@angular/router';
 })
 export class AppComponent {
   title = 'Game Portal';
-  user: Observable<firebase.User>;
+  public authState: any;
 
   constructor(public afAuth: AngularFireAuth, public router: Router) {
-    this.user = this.afAuth.authState;
+    this.afAuth.authState.subscribe((auth) => {
+      this.authState = auth;
+    });
   }
 
   signUporLogin() {
