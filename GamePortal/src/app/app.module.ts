@@ -14,12 +14,12 @@ import {WindowService} from './window.service';
 import { LoginIndexComponent } from './login-index/login-index.component';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
-  authDomain: 'gameportalangular.firebaseapp.com',
-  databaseURL: 'https://gameportalangular.firebaseio.com',
-  projectId: 'gameportalangular',
-  storageBucket: 'gameportalangular.appspot.com',
-  messagingSenderId: '678129730438'
+  apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
+  authDomain: 'universalgamemaker.firebaseapp.com',
+  databaseURL: 'https://universalgamemaker.firebaseio.com',
+  projectId: 'universalgamemaker',
+  storageBucket: 'universalgamemaker.appspot.com',
+  messagingSenderId: '144595629077'
 };
 
 @NgModule({
