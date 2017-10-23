@@ -1,5 +1,5 @@
-import {Injectable, Provider} from '@angular/core';
-import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { Injectable, Provider } from '@angular/core';
+import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
@@ -9,17 +9,13 @@ import {Router} from '@angular/router';
 @Injectable()
 export class AuthService {
   public user: Observable<firebase.User>;
-  items: FirebaseListObservable<any[]>;
+  items: AngularFireList<any>;
   errMessage = '';
   msg = '';
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private router: Router) {
-    this.items = af.list('/messages', {
-      query: {
-        limitToLast: 50
-      }
-    });
     this.user = this.afAuth.authState;
+    this.items = af.list('items');
   }
 
   logInWithGoogle() {
