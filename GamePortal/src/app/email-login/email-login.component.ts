@@ -38,7 +38,6 @@ export class EmailLoginComponent implements OnInit {
         console.log('Email user info: ', userInfo);
         // this.af.database.ref('users/' + result.uid).update(userInfo);
         firebase.database().ref('users/' + result.uid).update(userInfo); // permission denied!
-        this.router.navigate(['/']);
         console.log('success');
       })
       .catch(error => {

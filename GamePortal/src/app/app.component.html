@@ -2,6 +2,6 @@
   <h1> Welcome to {{title}}!</h1>
 </div>
 
-<button (click)="signUporLogin()" *ngIf="!(user | async)?.uid">Sign Up or Login</button>
-<button (click)="logOut()" *ngIf="(user | async)?.uid">Log out</button>
+<button (click)="signUporLogin()" *ngIf="!(this.afAuth.authState | async)?.uid">Sign Up or Login</button>
+<button (click)="logOut()" *ngIf="(this.afAuth.authState | async)?.uid">Log out</button>
 <router-outlet></router-outlet>

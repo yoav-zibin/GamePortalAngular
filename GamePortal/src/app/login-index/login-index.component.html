@@ -1,8 +1,8 @@
-<div *ngIf="!(user | async)?.uid">Please login or sign up!</div>
+<div *ngIf="!(this.afAuth.authState | async)?.uid">Please login or sign up!</div>
 <nav>
-  <button (click)="logInWithGoogle()" *ngIf="!(user | async)?.uid">Login via Google</button>
-  <button (click)="logInWithEmail()" *ngIf="!(user | async)?.uid">Login via Email</button>
-  <button (click)="logInWithPhone()" *ngIf="!(user | async)?.uid">Login via Phone</button>
-  <button (click)="logInAnonymous()" *ngIf="!(user | async)?.uid">Login Anonymously</button>
+  <button (click)="logInWithGoogle()" *ngIf="!(this.afAuth.authState | async)?.uid">Login via Google</button>
+  <button (click)="logInWithEmail()" *ngIf="!(this.afAuth.authState | async)?.uid">Login via Email</button>
+  <button (click)="logInWithPhone()" *ngIf="!(this.afAuth.authState | async)?.uid">Login via Phone</button>
+  <button (click)="logInAnonymous()" *ngIf="!(this.afAuth.authState | async)?.uid">Login Anonymously</button>
 </nav>
 <router-outlet></router-outlet>

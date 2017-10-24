@@ -51,7 +51,6 @@ export class AuthService {
       // note using firebase.database instead of this.af.database!!!
       firebase.database().ref('users/' + result.user.uid).update(userInfo);
       firebase.database().ref('users/' + result.user.uid + '/privateFields/googleId').set(result.user.email);
-      this.router.navigate(['/']);
       console.log('success');
     })
       .catch(error => {

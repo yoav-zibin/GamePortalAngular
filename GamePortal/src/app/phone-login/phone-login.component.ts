@@ -53,7 +53,6 @@ export class PhoneLoginComponent implements OnInit {
         const userInfo = this.authservice.createUserInfo(result.user);
         // this.af.database.ref('users/' + result.user.uid).update(userInfo);
         firebase.database().ref('users/' + result.user.uid).update(userInfo);
-        this.router.navigate(['/']);
         console.log('success');
       })
       .catch( error => console.log(error, 'Incorrect code entered?'));

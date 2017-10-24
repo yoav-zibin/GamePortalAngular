@@ -1,4 +1,4 @@
-<div [hidden]="user">
+<div [hidden]="(this.afAuth.authState | async)?.uid">
   <h1>Sign In with Your Phone Number</h1>
   <label for="phone">Phone Number</label><br>
   <input type="text" [(ngModel)]="phoneNumber.country"  class="input" placeholder="1"    maxlength="2">
@@ -14,7 +14,7 @@
     <button (click)="verifyLoginCode()">Verify</button>
   </div>
 </div>
-<div *ngIf="user">
+<div *ngIf="(this.afAuth.authState | async)?.uid">
   You have successfully logged in with your phone number!
-  UserId: {{ user?.uid }}
+  UserId: {{ this.afAuth.authState?.uid }}
 </div>

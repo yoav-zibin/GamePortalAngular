@@ -1,6 +1,6 @@
-<h1 *ngIf="user | async">Welcome {{ (user | async)?.email }}!</h1>
+<h1 *ngIf="this.afAuth.authState | async">Welcome {{ (this.afAuth.authState | async)?.email }}!</h1>
 
-<div *ngIf="!(user | async)">
+<div *ngIf="!(this.afAuth.authState | async)">
   <span *ngIf="errMessage.length > 0" class="error">{{errMessage}}</span>
   <input type="text" [(ngModel)]="email" placeholder="email">
 

@@ -21,6 +21,7 @@ export class AppComponent {
 
   signUporLogin() {
     this.router.navigate(['/login']);
+    console.log(this.authState);
   }
 
   logOut() {
