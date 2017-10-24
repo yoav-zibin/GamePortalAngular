@@ -2,8 +2,6 @@ import { Injectable, Provider } from '@angular/core';
 import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
-
-import { Observable } from 'rxjs/Observable';
 import {Router} from '@angular/router';
 
 @Injectable()
@@ -25,17 +23,18 @@ export class AuthService {
 
     const userInfo = {
       'publicFields': {
-        'avatarImageUrl': (user.photoURL || ''),
-        'displayName':  (user.displayName || ''),
+        'avatarImageUrl': (user.photoURL || 'https://s.ytimg.com/yts/img/avatar_720-vflYJnzBZ.png'),
+        'displayName':  (user.displayName || 'new guest'),
         'isConnected':  true,
         'lastSeen':  firebase.database.ServerValue.TIMESTAMP,
       },
       'privateFields' : {
-        'email':  (user.email || ''),
+        'email': (user.email || ''),
         'createdOn':  firebase.database.ServerValue.TIMESTAMP,
-        'phoneNumber': '',
+        'phoneNumber': (user.phoneNumber || ''),
         'facebookId': '',
-        'googleId': user.email,
+        // 'googleId': user.email,
+        'googleId': '',
         'twitterId': '',
         'githubId': '',
         'friends': '',
@@ -51,6 +50,7 @@ export class AuthService {
       const userInfo = this.createUserInfo(result.user);
       // note using firebase.database instead of this.af.database!!!
       firebase.database().ref('users/' + result.user.uid).update(userInfo);
+      firebase.database().ref('users/' + result.user.uid + '/privateFields/googleId').set(result.user.email);
       this.router.navigate(['/']);
       console.log('success');
     })

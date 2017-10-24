@@ -3,7 +3,6 @@ import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {Router} from '@angular/router';
-import {Observable} from 'rxjs/Observable';
 import {AuthService} from '../auth.service';
 
 @Component({
@@ -36,6 +35,7 @@ export class EmailLoginComponent implements OnInit {
         // note in this callback function, result is actually user!!!
         this.authState = result;
         const userInfo = this.authservice.createUserInfo(result);
+        console.log('Email user info: ', userInfo);
         // this.af.database.ref('users/' + result.uid).update(userInfo);
         firebase.database().ref('users/' + result.uid).update(userInfo); // permission denied!
         this.router.navigate(['/']);
