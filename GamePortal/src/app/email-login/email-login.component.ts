@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {Router} from '@angular/router';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-email-login',

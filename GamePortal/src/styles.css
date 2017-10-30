@@ -1,18 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
-body {
-  background-color:#EBEBEB;
-  padding-top: 5em;
-}
 * {
-  font-family: 'Raleway';
+  height: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
-button {
-  background:#008FEF;
-  color:white;
-  padding: 1.2em;
-  width:300px;
-  text-align:center;
-  font-size:1.2em;
-  margin-bottom: 30px;
-  cursor:pointer;
+
+body {
+  width: 100%;
+  min-height:100%;
+  background: #eee;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: "Open Sans", sans-serif;
 }
+
+app-chat-room {
+  display: flex;
+  flex-direction: column;
+}
+
+app-navbar{
+  width: 100%;
+}
+
+app-chat-form{
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+  overflow: unset;
+}
+
+.message {
+  display: block;
+  height: auto;
+}
+
+/*button {*/
+  /*background:#008FEF;*/
+  /*color:white;*/
+  /*padding: 1.2em;*/
+  /*width:300px;*/
+  /*text-align:center;*/
+  /*font-size:1.2em;*/
+  /*margin-bottom: 30px;*/
+  /*cursor:pointer;*/
+/*}*/

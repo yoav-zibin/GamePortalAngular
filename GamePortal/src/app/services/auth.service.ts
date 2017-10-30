@@ -19,6 +19,10 @@ export class AuthService {
     this.items = af.list('items');
   }
 
+  get authUser() {
+    return this.authState;
+  }
+
   public createUserInfo(user: any): any {
 
     const userInfo = {
