@@ -1,7 +1,8 @@
-import {Component, OnChanges, OnInit} from '@angular/core';
+import {Component, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { ChatService} from '../services/chat.service';
 import { ChatMessage } from '../models/chat_message';
 import {AngularFireList} from 'angularfire2/database';
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'app-chat-feed',
@@ -10,15 +11,16 @@ import {AngularFireList} from 'angularfire2/database';
 })
 export class ChatFeedComponent implements OnInit, OnChanges {
 
-  feed: AngularFireList<ChatMessage[]>;
+  feed: Observable<any>;
   constructor(private chat: ChatService) {
   }
 
   ngOnInit() {
-    this.feed = this.chat.getMessageHistory();
+    // this feed should be update whenever a new message gets posted
+    this.feed = this.chat.getMessageHistory().valueChanges();
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    throw new Error("Method not implemented.");
+  ngOnChanges() {
+    // TODO: this function is async and always update feed?
+    this.feed = this.chat.getMessageHistory().valueChanges();
   }
 }

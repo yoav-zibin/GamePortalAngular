@@ -22,12 +22,18 @@ import { UserItemComponent } from './user-item/user-item.component';
 import {ChatService} from './services/chat.service';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
-  authDomain: 'universalgamemaker.firebaseapp.com',
-  databaseURL: 'https://universalgamemaker.firebaseio.com',
-  projectId: 'universalgamemaker',
-  storageBucket: 'universalgamemaker.appspot.com',
-  messagingSenderId: '144595629077'
+  // apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
+  // authDomain: 'universalgamemaker.firebaseapp.com',
+  // databaseURL: 'https://universalgamemaker.firebaseio.com',
+  // projectId: 'universalgamemaker',
+  // storageBucket: 'universalgamemaker.appspot.com',
+  // messagingSenderId: '144595629077'
+  apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
+  authDomain: 'gameportalangular.firebaseapp.com',
+  databaseURL: 'https://gameportalangular.firebaseio.com',
+  projectId: 'gameportalangular',
+  storageBucket: 'gameportalangular.appspot.com',
+  messagingSenderId: '678129730438'
 };
 
 @NgModule({

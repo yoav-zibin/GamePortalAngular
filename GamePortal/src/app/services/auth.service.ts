@@ -19,7 +19,7 @@ export class AuthService {
     this.items = af.list('items');
   }
 
-  get authUser() {
+  public authUser(): any {
     return this.authState;
   }
 
@@ -28,7 +28,7 @@ export class AuthService {
     const userInfo = {
       'publicFields': {
         'avatarImageUrl': (user.photoURL || 'https://s.ytimg.com/yts/img/avatar_720-vflYJnzBZ.png'),
-        'displayName':  (user.displayName || 'new guest'),
+        'displayName':  (user.displayName || user.email || 'new guest'),
         'isConnected':  true,
         'lastSeen':  firebase.database.ServerValue.TIMESTAMP,
       },

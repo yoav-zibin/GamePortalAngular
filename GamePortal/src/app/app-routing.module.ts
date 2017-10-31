@@ -6,7 +6,7 @@ import {LoginIndexComponent} from './login-index/login-index.component';
 import {ChatRoomComponent} from './chat-room/chat-room.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'chat', pathMatch: 'full' },
   { path: 'login',  component: LoginIndexComponent},
   { path: 'emaillogin',  component: EmailLoginComponent},
   { path: 'phonelogin',  component: PhoneLoginComponent },

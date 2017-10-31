@@ -1,3 +1,7 @@
-<p>
-  user-item works!
-</p>
+<div class="userItem">
+  <span class="status" [ngClass]="{ 'online': user.publicFields.isConnected, 'offline': !user.publicFields.isConnected }">
+  </span>
+  <span class="userName">
+    {{user.publicFields.displayName}}
+  </span>
+</div>
