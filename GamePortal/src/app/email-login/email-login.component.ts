@@ -46,6 +46,7 @@ export class EmailLoginComponent implements OnInit {
       });
   }
   signIn() {
+    console.log('ready to sign in...');
     this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       .then((result) => {
       })
@@ -53,5 +54,6 @@ export class EmailLoginComponent implements OnInit {
         console.log(error);
         this.errMessage = error.message;
       });
+    console.log('sign in success...');
   }
 }

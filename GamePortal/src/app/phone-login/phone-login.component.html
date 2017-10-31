@@ -16,5 +16,5 @@
 </div>
 <div *ngIf="(this.afAuth.authState | async)?.uid">
   You have successfully logged in with your phone number!
-  UserId: {{ this.afAuth.authState?.uid }}
+  UserId: {{ this.authState.uid }}
 </div>

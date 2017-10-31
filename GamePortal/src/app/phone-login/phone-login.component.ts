@@ -49,7 +49,7 @@ export class PhoneLoginComponent implements OnInit {
     this.windowRef.confirmationResult
       .confirm(this.verificationCode)
       .then( result => {
-        this.authState = result;
+        this.authState = result.user;
         const userInfo = this.authservice.createUserInfo(result.user);
         // this.af.database.ref('users/' + result.user.uid).update(userInfo);
         firebase.database().ref('users/' + result.user.uid).update(userInfo);
