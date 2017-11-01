@@ -1,18 +1,28 @@
-<h1 *ngIf="this.afAuth.authState | async">Welcome {{ (this.afAuth.authState | async)?.email }}!</h1>
+<div class="container">
+  <div class="loginCard">
+    <span class="email-login-header">Please log in or sign up using email</span>
+    <span *ngIf="errMessage.length > 0" class="error">{{errMessage}}</span>
+    <input
+      [(ngModel)]="email"
+      type="email"
+      name="email"
+      class="formInput" />
 
-<div *ngIf="!(this.afAuth.authState | async)">
-  <span *ngIf="errMessage.length > 0" class="error">{{errMessage}}</span>
-  <input type="text" [(ngModel)]="email" placeholder="email">
+    <input type="password"
+           [(ngModel)]="password"
+           name="password"
+           class="formInput" />
 
-
-  <input type="password" [(ngModel)]="password" placeholder="password">
-
-
-  <button (click)="signUp()" [disabled]="!email || !password">
-    Signup
-  </button>
-
-  <button (click)="signIn()" [disabled]="!email || !password">
-    Login
-  </button>
+    <button class="btn"
+            id="btn-login"
+            (click)="signIn()">
+      Log In
+    </button>
+    <button class="btn"
+            id="btn-signUp"
+            (click)="signUp()">
+      Sign Up
+    </button>
+  </div>
 </div>
+

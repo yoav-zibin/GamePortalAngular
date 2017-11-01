@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { WindowService} from '../window.service';
 import * as firebase from 'firebase';
-import {PhoneNumber} from './phone-number';
+import {PhoneNumber} from '../models/phone-number';
 import {AngularFireAuth} from 'angularfire2/auth';
 import {AngularFireDatabase} from 'angularfire2/database';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../services/auth.service';
 import {Router} from '@angular/router';
 
 @Component({
@@ -54,6 +54,7 @@ export class PhoneLoginComponent implements OnInit {
         // this.af.database.ref('users/' + result.user.uid).update(userInfo);
         firebase.database().ref('users/' + result.user.uid).update(userInfo);
         console.log('success');
+        this.router.navigate(['/']);
       })
       .catch( error => console.log(error, 'Incorrect code entered?'));
   }

@@ -3,7 +3,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Observable';
 import * as firebase from 'firebase/app';
 import {Router} from '@angular/router';
-import {AuthService} from './auth.service';
+import {AuthService} from './services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -20,16 +20,13 @@ export class AppComponent {
     });
   }
 
-  signUporLogin() {
-    this.router.navigate(['/login']);
-  }
+  // signUporLogin() {
+  //   this.router.navigate(['/login']);
+  //   console.log(this.authState);
+  // }
 
-  logOut() {
-
-    this.afAuth.auth.signOut();
-    this.authService.updateOnDisconnect();
-    // this.authState = null;
-    this.router.navigate(['']);
-  }
+  // logOut() {
+  //   this.afAuth.auth.signOut();
+  // }
 }
 

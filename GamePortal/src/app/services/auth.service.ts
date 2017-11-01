@@ -58,15 +58,11 @@ export class AuthService {
       firebase.database().ref('users/' + result.user.uid).update(userInfo);
       firebase.database().ref('users/' + result.user.uid + '/privateFields/googleId').set(result.user.email);
       console.log('success');
-    })
-      .catch(error => {
+      this.router.navigate(['/']);
+    }).catch(error => {
         console.log(error);
         this.errMessage = error.message;
       });
-  }
-
-  signUpWithEmail() {
-    this.router.navigate(['/emaillogin']);
   }
 
   logInWithEmail() {
@@ -79,6 +75,11 @@ export class AuthService {
 
   logInAnonymous() {
     this.afAuth.auth.signInAnonymously();
+    this.router.navigate(['/']);
+  }
+
+  logOut() {
+    this.afAuth.auth.signOut();
   }
 
   // Send(desc: string) {

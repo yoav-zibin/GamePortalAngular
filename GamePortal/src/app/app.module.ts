@@ -6,20 +6,36 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
 import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
-import {AuthService} from './auth.service';
+import {AuthService} from './services/auth.service';
 import {EmailLoginComponent } from './email-login/email-login.component';
 import { PhoneLoginComponent } from './phone-login/phone-login.component';
 import {AppRoutingModule} from './app-routing.module';
 import {WindowService} from './window.service';
 import { LoginIndexComponent } from './login-index/login-index.component';
+import { ChatFormComponent } from './chat-form/chat-form.component';
+import { ChatRoomComponent } from './chat-room/chat-room.component';
+import { ChatFeedComponent } from './chat-feed/chat-feed.component';
+import { MessageComponent } from './message/message.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { UserListComponent } from './user-list/user-list.component';
+import { UserItemComponent } from './user-item/user-item.component';
+import {ChatService} from './services/chat.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 export const firebaseConfig = {
-  apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
-  authDomain: 'universalgamemaker.firebaseapp.com',
-  databaseURL: 'https://universalgamemaker.firebaseio.com',
-  projectId: 'universalgamemaker',
-  storageBucket: 'universalgamemaker.appspot.com',
-  messagingSenderId: '144595629077'
+  // apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
+  // authDomain: 'universalgamemaker.firebaseapp.com',
+  // databaseURL: 'https://universalgamemaker.firebaseio.com',
+  // projectId: 'universalgamemaker',
+  // storageBucket: 'universalgamemaker.appspot.com',
+  // messagingSenderId: '144595629077'
+  apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
+  authDomain: 'gameportalangular.firebaseapp.com',
+  databaseURL: 'https://gameportalangular.firebaseio.com',
+  projectId: 'gameportalangular',
+  storageBucket: 'gameportalangular.appspot.com',
+  messagingSenderId: '678129730438'
 };
 
 @NgModule({
@@ -27,7 +43,14 @@ export const firebaseConfig = {
     AppComponent,
     EmailLoginComponent,
     PhoneLoginComponent,
-    LoginIndexComponent
+    LoginIndexComponent,
+    ChatFormComponent,
+    ChatRoomComponent,
+    ChatFeedComponent,
+    MessageComponent,
+    NavbarComponent,
+    UserListComponent,
+    UserItemComponent
   ],
   imports: [
     BrowserModule,
@@ -36,9 +59,11 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule
   ],
-  providers: [AuthService, WindowService],
+  providers: [AuthService, WindowService, ChatService],
   bootstrap: [AppComponent]
 })
 

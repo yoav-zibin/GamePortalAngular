@@ -3,7 +3,7 @@ import * as firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {Router} from '@angular/router';
-import {AuthService} from '../auth.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-email-login',
@@ -39,6 +39,7 @@ export class EmailLoginComponent implements OnInit {
         // this.af.database.ref('users/' + result.uid).update(userInfo);
         firebase.database().ref('users/' + result.uid).update(userInfo); // permission denied!
         console.log('success');
+        this.router.navigate(['/']);
       })
       .catch(error => {
         console.log(error);
@@ -49,6 +50,8 @@ export class EmailLoginComponent implements OnInit {
     console.log('ready to sign in...');
     this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       .then((result) => {
+        console.log('success');
+        this.router.navigate(['/']);
       })
       .catch(error => {
         console.log(error);
