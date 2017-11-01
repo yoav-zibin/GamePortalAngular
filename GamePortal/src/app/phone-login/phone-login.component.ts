@@ -54,6 +54,7 @@ export class PhoneLoginComponent implements OnInit {
         // this.af.database.ref('users/' + result.user.uid).update(userInfo);
         firebase.database().ref('users/' + result.user.uid).update(userInfo);
         console.log('success');
+        this.router.navigate(['/']);
       })
       .catch( error => console.log(error, 'Incorrect code entered?'));
   }

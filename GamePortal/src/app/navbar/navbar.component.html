@@ -1,19 +1,45 @@
-<div class="navBar">
-  <div id="logo"></div>
-  <div id="heading"><a routerLink="/">basechat</a></div>
-  <!--TODO: nav bar login sign up-->
+<nav class="navbar navbar-inverse custom-height">
+  <div class="container-fluid ">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" routerLink="/">GamePortal</a>
+    </div>
+
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a [routerLink]="['/chat']"> Chat </a></li>
+        <li><a [routerLink]="['/users']"> Online Users </a></li>
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right">
+
+        <li *ngIf="(user|async)?.uid" ><a href="#">Hello, {{userName}}</a></li>
+        <li *ngIf="!(user|async)?.uid" ><a routerLink="/login">Login or Sign Up</a></li>
+        <li *ngIf="(user|async)?.uid"><a href="#" (click)="logout()">Logout</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!--<div class="navBar">-->
+  <!--<div id="logo"></div>-->
+  <!--<div id="heading"><a routerLink="/">GamePortal</a></div>-->
+  <!--&lt;!&ndash;TODO: nav bar login sign up&ndash;&gt;-->
   <!--<div class="links">-->
     <!--<span>-->
-      <!--<a *ngIf="!(user|async)?.uid" href="#" (click)="login()">Login</a>-->
+      <!--<a *ngIf="!(user|async)?.uid" routerLink="/login">Login or Sign Up</a>-->
     <!--</span>-->
     <!--<span>-->
-      <!--<a *ngIf="!(user|async)?.uid" routerLink="/signup">Sign Up</a>-->
-    <!--</span>-->
-    <!--<span>-->
-      <!--<span id="userEmail" *ngIf="(user|async)?.uid">Hello, {{userEmail}}</span>-->
+      <!--&lt;!&ndash;TODO: for phone or anonymous user dont have a email&ndash;&gt;-->
+      <!--<span id="userName" *ngIf="(user|async)?.uid">Hello, {{userName}}</span>-->
     <!--</span>-->
     <!--<span>-->
       <!--<a *ngIf="(user|async)?.uid" href="#" (click)="logout()">Logout</a>-->
     <!--</span>-->
   <!--</div>-->
-</div>
+<!--</div>-->

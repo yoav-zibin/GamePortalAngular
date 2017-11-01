@@ -11,6 +11,8 @@
 
 .isOwnMessageContainer{
   background-color: #01579B;
+  position: relative;
+  right: 0px;
 }
 
 .messageData{
@@ -30,12 +32,13 @@
 }
 
 .timestamp {
-  color: #555;
+  color: #ffffff;
   font-style: italic;
+  font-size: 0.7em;
 }
 
 .isOwnTimestamp{
-  color: #4FC3F7;
+  color: #fa0064;
 }
 
 .messageContent{

@@ -6,6 +6,8 @@
   color: #000;
   transition: 0.1s ease-out;
   padding-left: 80px;
+  height: auto;
+  width: 50%;
 }
 
 .chatInput:focus{

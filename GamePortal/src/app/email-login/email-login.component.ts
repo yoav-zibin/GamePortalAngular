@@ -39,6 +39,7 @@ export class EmailLoginComponent implements OnInit {
         // this.af.database.ref('users/' + result.uid).update(userInfo);
         firebase.database().ref('users/' + result.uid).update(userInfo); // permission denied!
         console.log('success');
+        this.router.navigate(['/']);
       })
       .catch(error => {
         console.log(error);
@@ -48,6 +49,8 @@ export class EmailLoginComponent implements OnInit {
   signIn() {
     this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       .then((result) => {
+        console.log('success');
+        this.router.navigate(['/']);
       })
       .catch(error => {
         console.log(error);

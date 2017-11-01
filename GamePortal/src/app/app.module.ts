@@ -20,6 +20,8 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserItemComponent } from './user-item/user-item.component';
 import {ChatService} from './services/chat.service';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 
 export const firebaseConfig = {
   // apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -57,7 +59,9 @@ export const firebaseConfig = {
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    NoopAnimationsModule
   ],
   providers: [AuthService, WindowService, ChatService],
   bootstrap: [AppComponent]

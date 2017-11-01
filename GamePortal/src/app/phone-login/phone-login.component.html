@@ -1,20 +1,66 @@
-<div [hidden]="(this.afAuth.authState | async)?.uid">
-  <h1>Sign In with Your Phone Number</h1>
-  <label for="phone">Phone Number</label><br>
-  <input type="text" [(ngModel)]="phoneNumber.country"  class="input" placeholder="1"    maxlength="2">
-  <input type="text" [(ngModel)]="phoneNumber.area"     class="input" placeholder="949"  maxlength="3">
-  <input type="text" [(ngModel)]="phoneNumber.prefix"   class="input" placeholder="555"  maxlength="3">
-  <input type="text" [(ngModel)]="phoneNumber.line"     class="input" placeholder="5555" maxlength="4">
-  <div id="recaptcha-container"></div>
-  <button (click)="sendLoginCode()">SMS Text Login Code</button>
-  <div *ngIf="windowRef.confirmationResult">
-    <hr>
-    <label for="code">Enter your Verification Code Here</label><br>
-    <input type="text" name="code" [(ngModel)]="verificationCode">
-    <button (click)="verifyLoginCode()">Verify</button>
+<div class="container">
+  <div class="loginCard">
+    <span class="phone-login-header">Please Sign In with Your Phone Number</span>
+    <br>
+    <!--<div class="phoneElements">-->
+      <input type="text"
+             [(ngModel)]="phoneNumber.country"
+             class="formInput" placeholder="1"
+             maxlength="2"
+         />
+      <input type="text"
+             [(ngModel)]="phoneNumber.area"
+             class="formInput" placeholder="949"
+             maxlength="3" />
+      <input type="text"
+             [(ngModel)]="phoneNumber.prefix"
+             class="formInput" placeholder="555"
+             maxlength="3" />
+      <input type="text"
+             [(ngModel)]="phoneNumber.line"
+             class="formInput" placeholder="5555"
+             maxlength="4" />
+    <!--</div>-->
+
+    <div id="recaptcha-container"></div>
+
+    <button class="btn"
+            id="btn-login"
+            (click)="sendLoginCode()">
+      SMS Text Login Code
+    </button>
+
+    <div *ngIf="windowRef.confirmationResult">
+      <hr>
+      <span class="phone-login-header">Enter your Verification Code Here</span>
+      <br>
+      <input type="text" class="formInput" id="form-verify" name="code" [(ngModel)]="verificationCode">
+      <br>
+      <button class="btn"
+              id="btn-signUp"
+              (click)="verifyLoginCode()">
+        Verify
+      </button>
   </div>
 </div>
-<div *ngIf="(this.afAuth.authState | async)?.uid">
-  You have successfully logged in with your phone number!
-  UserId: {{ this.afAuth.authState?.uid }}
-</div>
+
+<!--<div [hidden]="(this.afAuth.authState | async)?.uid">-->
+  <!--<h1>Sign In with Your Phone Number</h1>-->
+  <!--<label for="phone">Phone Number</label><br>-->
+  <!--<input type="text" [(ngModel)]="phoneNumber.country"  class="input" placeholder="1"    maxlength="2">-->
+  <!--<input type="text" [(ngModel)]="phoneNumber.area"     class="input" placeholder="949"  maxlength="3">-->
+  <!--<input type="text" [(ngModel)]="phoneNumber.prefix"   class="input" placeholder="555"  maxlength="3">-->
+  <!--<input type="text" [(ngModel)]="phoneNumber.line"     class="input" placeholder="5555" maxlength="4">-->
+  <!--<div id="recaptcha-container"></div>-->
+  <!--<button (click)="sendLoginCode()">SMS Text Login Code</button>-->
+  <!--<div *ngIf="windowRef.confirmationResult">-->
+    <!--<hr>-->
+    <!--<label for="code">Enter your Verification Code Here</label><br>-->
+    <!--<input type="text" name="code" [(ngModel)]="verificationCode">-->
+    <!--<button (click)="verifyLoginCode()">Verify</button>-->
+  <!--</div>-->
+<!--</div>-->
+<!--<div *ngIf="(this.afAuth.authState | async)?.uid">-->
+  <!--You have successfully logged in with your phone number!-->
+  <!--UserId: {{ this.afAuth.authState?.uid }}-->
+<!--</div>-->

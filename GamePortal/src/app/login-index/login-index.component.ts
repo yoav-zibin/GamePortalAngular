@@ -23,10 +23,6 @@ export class LoginIndexComponent implements OnInit {
   ngOnInit() {
   }
 
-  signUpWithEmail() {
-    this.authservice.signUpWithEmail();
-  }
-
   logInWithGoogle() {
     this.authservice.logInWithGoogle();
   }

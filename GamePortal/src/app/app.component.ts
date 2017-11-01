@@ -19,13 +19,13 @@ export class AppComponent {
     });
   }
 
-  signUporLogin() {
-    this.router.navigate(['/login']);
-    console.log(this.authState);
-  }
+  // signUporLogin() {
+  //   this.router.navigate(['/login']);
+  //   console.log(this.authState);
+  // }
 
-  logOut() {
-    this.afAuth.auth.signOut();
-  }
+  // logOut() {
+  //   this.afAuth.auth.signOut();
+  // }
 }
 

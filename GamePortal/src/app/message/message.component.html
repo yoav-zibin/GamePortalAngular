@@ -1,3 +1,7 @@
+<span class="timestamp"
+[ngClass] = "{'isOwnTimestamp':isOwnMessage}">
+{{ timestamp | date:'medium' }}
+</span>
 <div class="messageContainer"
      [ngClass]="{'isOwnMessageContainer':isOwnMessage}">
   <div class="messageData"
@@ -6,10 +10,10 @@
               [ngClass]="{'isOwnSender':isOwnMessage}">
             {{ userid }}
         </span>
-    <span class="timestamp"
-          [ngClass] = "{'isOwnTimestamp':isOwnMessage}">
-            {{ timestamp | date:'medium' }}
-        </span>
+    <!--<span class="timestamp"-->
+          <!--[ngClass] = "{'isOwnTimestamp':isOwnMessage}">-->
+            <!--{{ timestamp | date:'medium' }}-->
+        <!--</span>-->
   </div>
   <div class="messageContent"
        [ngClass]="{'isOwnMessageContent':isOwnMessage}">
