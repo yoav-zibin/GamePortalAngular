@@ -8,6 +8,8 @@ import {Router} from '@angular/router';
 export class AuthService {
   // public user: Observable<firebase.User>;
   public authState: any; // actually user
+  // current user id
+  public curtUserId: string;
   items: AngularFireList<any>;
   errMessage = '';
   msg = '';
@@ -15,6 +17,10 @@ export class AuthService {
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase, private router: Router) {
     this.afAuth.authState.subscribe((auth) => {
       this.authState = auth;
+      if (this.authState) {
+        this.curtUserId = auth.uid;
+        this.updateOnConnect();
+      }
     });
     this.items = af.list('items');
   }
@@ -24,7 +30,7 @@ export class AuthService {
     const userInfo = {
       'publicFields': {
         'avatarImageUrl': (user.photoURL || 'https://s.ytimg.com/yts/img/avatar_720-vflYJnzBZ.png'),
-        'displayName':  (user.displayName || 'new guest'),
+        'displayName':  (user.displayName || user.email || 'new guest'),
         'isConnected':  true,
         'lastSeen':  firebase.database.ServerValue.TIMESTAMP,
       },
@@ -79,4 +85,27 @@ export class AuthService {
   //   this.items.push({ message: desc});
   //   this.msg = '';
   // }
+
+  /// Updates status when connection to Firebase starts
+  public updateOnConnect() {
+    return this.af.object('.info/connected').valueChanges().subscribe
+      (connected => {
+        console.log(this.curtUserId);
+        console.log(connected);
+        this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: connected });
+        console.log('woyoucuo');
+      });
+  }
+
+  // Updates status when connection to Firebase ends
+  public updateOnDisconnect() {
+    // console.log('calling onDisconnect');
+    this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: false });
+    // const ref = firebase.database().ref(`users/${this.curtUserId}/publicFields/isConnected`);
+    // ref.once('value').then(function(snapshot) {
+    //   console.log(snapshot.val());
+    // });
+    // console.log('called...');
+  }
+
 }
