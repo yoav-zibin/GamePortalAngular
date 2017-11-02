@@ -19,8 +19,7 @@ export class AuthService {
       this.authState = auth;
       if (this.authState) {
         this.curtUserId = auth.uid;
-        // this.updateOnConnect();
-        this.updateStatus();
+        this.updateOnConnect();
       }
     });
     this.items = af.list('items');
@@ -81,57 +80,52 @@ export class AuthService {
 
   logOut() {
     this.afAuth.auth.signOut();
+    this.updateOnDisconnect();
   }
 
-  // Send(desc: string) {
-  //   this.items.push({ message: desc});
-  //   this.msg = '';
-  // }
+  // Updates status when connection to Firebase starts
+  public updateOnConnect() {
+    return this.af.object('.info/connected').valueChanges().subscribe
+      (connected => {
+        console.log(this.curtUserId);
+        console.log(connected);
+        this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: connected });
+        console.log('woyoucuo');
+      });
+  }
 
-  /// Updates status when connection to Firebase starts
-  // public updateOnConnect() {
-  //   return this.af.object('.info/connected').valueChanges().subscribe
-  //     (connected => {
-  //       console.log(this.curtUserId);
-  //       console.log(connected);
-  //       this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: connected });
-  //       console.log('woyoucuo');
-  //     });
+  // Updates status when connection to Firebase ends
+  public updateOnDisconnect() {
+    // console.log('calling onDisconnect');
+    this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: false });
+    // const ref = firebase.database().ref(`users/${this.curtUserId}/publicFields/isConnected`);
+    // ref.once('value').then(function(snapshot) {
+    //   console.log(snapshot.val());
+    // });
+    // console.log('called...');
+  }
+
+  // TODO: refactor to use onDisconnect()
+  // public updateStatus() {
+  //   const userListRef = firebase.database().ref('users/');
+  //   const myUserRef = userListRef.push();
+  //   console.log(this.curtUserId);
+  //   // Monitor connection state on browser tab
+  //   this.af.object('.info/connected').snapshotChanges().subscribe((snap) => {
+  //     if (snap) {
+  //       // if we lose network then remove this user from the list
+  //       myUserRef.onDisconnect().remove();
+  //       // set user's online status
+  //       this.setUserConnectionStatus(true, myUserRef);
+  //     } else {
+  //       // client has lost network
+  //       this.setUserConnectionStatus(false, myUserRef);
+  //     }
+  //   });
   // }
   //
-  // // Updates status when connection to Firebase ends
-  // public updateOnDisconnect() {
-  //   // console.log('calling onDisconnect');
-  //   this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: false });
-  //   // const ref = firebase.database().ref(`users/${this.curtUserId}/publicFields/isConnected`);
-  //   // ref.once('value').then(function(snapshot) {
-  //   //   console.log(snapshot.val());
-  //   // });
-  //   // console.log('called...');
+  // public setUserConnectionStatus(connected, myUserRef) {
+  //   firebase.database().ref('users/' + myUserRef.key + '/publicFields/isConnected').set(connected);
   // }
-
-  public updateStatus() {
-    const userListRef = firebase.database().ref('users/');
-    const myUserRef = userListRef.push();
-
-    // Monitor connection state on browser tab
-    firebase.database().ref('.info/connected')
-      .on('value', function (snap) {
-          if (snap.val()) {
-            // if we lose network then remove this user from the list
-            myUserRef.onDisconnect().remove();
-            // set user's online status
-            this.setUserConnectionStatus(true, myUserRef);
-          } else {
-            // client has lost network
-            this.setUserConnectionStatus(false, myUserRef);
-          }
-        }
-      );
-  }
-
-  public setUserConnectionStatus(connected, myUserRef) {
-    firebase.database().ref('users' + myUserRef.key + '/publicFields/isConnected').set(connected);
-  }
 
 }

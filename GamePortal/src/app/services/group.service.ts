@@ -32,6 +32,9 @@ export class GroupService {
     //     },
     //     "timestamp": {
     //     },
+    if (!this.user) {
+      return [];
+    }
 
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
     let groupsInUsers: any;

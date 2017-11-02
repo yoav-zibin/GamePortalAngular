@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User} from '../models/user';
 import {ChatService} from '../services/chat.service';
+import {GroupService} from '../services/group.service';
 
 // TODO: to set up groups!
 @Component({
@@ -19,7 +20,6 @@ export class UserListComponent implements OnInit {
       this.users = users;
     });
     this.groups = groupService.getGroupsForUser();
-
   }
 
   ngOnInit() {

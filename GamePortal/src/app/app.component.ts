@@ -19,14 +19,5 @@ export class AppComponent {
       this.authState = auth;
     });
   }
-
-  // signUporLogin() {
-  //   this.router.navigate(['/login']);
-  //   console.log(this.authState);
-  // }
-
-  // logOut() {
-  //   this.afAuth.auth.signOut();
-  // }
 }
 
