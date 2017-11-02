@@ -2,34 +2,34 @@
 export class User {
   $userId?: string;
   publicFields: {
-    'avatarImageUrl'?: string;
-    'displayName'?: string;
-    'isConnected'?: boolean,
-    'lastSeen'?: string;
+    avatarImageUrl?: string;
+    displayName?: string;
+    isConnected?: boolean,
+    lastSeen?: number;
   };
   privateFields: {
-    'email'?: string;
-    'createdOn'?: string;
-    'phoneNumber'?: string;
-    'facebookId'?: string;
+    email?: string;
+    createdOn?: number;
+    phoneNumber?: string;
+    facebookId?: string;
     // 'googleId': user.email,
-    'googleId'?: string;
-    'twitterId'?: string;
-    'githubId'?: string;
-    'friends'?: string;
-    'pushNotificationsToken'?: string;
+    googleId?: string;
+    twitterId?: string;
+    githubId?: string;
+    friends?: string;
+    pushNotificationsToken?: string;
   };
   privateButAddable: {
-    'groups'?: {
+    groups?: {
       $memberOfGroupId?: {
-        'addedByUid'?: string;
-        'timestamp'?: string;
+        addedByUid?: string;
+        timestamp?: number;
       };
-      'signal'?: {
+      signal?: {
         $signalId?: {
-          'addedByUid'?: string;
-          'timestamp'?: string;
-          'signalData'?: string;
+          addedByUid?: string;
+          timestamp?: number;
+          signalData?: string;
         }
       }
     }

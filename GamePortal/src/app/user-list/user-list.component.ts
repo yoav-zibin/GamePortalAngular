@@ -12,10 +12,9 @@ export class UserListComponent implements OnInit {
 
   users: any;
   groups: any;
-  curtUserId: string;
-
 
   constructor(chatService: ChatService, groupService: GroupService) {
+    // display users and groups!!
     chatService.getUsers().valueChanges().subscribe(users => {
       this.users = users;
     });
