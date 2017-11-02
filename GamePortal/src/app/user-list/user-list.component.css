@@ -1,23 +1,30 @@
 .userListWrapper {
   background-color: #2A2845;
   color: #fff;
-  display: flex;
+  display: inline-block;
   font-family: "Open Sans", sans-serif;
   font-size: 1.2em;
   flex: 1;
   order: 1;
-  padding:20px 0px 40px 30px;
-  border-right: 1px solid #222;
+  text-align: center;
+}
+/*.isChat {*/
+  /*height: 100%;*/
+/*}*/
+
+#itemWrapper {
+  text-align: left;
 }
 
 .btn-chat{
   height: 50px;
-  width: 50px;
+  width: 40px;
   margin: auto;
   margin-top: 16px;
   border: none;
   color: white;
   background-size: 30px 30px;
+  align-self: center;
   background:
     /*linear-gradient(45deg, rgba(255,103,0,0.3), rgba(0, 0, 80, 0.9)),*/
     url('../../assets/img/new-group1.jpg') center center no-repeat;

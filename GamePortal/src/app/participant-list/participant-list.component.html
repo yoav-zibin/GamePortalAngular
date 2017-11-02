@@ -1,0 +1,79 @@
+<!--<div class="userListWrapper">-->
+  <!--<div id="itemWrapper">-->
+    <!--<select [(ngModel)]="mylist">-->
+      <!--<option *ngFor="let user of users" [ngValue]="user" (onchange)="handler(user)">-->
+        <!--<app-user-item-->
+          <!--[user]=user ><br>-->
+        <!--</app-user-item>-->
+
+      <!--</option>-->
+    <!--</select>-->
+  <!--</div>-->
+  <!--<button onclick="submit()"></button>-->
+<!--</div>-->
+<!--<mat-selection-list #userlist>-->
+  <!--<mat-list-option *ngFor="let user of users">-->
+    <!--{{user.displayName}}-->
+  <!--</mat-list-option>-->
+<!--</mat-selection-list>-->
+
+<!--<p>-->
+  <!--Options selected: {{userlist.selectedOptions.selected.length}}-->
+<!--</p>-->
+
+
+<!--<md-button-toggle-group multiple>-->
+  <!--<md-button-toggle *ngFor="let user of users" [value]="user" (change)="handler(user)" [checked]="user">{{user.displayName}}</md-button-toggle>-->
+<!--</md-button-toggle-group>.-->
+<!--<div>-->
+  <!--<p> hahhahaha-->
+  <!--</p>-->
+  <!--<div>-->
+<!--<ng-select-->
+  <!--[options]="users"-->
+  <!--[multiple]="true"-->
+  <!--[(ngModel)]="selectedUsers">-->
+<!--</ng-select>-->
+<!--</div>-->
+  <!--<button-->
+    <!--(click)="selectedUsers = ['2', '4']">-->
+    <!--Select Daito and Shoto-->
+  <!--</button>-->
+<!--</div>-->
+
+<!--<h1>My Application</h1>-->
+<!--<div>-->
+<!--<ng-select-->
+<!--[options]="usernameList"-->
+<!--[multiple]="true"-->
+<!--[(ngModel)]="selectedUsers">-->
+<!--</ng-select>-->
+<!--</div>-->
+<!--<button-->
+<!--(click)="submit()">-->
+<!--submit-->
+<!--</button>-->
+
+  <!--<select [(ngModel)]="selectedUsers">-->
+    <!--<option *ngFor="let s of users" [ngValue]="s">{{s.publicFields.displayName}}</option>-->
+  <!--</select>-->
+<div class="container">
+  <!--<div id="scroller" class="loginCard">-->
+  <div class="loginCard">
+    <span class="participants-list-header">Please select participants to start group chat:</span>
+
+    <div class="select">
+
+      <select size="6" name="multiselect" [(ngModel)]="selectedUsers" multiple title="SSSelect">
+        <option class="participants-list-header" *ngFor="let s of users" [ngValue]="s">{{s.publicFields.displayName}}</option>
+      </select>
+
+
+      <button type="submit" class="btn"
+      (click)="submit()">
+      Submit
+      </button>
+    </div>
+
+  </div>
+</div>

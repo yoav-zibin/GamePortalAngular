@@ -5,6 +5,7 @@ import {PhoneLoginComponent} from './phone-login/phone-login.component';
 import {LoginIndexComponent} from './login-index/login-index.component';
 import {ChatRoomComponent} from './chat-room/chat-room.component';
 import {UserListComponent} from './user-list/user-list.component';
+import {ParticipantListComponent} from './participant-list/participant-list.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'emaillogin',  component: EmailLoginComponent},
   { path: 'phonelogin',  component: PhoneLoginComponent },
   { path: 'chat',  component: ChatRoomComponent },
-  { path: 'users',  component: UserListComponent }
+  { path: 'users',  component: UserListComponent },
+  {path: 'participant-list',  component: ParticipantListComponent}
 ];
 
 @NgModule({

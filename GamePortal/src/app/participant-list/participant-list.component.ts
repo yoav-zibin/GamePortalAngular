@@ -1,25 +1,22 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {User} from '../models/user';
-import {ChatService} from '../services/chat.service';
-import {GroupService} from '../services/group.service';
+///<reference path="../../../node_modules/@angular/core/src/metadata/directives.d.ts"/>
+import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
-import 'rxjs/add/operator/mergeMap';
+import {GroupService} from '../services/group.service';
+import {ChatService} from '../services/chat.service';
+import {MatListModule} from '@angular/material';
+import {SelectModule} from 'ng-select';
 
-// TODO: to set up groups!
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.css']
+  selector: 'app-participant-list',
+  templateUrl: './participant-list.component.html',
+  styleUrls: ['./participant-list.component.css']
 })
-export class UserListComponent implements OnInit {
-@Input() isChat: boolean;
+export class ParticipantListComponent implements OnInit {
   users: any;
-  groups: any;
-
+  // usernameList: Array<string>;
+  selectedUsers: any;
   constructor(chatService: ChatService, groupService: GroupService, private router: Router) {
-    this.isChat = false;
     // display users and groups!!
-
     const snap = chatService.getUsers().snapshotChanges();
     snap.subscribe( actions => {
       // const $key = action.key;
@@ -41,22 +38,13 @@ export class UserListComponent implements OnInit {
       this.users = mylist;
       console.log(this.users);
     });
-    if (this.users) {
-      console.log('this is users: ' + this.users);
-    }
-    // chatService.getUsers().valueChanges().subscribe(users => {
-    //   this.users = users;
-    //   console.log(users[0]);
-    // });
-    this.groups = groupService.getGroupsForUser();
+    // this.users = [1, 2, 3, 4, 45, 5, 66, 6];
   }
 
   ngOnInit() {
-
   }
 
-  startChat() {
-    console.log('wo jin lai le');
-    this.router.navigate(['/participant-list']);
+  submit() {
+    console.log(this.selectedUsers[0]);
   }
 }

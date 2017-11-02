@@ -18,8 +18,8 @@
     background-color: #fff;
 
     background:
-        /*linear-gradient(181deg, rgba(100,200,255,0.6), rgba(0, 0, 0, 0.9)),*/
-        url('../../assets/img/chat-bg-1.png') center center no-repeat;
+        linear-gradient(181deg, rgba(220, 220, 220, 0.9), rgba(100,200,255,0.6));
+        /*url('../../assets/img/chat-bg-1.png') center center no-repeat;*/
     font-family: "Open Sans", sans-serif;
     font-size: 1.2em;
     flex: 5;

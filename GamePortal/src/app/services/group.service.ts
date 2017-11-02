@@ -37,12 +37,13 @@ export class GroupService {
     }
 
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
-    let groupsInUsers: any;
+    let groupsInUsers = [];
     this.af.list(path).valueChanges().subscribe(groups => {
       groupsInUsers = groups; // group list in users/userid/...
     });
+    console.log(groupsInUsers);
     let groupList = []; // group list in groups/...
-    for (const groupInUser of groupsInUsers) {
+    for (let groupInUser of groupsInUsers) {
       const groupid = groupInUser.$memberOfGroupId;
       const groupObj = this.af.object('gamePortal/groups/' + groupid).valueChanges().subscribe( result => {
         groupList.push(result);

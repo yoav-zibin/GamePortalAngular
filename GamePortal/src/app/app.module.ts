@@ -24,21 +24,25 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {GroupService} from './services/group.service';
 import { GroupItemComponent } from './group-item/group-item.component';
-
+import { ParticipantListComponent } from './participant-list/participant-list.component';
+import {MatListModule} from '@angular/material';
+import {MatButtonToggleModule} from '@angular/material';
 
 export const firebaseConfig = {
-  // apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
-  // authDomain: 'universalgamemaker.firebaseapp.com',
-  // databaseURL: 'https://universalgamemaker.firebaseio.com',
-  // projectId: 'universalgamemaker',
-  // storageBucket: 'universalgamemaker.appspot.com',
-  // messagingSenderId: '144595629077'
-  apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
-  authDomain: 'gameportalangular.firebaseapp.com',
-  databaseURL: 'https://gameportalangular.firebaseio.com',
-  projectId: 'gameportalangular',
-  storageBucket: 'gameportalangular.appspot.com',
-  messagingSenderId: '678129730438'
+  apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
+  authDomain: 'universalgamemaker.firebaseapp.com',
+  databaseURL: 'https://universalgamemaker.firebaseio.com',
+  projectId: 'universalgamemaker',
+  storageBucket: 'universalgamemaker.appspot.com',
+  messagingSenderId: '144595629077'
+
+  // config for test firebase:
+  // apiKey: 'AIzaSyBrfL2oO_3MCC-A9ympGKJGnZl2SERK7kA',
+  // authDomain: 'gameportalangular.firebaseapp.com',
+  // databaseURL: 'https://gameportalangular.firebaseio.com',
+  // projectId: 'gameportalangular',
+  // storageBucket: 'gameportalangular.appspot.com',
+  // messagingSenderId: '678129730438'
 };
 
 @NgModule({
@@ -54,7 +58,8 @@ export const firebaseConfig = {
     NavbarComponent,
     UserListComponent,
     UserItemComponent,
-    GroupItemComponent
+    GroupItemComponent,
+    ParticipantListComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +70,9 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule
+    NoopAnimationsModule,
+    MatListModule,
+    MatButtonToggleModule,
   ],
   providers: [AuthService, WindowService, ChatService, GroupService],
   bootstrap: [AppComponent]

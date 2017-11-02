@@ -4,7 +4,7 @@ import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { ChatMessage } from '../models/chat_message';
 import { Observable } from 'rxjs/Observable';
-import {User} from '../models/user';
+// import {User} from '../models/user';
 import {GroupService} from './group.service';
 
 // TODO: groupid, participants, index;
@@ -32,8 +32,11 @@ export class ChatService {
 
   getUsers() {
     const path = '/users';
+    // return this.af.list(path);
+    // return this.af.database.ref(path);
+    console.log('ready to fetch users');
     return this.af.list(path, ref => {
-      return ref.orderByChild('isConnected').equalTo(true);
+      return ref.orderByChild('/publicFields/isConnected').equalTo(true);
     });
   }
 
