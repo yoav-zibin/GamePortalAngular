@@ -5,6 +5,7 @@ import * as firebase from 'firebase/app';
 import { ChatMessage } from '../models/chat_message';
 import { Observable } from 'rxjs/Observable';
 import {User} from '../models/user';
+import {GroupService} from './group.service';
 
 // TODO: groupid, participants, index;
 @Injectable()
@@ -12,24 +13,21 @@ export class ChatService {
   // should have a group id:
   // when the current user select a group chat
   // open the corresponding chat room
-  currentGroupId: any;
+  curtGroupId: any;
   user: any;
   testGroupId = 'ttest';
   public curtUserId: string;
   chatMessages: AngularFireList<ChatMessage>;
 
   constructor(private af: AngularFireDatabase,
-              private afAuth: AngularFireAuth) {
+              private afAuth: AngularFireAuth,
+              private group: GroupService) {
     this.afAuth.authState.subscribe((auth) => {
       if (auth !== undefined && auth !== null) {
         this.user = auth;
         this.curtUserId = auth.uid;
       }
     });
-  }
-
-  set GroupId(groupId: any) {
-    this.currentGroupId = groupId;
   }
 
   getUsers() {
@@ -42,7 +40,8 @@ export class ChatService {
   getMessageHistory(): AngularFireList<ChatMessage> {
     // for showing feed
     // test group id:
-    return this.af.list('gamePortal/groups/' + this.testGroupId + '/messages', ref => {
+    this.curtUserId = this.group.curtGroupId;
+    return this.af.list('gamePortal/groups/' + this.curtGroupId + '/messages', ref => {
       return ref.limitToLast(20).orderByKey();
     });
   }
@@ -51,11 +50,11 @@ export class ChatService {
     // group id? ref?
     //  according to our group chat rules:
     const TimeStamp = firebase.database.ServerValue.TIMESTAMP;
-    const senderuid = 'testuid';
+    // const senderuid = 'testuid';
     this.chatMessages = this.getMessageHistory();
     console.log('list mei cuo');
     this.chatMessages.push({
-      senderUid: senderuid,
+      senderUid: this.curtGroupId,
       timestamp: TimeStamp,
       message: msg
     });

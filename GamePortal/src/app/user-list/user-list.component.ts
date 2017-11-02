@@ -11,7 +11,7 @@ import {ChatService} from '../services/chat.service';
 export class UserListComponent implements OnInit {
 
   users: any;
-
+// TODO: not only display users but also groups!!
   constructor(chat: ChatService) {
     chat.getUsers().valueChanges().subscribe(users => {
       this.users = users;

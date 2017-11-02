@@ -22,6 +22,7 @@ import { UserItemComponent } from './user-item/user-item.component';
 import {ChatService} from './services/chat.service';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {NoopAnimationsModule} from '@angular/platform-browser/animations';
+import {GroupService} from './services/group.service';
 
 export const firebaseConfig = {
   // apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -63,7 +64,7 @@ export const firebaseConfig = {
     BrowserAnimationsModule,
     NoopAnimationsModule
   ],
-  providers: [AuthService, WindowService, ChatService],
+  providers: [AuthService, WindowService, ChatService, GroupService],
   bootstrap: [AppComponent]
 })
 
