@@ -1,4 +1,9 @@
 <div class="userList">
+
+  <app-group-item
+    [group]=group *ngFor="let group of groups">
+  </app-group-item>
+
   <app-user-item
     [user]=user *ngFor="let user of users">
   </app-user-item>

@@ -1,0 +1,12 @@
+.userListWrapper {
+  background-color: #2A2845;
+  color: #fff;
+  display: flex;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2em;
+  flex: 1;
+  order: 1;
+  padding:20px 0px 40px 30px;
+  border-right: 1px solid #222;
+}
+
