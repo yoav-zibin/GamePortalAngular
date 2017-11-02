@@ -11,13 +11,20 @@ import {ChatService} from '../services/chat.service';
 export class UserListComponent implements OnInit {
 
   users: any;
+  groups: any;
+  curtUserId: string;
 
-  constructor(chat: ChatService) {
-    chat.getUsers().valueChanges().subscribe(users => {
+
+  constructor(chatService: ChatService, groupService: GroupService) {
+    chatService.getUsers().valueChanges().subscribe(users => {
       this.users = users;
     });
+    this.groups = groupService.getGroupsForUser();
+
   }
+
   ngOnInit() {
+
   }
 
 }
