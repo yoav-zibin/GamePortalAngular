@@ -36,6 +36,7 @@ export class GroupService {
       return [];
     }
 
+    // test user id:
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
     let groupsInUsers = [];
     this.af.list(path).valueChanges().subscribe(groups => {

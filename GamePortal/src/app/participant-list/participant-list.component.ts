@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 import {GroupService} from '../services/group.service';
 import {ChatService} from '../services/chat.service';
 import {MatListModule} from '@angular/material';
-import {SelectModule} from 'ng-select';
+// import {SelectModule} from 'ng-select';
 
 @Component({
   selector: 'app-participant-list',
@@ -46,5 +46,6 @@ export class ParticipantListComponent implements OnInit {
 
   submit() {
     console.log(this.selectedUsers[0]);
+    this.router.navigate(['/chat']);
   }
 }
