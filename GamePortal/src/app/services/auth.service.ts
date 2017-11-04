@@ -30,13 +30,13 @@ export class AuthService {
     const userInfo = {
       'publicFields': {
         'avatarImageUrl': (user.photoURL || 'https://s.ytimg.com/yts/img/avatar_720-vflYJnzBZ.png'),
-        'displayName':  (user.displayName || user.email || 'new guest'),
-        'isConnected':  true,
-        'lastSeen':  firebase.database.ServerValue.TIMESTAMP,
+        'displayName': (user.displayName || user.email || 'new guest'),
+        'isConnected': true,
+        'lastSeen': firebase.database.ServerValue.TIMESTAMP,
       },
-      'privateFields' : {
+      'privateFields': {
         'email': (user.email || ''),
-        'createdOn':  firebase.database.ServerValue.TIMESTAMP,
+        'createdOn': firebase.database.ServerValue.TIMESTAMP,
         'phoneNumber': (user.phoneNumber || ''),
         'facebookId': '',
         // 'googleId': user.email,
@@ -60,9 +60,9 @@ export class AuthService {
       console.log('success');
       this.router.navigate(['/']);
     }).catch(error => {
-        console.log(error);
-        this.errMessage = error.message;
-      });
+      console.log(error);
+      this.errMessage = error.message;
+    });
   }
 
   logInWithEmail() {
@@ -86,18 +86,18 @@ export class AuthService {
   // Updates status when connection to Firebase starts
   public updateOnConnect() {
     return this.af.object('.info/connected').valueChanges().subscribe
-      (connected => {
-        console.log(this.curtUserId);
-        console.log(connected);
-        this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: connected });
-        console.log('woyoucuo');
-      });
+    (connected => {
+      console.log(this.curtUserId);
+      console.log(connected);
+      this.af.object('users/' + this.curtUserId + '/publicFields').update({isConnected: connected});
+      console.log('woyoucuo');
+    });
   }
 
   // Updates status when connection to Firebase ends
   public updateOnDisconnect() {
     // console.log('calling onDisconnect');
-    this.af.object('users/' + this.curtUserId + '/publicFields').update({ isConnected: false });
+    this.af.object('users/' + this.curtUserId + '/publicFields').update({isConnected: false});
     // const ref = firebase.database().ref(`users/${this.curtUserId}/publicFields/isConnected`);
     // ref.once('value').then(function(snapshot) {
     //   console.log(snapshot.val());
@@ -127,5 +127,4 @@ export class AuthService {
   // public setUserConnectionStatus(connected, myUserRef) {
   //   firebase.database().ref('users/' + myUserRef.key + '/publicFields/isConnected').set(connected);
   // }
-
 }

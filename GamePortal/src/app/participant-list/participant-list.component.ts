@@ -12,7 +12,7 @@ import {MatListModule} from '@angular/material';
   styleUrls: ['./participant-list.component.css']
 })
 export class ParticipantListComponent implements OnInit {
-  users: any;
+  users: Array<any> = [];
   // usernameList: Array<string>;
   selectedUsers: any;
   constructor(chatService: ChatService, groupService: GroupService, private router: Router) {
@@ -23,19 +23,21 @@ export class ParticipantListComponent implements OnInit {
       // const user = { userId: $key, ...action.payload.val() };
       // console.log(user);
       // return user;
-      let mylist = [];
+      // let mylist = [];
       actions.forEach(action => {
         console.log(action.key);
         console.log(action.payload.val());
         const $key = action.key;
         const user = { userId: $key, ...action.payload.val() };
         console.log(user);
-        mylist.push(user);
-        console.log(mylist);
+        // mylist.push(user);
+        this.users.push(user);
+        console.log('ni ma si le');
+        // console.log(mylist);
         return user;
       });
       // console.log('map ends');
-      this.users = mylist;
+      // this.users = mylist;
       console.log(this.users);
     });
     // this.users = [1, 2, 3, 4, 45, 5, 66, 6];

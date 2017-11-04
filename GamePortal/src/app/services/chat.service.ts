@@ -43,7 +43,7 @@ export class ChatService {
   getMessageHistory(): AngularFireList<ChatMessage> {
     // for showing feed
     // test group id:
-    this.curtGroupId = 'testGroup';
+    this.curtGroupId = this.group.curtGroupId;
     return this.af.list('gamePortal/groups/' + this.curtGroupId + '/messages', ref => {
       return ref.limitToLast(20).orderByKey();
     });
@@ -57,7 +57,7 @@ export class ChatService {
     this.chatMessages = this.getMessageHistory();
     console.log('list mei cuo');
     this.chatMessages.push({
-      senderUid: 'testuid',
+      senderUid: this.curtUserId,
       timestamp: TimeStamp,
       message: msg
     });
