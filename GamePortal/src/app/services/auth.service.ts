@@ -83,7 +83,16 @@ export class AuthService {
   logInAnonymous() {
     this.afAuth.auth.signInAnonymously();
     // TODO: may have to push to reccentlyconnected:
-    this.router.navigate(['/']);
+    this.afAuth.auth.signInAnonymously().then( result => {
+        console.log(result);
+        this.authState = result;
+        const userInfo = this.createUserInfo(result);
+        firebase.database().ref('users/' + result.uid).update(userInfo);
+        this.router.navigate(['/']);
+      }).catch(error => {
+      console.log(error);
+      this.errMessage = error.message;
+    });
   }
 
   logOut() {

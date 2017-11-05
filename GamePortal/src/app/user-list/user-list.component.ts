@@ -27,7 +27,6 @@ export class UserListComponent implements OnInit {
       // const user = { userId: $key, ...action.payload.val() };
       // console.log(user);
       // return user;
-      // let mylist = [];
       actions.forEach(action => {
         // recentlyconnected ID:
         console.log(action.key);
@@ -54,10 +53,7 @@ export class UserListComponent implements OnInit {
       // this.users = mylist;
       console.log(this.users);
     });
-    // chatService.getUsers().valueChanges().subscribe(users => {
-    //   this.users = users;
-    //   console.log(users[0]);
-    // });
+
     this.groups = this.groupService.getGroupsForUser();
   }
 
