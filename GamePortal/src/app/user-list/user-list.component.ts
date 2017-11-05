@@ -5,6 +5,7 @@ import {GroupService} from '../services/group.service';
 import {Router} from '@angular/router';
 import 'rxjs/add/operator/mergeMap';
 import {AngularFireDatabase} from 'angularfire2/database';
+import {AuthService} from "../services/auth.service";
 
 // TODO: to set up groups!
 @Component({
@@ -17,7 +18,11 @@ export class UserListComponent implements OnInit {
   users: Array<any> = [];
   groups: any;
 
-  constructor(public chatService: ChatService, public af: AngularFireDatabase, public groupService: GroupService, private router: Router) {
+  constructor(private chatService: ChatService,
+              private af: AngularFireDatabase,
+              private groupService: GroupService,
+              private router: Router,
+              private authService: AuthService) {
     this.isChat = false;
     // display users and groups!!
 
