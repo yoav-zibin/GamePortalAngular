@@ -52,7 +52,14 @@ export class PhoneLoginComponent implements OnInit {
         this.authState = result.user;
         const userInfo = this.authservice.createUserInfo(result.user);
         // this.af.database.ref('users/' + result.user.uid).update(userInfo);
+        // push to recentlyconnected
         firebase.database().ref('users/' + result.user.uid).update(userInfo);
+        this.af.list('gamePortal/recentlyConnected').push(
+          {
+            userId: result.user.uid,
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+          }
+        );
         console.log('success');
         this.router.navigate(['/']);
       })

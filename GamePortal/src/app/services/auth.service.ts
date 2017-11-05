@@ -57,6 +57,13 @@ export class AuthService {
       // note using firebase.database instead of this.af.database!!!
       firebase.database().ref('users/' + result.user.uid).update(userInfo);
       firebase.database().ref('users/' + result.user.uid + '/privateFields/googleId').set(result.user.email);
+      this.af.list('gamePortal/recentlyConnected').push(
+        {
+          userId: result.user.uid,
+          timestamp: firebase.database.ServerValue.TIMESTAMP,
+        }
+      );
+      // console.log(result.user.uid);
       console.log('success');
       this.router.navigate(['/']);
     }).catch(error => {
@@ -75,6 +82,7 @@ export class AuthService {
 
   logInAnonymous() {
     this.afAuth.auth.signInAnonymously();
+    // TODO: may have to push to reccentlyconnected:
     this.router.navigate(['/']);
   }
 

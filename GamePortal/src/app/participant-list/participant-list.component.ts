@@ -32,7 +32,6 @@ export class ParticipantListComponent implements OnInit {
         console.log(user);
         // mylist.push(user);
         this.users.push(user);
-        console.log('ni ma si le');
         // console.log(mylist);
         return user;
       });
