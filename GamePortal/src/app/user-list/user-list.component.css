@@ -7,14 +7,19 @@
   flex: 1;
   order: 1;
   text-align: center;
+  overflow-y: scroll;
+  /*text-align: left;*/
 }
 /*.isChat {*/
   /*height: 100%;*/
 /*}*/
+/*#groupItemWrapper {*/
+  /*text-align: left;*/
+/*}*/
 
-#itemWrapper {
-  text-align: left;
-}
+/*#userItemWrapper {*/
+  /*text-align: left;*/
+/*}*/
 
 .btn-chat{
   height: 50px;
