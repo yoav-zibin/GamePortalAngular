@@ -13,7 +13,7 @@ import 'rxjs/add/operator/mergeMap';
 })
 export class UserListComponent implements OnInit {
 @Input() isChat: boolean;
-  users: any;
+  users: Array<any> = [];
   groups: any;
 
   constructor(chatService: ChatService, groupService: GroupService, private router: Router) {
@@ -26,24 +26,19 @@ export class UserListComponent implements OnInit {
       // const user = { userId: $key, ...action.payload.val() };
       // console.log(user);
       // return user;
-      let mylist = [];
       actions.forEach(action => {
         console.log(action.key);
         console.log(action.payload.val());
         const $key = action.key;
         const user = { userId: $key, ...action.payload.val() };
         console.log(user);
-        mylist.push(user);
-        console.log(mylist);
+        this.users.push(user);
         return user;
       });
       // console.log('map ends');
-      this.users = mylist;
       console.log(this.users);
     });
-    if (this.users) {
-      console.log('this is users: ' + this.users);
-    }
+
     // chatService.getUsers().valueChanges().subscribe(users => {
     //   this.users = users;
     //   console.log(users[0]);
