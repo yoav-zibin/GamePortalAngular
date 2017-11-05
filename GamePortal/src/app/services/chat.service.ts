@@ -35,25 +35,23 @@ export class ChatService {
   constructor(private authService: AuthService,
               private af: AngularFireDatabase,
               private group: GroupService) {
-    this.curtUserId = this.authService.curtUserId;
-    console.log('the current auth uid: ', this.curtUserId);
+    this.curtUserId = this.authService.curtUserId; // undefined at first.
+    // console.log('the current auth uid: ', this.curtUserId);
   }
 
   getUsers() {
     const path = '/gamePortal/recentlyConnected';
-    // return this.af.list(path);
-    // return this.af.database.ref(path);
     console.log('ready to fetch users');
     return this.af.list(path);
-    // ref => {
-    //   return ref.orderByChild('/publicFields/isConnected').equalTo(true);
-    // }
   }
 
   getMessageHistory(): AngularFireList<ChatMessage> {
     // for showing feed
     // test group id:
     this.curtGroupId = this.group.curtGroupId;
+    if (!this.curtGroupId) {
+      return null;
+    }
     return this.af.list('gamePortal/groups/' + this.curtGroupId + '/messages', ref => {
       return ref.limitToLast(20).orderByKey();
     });
@@ -64,6 +62,7 @@ export class ChatService {
     //  according to our group chat rules:
     const TimeStamp = firebase.database.ServerValue.TIMESTAMP;
     // const senderuid = 'testuid';
+    this.curtUserId = this.authService.curtUserId;
     this.chatMessages = this.getMessageHistory();
     console.log('list mei cuo');
     this.chatMessages.push({

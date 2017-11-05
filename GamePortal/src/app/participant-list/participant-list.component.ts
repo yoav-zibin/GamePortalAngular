@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {GroupService} from '../services/group.service';
 import {ChatService} from '../services/chat.service';
 import {MatListModule} from '@angular/material';
+import {AngularFireDatabase} from 'angularfire2/database';
 // import {SelectModule} from 'ng-select';
 
 @Component({
@@ -13,26 +14,40 @@ import {MatListModule} from '@angular/material';
 })
 export class ParticipantListComponent implements OnInit {
   users: Array<any> = [];
+  groupName: string;
   // usernameList: Array<string>;
   selectedUsers: any;
-  constructor(chatService: ChatService, groupService: GroupService, private router: Router) {
+
+  constructor(private chatService: ChatService, private af: AngularFireDatabase, private groupService: GroupService, private router: Router) {
     // display users and groups!!
-    const snap = chatService.getUsers().snapshotChanges();
+    const snap = this.chatService.getUsers().snapshotChanges();
     snap.subscribe( actions => {
       // const $key = action.key;
       // const user = { userId: $key, ...action.payload.val() };
       // console.log(user);
       // return user;
-      // let mylist = [];
       actions.forEach(action => {
+        // recentlyconnected ID:
         console.log(action.key);
+        // userid and timestamp:
         console.log(action.payload.val());
-        const $key = action.key;
-        const user = { userId: $key, ...action.payload.val() };
+        let user = {...action.payload.val()};
         console.log(user);
-        // mylist.push(user);
-        this.users.push(user);
-        // console.log(mylist);
+        const uid = user.userId;
+        // get corresponding displayname and isConnected for user:
+        this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
+          const dpname = result.val();
+          this.af.database.ref('users/' + uid + '/publicFields/isConnected').once('value').then(res => {
+            const connected = res.val();
+            if (connected === true) {
+              user = {
+                userId: uid,
+                displayName: dpname
+              };
+              this.users.push(user);
+            }
+          });
+        });
         return user;
       });
       // console.log('map ends');
@@ -47,6 +62,7 @@ export class ParticipantListComponent implements OnInit {
 
   submit() {
     console.log(this.selectedUsers[0]);
+    this.groupService.addGroupToDatabase(this.groupName, this.selectedUsers);
     this.router.navigate(['/chat']);
   }
 }

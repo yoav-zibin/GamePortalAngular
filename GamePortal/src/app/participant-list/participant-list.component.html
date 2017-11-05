@@ -60,14 +60,22 @@
 <div class="container">
   <!--<div id="scroller" class="loginCard">-->
   <div class="loginCard">
-    <span class="participants-list-header">Please select participants to start group chat:</span>
+    <span class="participants-list-header">Please select online participants to start group chat:</span>
 
     <div class="select">
 
       <select size="6" name="multiselect" [(ngModel)]="selectedUsers" multiple title="SSSelect">
-        <option class="participants-list-header" *ngFor="let s of users" [ngValue]="s">{{s.publicFields.displayName}}</option>
+        <option class="participants-list-header" *ngFor="let s of users" [ngValue]="s.userId">{{s.displayName}}</option>
       </select>
+      <br>
+      <br>
 
+      <span class="participants-list-header">Please specify your group name:</span>
+      <input
+        [(ngModel)]="groupName"
+        type="text"
+        name="groupName"
+        class="formInput" />
 
       <button type="submit" class="btn"
       (click)="submit()">

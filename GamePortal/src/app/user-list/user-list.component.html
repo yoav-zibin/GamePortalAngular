@@ -1,7 +1,7 @@
 <div class="userListWrapper" [ngClass]="{'isChat': !isChat}">
     <button class="btn-chat" (click)="startChat()"></button>
 
-    <div id="itemWrapper">
+    <div *ngIf="(user| async)?.uid" id="itemWrapper">
       <app-group-item
         [group]=group *ngFor="let group of groups"><br>
       </app-group-item>
