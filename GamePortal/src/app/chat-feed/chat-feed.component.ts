@@ -17,10 +17,20 @@ export class ChatFeedComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     // this feed should be update whenever a new message gets posted
-    this.feed = this.chat.getMessageHistory().valueChanges();
+    let message_observe = this.chat.getMessageHistory();
+    if (message_observe === null) {
+      this.feed = null;
+    } else {
+      this.feed = message_observe.valueChanges();
+    }
   }
   ngOnChanges() {
     // TODO: this function is async and always update feed?
-    this.feed = this.chat.getMessageHistory().valueChanges();
+    let message_observe = this.chat.getMessageHistory();
+    if (message_observe === null) {
+      this.feed = null;
+    } else {
+      this.feed = message_observe.valueChanges();
+    }
   }
 }

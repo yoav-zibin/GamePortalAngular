@@ -3,7 +3,7 @@
   <button class="btn-chat" (click)="startChat()"></button><br><br>
 
   <a data-toggle="collapse" href="#groupItemWrapper">Groups</a>
-  <div *ngIf="(this.afAuth.authState|async)" id="groupItemWrapper" class="panel-collapse collapse">
+  <div *ngIf="(user|async)" id="groupItemWrapper" class="panel-collapse collapse">
     <app-group-item
       [group]=group *ngFor="let group of groups"><br>
     </app-group-item>
@@ -18,4 +18,4 @@
     </app-user-item>
   </div>
 
-</div>-
+</div>
