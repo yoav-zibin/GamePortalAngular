@@ -1,13 +1,21 @@
-<div class="userListWrapper" [ngClass]="{'isChat': !isChat}">
-    <button class="btn-chat" (click)="startChat()"></button>
+<div #scroller class="userListWrapper" [ngClass]="{'isChat': !isChat}">
 
-    <div *ngIf="(user| async)?.uid" id="itemWrapper">
-      <app-group-item
-        [group]=group *ngFor="let group of groups"><br>
-      </app-group-item>
+  <button class="btn-chat" (click)="startChat()"></button><br><br>
 
-      <app-user-item
-        [user]=user *ngFor="let user of users"><br>
-      </app-user-item>
-    </div>
+  <a data-toggle="collapse" href="#groupItemWrapper">Groups</a>
+  <div *ngIf="(user|async)" id="groupItemWrapper" class="panel-collapse collapse">
+    <app-group-item
+      [group]=group *ngFor="let group of groups"><br>
+    </app-group-item>
+  </div>
+
+  <br>
+
+  <a data-toggle="collapse" href="#userItemWrapper">Recently connected users</a>
+  <div id="userItemWrapper" class="panel-collapse collapse">
+    <app-user-item
+      [user]=user *ngFor="let user of users"><br>
+    </app-user-item>
+  </div>
+
 </div>
