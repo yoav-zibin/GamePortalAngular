@@ -9,7 +9,7 @@ import {ChatService} from '../services/chat.service';
 })
 export class UserItemComponent implements OnInit {
 
-  @Input() user: User;
+  @Input() user: any;
   constructor(chat: ChatService) {
   }
 
