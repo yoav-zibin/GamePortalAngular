@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ChatMessage} from '../models/chat_message';
-import {AuthService} from '../services/auth.service';
+import {AuthService} from '../services/auth.service';;
+import {AngularFireDatabase} from 'angularfire2/database';
 
 @Component({
   selector: 'app-message',
@@ -15,7 +16,7 @@ export class MessageComponent implements OnInit {
   timestamp: any;
   username: string;
   isOwnMessage: boolean;
-  constructor(public authService: AuthService) {
+  constructor(private af: AngularFireDatabase, private authService: AuthService) {
     // this.isOwnMessage = authService.authUser().uid === this.userid;
     this.isOwnMessage = true;
   }
@@ -24,5 +25,8 @@ export class MessageComponent implements OnInit {
     this.message = chatMessage.message;
     this.timestamp = chatMessage.timestamp;
     this.userid = chatMessage.senderUid; // may want to have displayname
+    this.af.database.ref('users/' + this.userid + '/publicFields/displayName').once('value').then( res => {
+      this.username = res.val();
+    });
   }
 }

@@ -64,7 +64,7 @@ export class AuthService {
         }
       );
       // console.log(result.user.uid);
-      console.log('success');
+      console.log('success login using google');
       this.router.navigate(['/']);
     }).catch(error => {
       console.log(error);
@@ -84,7 +84,7 @@ export class AuthService {
     this.afAuth.auth.signInAnonymously();
     // TODO: may have to push to reccentlyconnected:
     this.afAuth.auth.signInAnonymously().then( result => {
-        console.log(result);
+        // console.log(result);
         this.authState = result;
         const userInfo = this.createUserInfo(result);
         firebase.database().ref('users/' + result.uid).update(userInfo);
@@ -104,10 +104,9 @@ export class AuthService {
   public updateOnConnect() {
     return this.af.object('.info/connected').valueChanges().subscribe
     (connected => {
-      console.log(this.curtUserId);
-      console.log(connected);
+      // console.log(this.curtUserId);
+      // console.log(connected);
       this.af.object('users/' + this.curtUserId + '/publicFields').update({isConnected: connected});
-      console.log('woyoucuo');
     });
   }
 

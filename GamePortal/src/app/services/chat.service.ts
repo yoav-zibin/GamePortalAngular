@@ -34,9 +34,13 @@ export class ChatService {
 
   constructor(private authService: AuthService,
               private af: AngularFireDatabase,
-              private group: GroupService) {
+              private groupService: GroupService) {
     this.curtUserId = this.authService.curtUserId; // undefined at first.
     // console.log('the current auth uid: ', this.curtUserId);
+  }
+
+  setGroupID(gid) {
+   this.curtGroupId = gid;
   }
 
   getUsers() {
@@ -45,16 +49,15 @@ export class ChatService {
     return this.af.list(path);
   }
 
-  getMessageHistory(): AngularFireList<ChatMessage> {
+  getMessageHistory(gid): any {
     // for showing feed
     // test group id:
-    this.curtGroupId = this.group.curtGroupId;
-    if (!this.curtGroupId) {
-      return null;
-    }
-    return this.af.list('gamePortal/groups/' + this.curtGroupId + '/messages', ref => {
+    return this.af.list('gamePortal/groups/' + gid + '/messages', ref => {
       return ref.limitToLast(20).orderByKey();
     });
+    // if (!this.curtGroupId) {
+    //   return null;
+    // }
   }
 
   sendMessage(msg: string) {
@@ -63,8 +66,8 @@ export class ChatService {
     const TimeStamp = firebase.database.ServerValue.TIMESTAMP;
     // const senderuid = 'testuid';
     this.curtUserId = this.authService.curtUserId;
-    this.chatMessages = this.getMessageHistory();
-    console.log('list mei cuo');
+    this.chatMessages = this.getMessageHistory(this.curtGroupId);
+    // console.log('list mei cuo');
     this.chatMessages.push({
       senderUid: this.curtUserId,
       timestamp: TimeStamp,

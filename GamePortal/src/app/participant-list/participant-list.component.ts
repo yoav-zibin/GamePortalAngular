@@ -5,6 +5,7 @@ import {GroupService} from '../services/group.service';
 import {ChatService} from '../services/chat.service';
 import {MatListModule} from '@angular/material';
 import {AngularFireDatabase} from 'angularfire2/database';
+import {AuthService} from '../services/auth.service';
 // import {SelectModule} from 'ng-select';
 
 @Component({
@@ -18,7 +19,11 @@ export class ParticipantListComponent implements OnInit {
   // usernameList: Array<string>;
   selectedUsers: any;
 
-  constructor(private chatService: ChatService, private af: AngularFireDatabase, private groupService: GroupService, private router: Router) {
+  constructor(private chatService: ChatService,
+               private af: AngularFireDatabase,
+               private groupService: GroupService,
+               private router: Router,
+               private authService: AuthService) {
     // display users and groups!!
     const snap = this.chatService.getUsers().snapshotChanges();
     snap.subscribe( actions => {
@@ -27,19 +32,15 @@ export class ParticipantListComponent implements OnInit {
       // console.log(user);
       // return user;
       actions.forEach(action => {
-        // recentlyconnected ID:
-        console.log(action.key);
-        // userid and timestamp:
-        console.log(action.payload.val());
         let user = {...action.payload.val()};
-        console.log(user);
         const uid = user.userId;
         // get corresponding displayname and isConnected for user:
         this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
           const dpname = result.val();
           this.af.database.ref('users/' + uid + '/publicFields/isConnected').once('value').then(res => {
             const connected = res.val();
-            if (connected === true) {
+            // can not select current user as participant again.
+            if (connected === true && uid !== this.authService.curtUserId) {
               user = {
                 userId: uid,
                 displayName: dpname
@@ -52,7 +53,7 @@ export class ParticipantListComponent implements OnInit {
       });
       // console.log('map ends');
       // this.users = mylist;
-      console.log(this.users);
+      // console.log(this.users);
     });
     // this.users = [1, 2, 3, 4, 45, 5, 66, 6];
   }

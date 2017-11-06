@@ -1,12 +1,14 @@
 <div class="mainContent">
-  <div>
+  <div *ngIf="(user | async)?.uid">
     <app-user-list [isChat] = true></app-user-list>
   </div>
   <div #scroller class="feedWrapper">
-    <app-chat-feed></app-chat-feed>
+    <div *ngIf="(groupId | async)">
+      <app-chat-feed [groupId]="groupId"></app-chat-feed>
+    </div>
   </div>
 </div>
 
 <div class="chatFormWrapper">
-  <app-chat-form></app-chat-form>
+  <app-chat-form *ngIf="(groupId | async)"></app-chat-form>
 </div>

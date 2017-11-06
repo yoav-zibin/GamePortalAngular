@@ -5,19 +5,35 @@ import * as firebase from 'firebase/app';
 import {Router} from '@angular/router';
 import {Group} from '../models/group';
 import {AuthService} from './auth.service';
+import { Observable } from 'rxjs/';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class GroupService {
   // public user: Observable<firebase.User>;
   public curtUserId: string;
-  public curtGroupId: string;
+  public curtGroupId = new Subject<any>();
   public participants: Array<any>;
   public groupName: string;
-  public curtGroup: Group;
 
   constructor(public authService: AuthService, public af: AngularFireDatabase, private router: Router) {
     this.curtUserId = this.authService.curtUserId; // undefined at first
     // console.log('undefined??no no no', this.curtUserId);
+    // this.curtGroupId.subscribe(res => {
+    //   console.log('you ma?', res);
+    // });
+  }
+
+  getObservable(): Observable<any> {
+    // console.log('kai shi shi blank? ', this.curtGroupId.asObservable());
+    // TODO: have to click twice two trigger feed, since on init, this returns an (empty) observable.
+    // TODO: so, it could still pass the ngif.
+    return this.curtGroupId.asObservable();
+  }
+
+
+  setGroupID(gid) {
+    this.curtGroupId.next(gid);
   }
 
   createGroupInfo(): any {
@@ -39,22 +55,13 @@ export class GroupService {
 
   addGroupToDatabase(groupName: string, participants: Array<any>) {
     this.participants = participants;
-    // export class Group {
-    //   $groupId?: string;
-    //   participants: {
-    //     $participantUserId: {
-    //       participantIndex: number;
-    //     }
-    //   };
-    //   groupName: string;
-    //   createdOn: number;
-    //   messages: ChatMessage;
-    // }
     this.groupName = groupName;
-    this.curtGroupId = this.createGroupInfo();
+    console.log('creating group info: ');
+    const groupid = this.createGroupInfo();
+    this.curtGroupId.next(groupid);
     const timeStamp = firebase.database.ServerValue.TIMESTAMP;
     // for this user:
-    this.af.database.ref('users/' + this.curtUserId + '/privateButAddable/groups/' + this.curtGroupId).update(
+    this.af.database.ref('users/' + this.curtUserId + '/privateButAddable/groups/' + groupid).update(
       {
         addedByUid: this.curtUserId,
         timestamp: timeStamp,
@@ -65,12 +72,12 @@ export class GroupService {
     for (const partici of this.participants) {
       console.log('participant::::::    ', partici);
       const userid = partici;
-      this.af.database.ref('gamePortal/groups/' + this.curtGroupId + '/participants/' + userid).update(
+      this.af.database.ref('gamePortal/groups/' + groupid + '/participants/' + userid).update(
         {
           participantIndex: index
         }
       );
-      this.af.database.ref('users/' + userid + '/privateButAddable/groups/' + this.curtGroupId).update(
+      this.af.database.ref('users/' + userid + '/privateButAddable/groups/' + groupid).update(
         {
           addedByUid: this.curtUserId,
           timestamp: timeStamp,
@@ -81,33 +88,30 @@ export class GroupService {
   }
 
   getGroupsForUser(): any {
-    // "groups": {
-    //   "$memberOfGroupId": {
-    //       "addedByUid": {
-    //     },
-    //     "timestamp": {
-    //     },
-
     console.log('wo jin lai le getGroupsForUser');
+    this.curtUserId = this.authService.curtUserId;
+    console.log('wo zai kan group service uid: ', this.curtUserId);
     if (!this.curtUserId) {
       return [];
     }
 
     // test user id:
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
-    let groupsInUsers = [];
-    this.af.list(path).valueChanges().subscribe(groups => {
-      groupsInUsers = groups; // group list in users/userid/...
-    });
-    console.log('groupsInUSERS: ', groupsInUsers);
-    const groupList = []; // group list in groups/...
-    for (const groupInUser of groupsInUsers) {
-      const groupid = groupInUser.$memberOfGroupId;
-      const groupObj = this.af.object('gamePortal/groups/' + groupid).valueChanges().subscribe( result => {
-        groupList.push(result);
-      });
-    }
-    return groupList;
+    return this.af.list(path);
+
+    //
+    // this.af.list(path).valueChanges().subscribe(groups => {
+    //   groupsInUsers = groups; // group list in users/userid/...
+    //   console.log('groupsInUSERS: ', groupsInUsers);
+    //   const groupList = []; // group list in groups/...
+    //   for (const groupInUser of groupsInUsers) {
+    //     const groupid = groupInUser.$memberOfGroupId;
+    //     const groupObj = this.af.object('gamePortal/groups/' + groupid).valueChanges().subscribe( result => {
+    //       groupList.push(result);
+    //     });
+    //   }
+    //   return groupList;
+    // });
   }
 }
 
