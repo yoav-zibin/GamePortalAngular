@@ -1,7 +1,5 @@
 <div class="groupItem">
-  <span class="status" [ngClass]="{ 'online': user.publicFields.isConnected, 'offline': !user.publicFields.isConnected }">
-  </span>
-  <span class="groupName">
-    {{group.publicFields.displayName}}
+  <span class="groupName" (click)="setCurtGroupId()">
+    {{group.groupName}}
   </span>
 </div>

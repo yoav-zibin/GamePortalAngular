@@ -3,7 +3,7 @@
   <button class="btn-chat" (click)="startChat()"></button><br><br>
 
   <a data-toggle="collapse" href="#groupItemWrapper">Groups</a>
-  <div *ngIf="(user|async)" id="groupItemWrapper" class="panel-collapse collapse">
+  <div id="groupItemWrapper" class="panel-collapse collapse">
     <app-group-item
       [group]=group *ngFor="let group of groups"><br>
     </app-group-item>

@@ -16,7 +16,7 @@ import {AngularFireAuth} from 'angularfire2/auth';
 export class UserListComponent implements OnInit {
 @Input() isChat: boolean;
   users: Array<any> = [];
-  groups: any;
+  groups: Array<any> = [];
   public authState: any;
   user: any;
 
@@ -29,8 +29,8 @@ export class UserListComponent implements OnInit {
     // display users and groups!!
     this.user = this.afAuth.authState;
 
-    const snap = this.chatService.getUsers().snapshotChanges();
-    snap.subscribe( actions => {
+    const snapUser = this.chatService.getUsers().snapshotChanges();
+    snapUser.subscribe( actions => {
       actions.forEach(action => {
         let user = {...action.payload.val()};
         const uid = user.userId;
@@ -49,11 +49,35 @@ export class UserListComponent implements OnInit {
         return user;
       });
     });
-    this.groups = this.groupService.getGroupsForUser();
   }
 
   ngOnInit() {
-
+    console.log('Fetching groups...  ');
+    const snapGroup = this.groupService.getGroupsForUser().snapshotChanges();
+    // TODO: find out why snapshotchanges return a group info multiple times!!!
+    let groupIdSet: Set<string> = new Set<string>();
+    snapGroup.subscribe(actions => {
+      const size = actions.length;
+      // console.log('size too big???', size);
+      actions.forEach( action => {
+        const groupid = action.key;
+        console.log('Group ID: ', groupid);
+        if (!groupIdSet.has(groupid)) {
+          groupIdSet.add(groupid);
+          this.af.database.ref('gamePortal/groups/' + groupid + '/groupName').once('value').then(result => {
+            this.groups.push({
+              groupId: groupid,
+              groupName: result.val()
+            });
+            // console.log(this.groups[0]);
+            // if (this.groups.length === size) {
+            //   return groupList;
+            // }
+          });
+        }
+        return groupid;
+      });
+    });
   }
 
   startChat() {
