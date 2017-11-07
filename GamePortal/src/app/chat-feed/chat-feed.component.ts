@@ -1,7 +1,7 @@
 import {Component, Input, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import { ChatService} from '../services/chat.service';
 import { ChatMessage } from '../models/chat_message';
-import {AngularFireList} from 'angularfire2/database';
+import {AngularFireDatabase, AngularFireList} from 'angularfire2/database';
 import {Observable} from 'rxjs/Observable';
 import {GroupService} from '../services/group.service';
 
@@ -14,7 +14,9 @@ export class ChatFeedComponent implements OnInit, OnChanges {
 
   @Input() groupId: Observable<any>;
   feed: Observable<any>;
-  constructor(private chat: ChatService, private groupService: GroupService) {
+  // participants: any;
+  // groupName: any;
+  constructor(private chat: ChatService, private af: AngularFireDatabase, private groupService: GroupService) {
   }
 
   ngOnInit() {
@@ -24,6 +26,14 @@ export class ChatFeedComponent implements OnInit, OnChanges {
       // console.log('diyigeyouma?', gid);
       const message_observe = this.chat.getMessageHistory(gid);
       this.feed = message_observe.valueChanges();
+      // this.groupName = this.af.database.ref('gamePortal/groups/' + gid + '/groupName').once(
+      //   'value').then( res => {
+      //     this.groupName = res.val();
+      // });
+      // // uid
+      // this.af.list('gamePortal/groups/' + gid + '/participants').valueChanges().subscribe(res => {
+      //   this.participants = res;
+      // });
     });
   }
   ngOnChanges() {
