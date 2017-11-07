@@ -15,7 +15,9 @@ import {AngularFireAuth} from 'angularfire2/auth';
 })
 export class UserListComponent implements OnInit {
 @Input() isChat: boolean;
-  users: Array<any> = [];
+  // users: Array<any> = [];
+  onlineUsers: Array<any> = [];
+  offlineUsers: Array<any> = [];
   groups: Array<any> = [];
   public authState: any;
   user: any;
@@ -29,23 +31,33 @@ export class UserListComponent implements OnInit {
     // display users and groups!!
     this.user = this.afAuth.authState;
 
+    let userIdSet: Set<string> = new Set<string>();
     const snapUser = this.chatService.getUsers().snapshotChanges();
     snapUser.subscribe( actions => {
       actions.forEach(action => {
+        const size = actions.length;
+        console.log('size too big???', size);
         let user = {...action.payload.val()};
         const uid = user.userId;
-        // get corresponding displayname and isConnected for user:
-        this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
-          const dpname = result.val();
-          this.af.database.ref('users/' + uid + '/publicFields/isConnected').once('value').then(res => {
-            const connected = res.val();
-            user = {
-              displayName: dpname,
-              isConnected: connected
-            };
-            this.users.push(user);
+        if (!userIdSet.has(uid)) {
+          userIdSet.add(uid);
+          // get corresponding displayname and isConnected for user:
+          this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
+            const dpname = result.val();
+            this.af.database.ref('users/' + uid + '/publicFields/isConnected').once('value').then(res => {
+              const connected = res.val();
+              user = {
+                displayName: dpname,
+                isConnected: connected
+              };
+              if (connected) {
+                this.onlineUsers.push(user);
+              } else {
+                this.offlineUsers.push(user);
+              }
+            });
           });
-        });
+        }
         return user;
       });
     });
@@ -61,7 +73,7 @@ export class UserListComponent implements OnInit {
       // console.log('size too big???', size);
       actions.forEach( action => {
         const groupid = action.key;
-        console.log('Group ID: ', groupid);
+        // console.log('Group ID: ', groupid);
         if (!groupIdSet.has(groupid)) {
           groupIdSet.add(groupid);
           this.af.database.ref('gamePortal/groups/' + groupid + '/groupName').once('value').then(result => {

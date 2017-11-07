@@ -14,7 +14,10 @@
   <a data-toggle="collapse" href="#userItemWrapper">Recently connected users</a>
   <div id="userItemWrapper" class="panel-collapse collapse">
     <app-user-item
-      [user]=user *ngFor="let user of users"><br>
+      [user]=user *ngFor="let user of onlineUsers"><br>
+    </app-user-item>
+    <app-user-item
+      [user]=user *ngFor="let user of offlineUsers"><br>
     </app-user-item>
   </div>
 

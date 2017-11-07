@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ChatMessage} from '../models/chat_message';
-import {AuthService} from '../services/auth.service';;
+import {AuthService} from '../services/auth.service';
 import {AngularFireDatabase} from 'angularfire2/database';
+import {AngularFireAuth} from "angularfire2/auth";
 
 @Component({
   selector: 'app-message',
@@ -16,9 +17,10 @@ export class MessageComponent implements OnInit {
   timestamp: any;
   username: string;
   isOwnMessage: boolean;
-  constructor(private af: AngularFireDatabase, private authService: AuthService) {
-    // this.isOwnMessage = authService.authUser().uid === this.userid;
-    this.isOwnMessage = true;
+  constructor(private af: AngularFireDatabase, private afAuth: AngularFireAuth) {
+    this.afAuth.authState.subscribe(user => {
+      this.isOwnMessage = this.userid === user.uid;
+    });
   }
 
   ngOnInit(chatMessage = this.chatMessage) {
