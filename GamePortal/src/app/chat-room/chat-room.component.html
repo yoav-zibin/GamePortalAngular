@@ -13,12 +13,12 @@
     <!--</li>-->
   <!--</ul>-->
   <div #scroller class="feedWrapper">
-    <div *ngIf="(groupId | async)">
-      <app-chat-feed [groupId]="groupId"></app-chat-feed>
+    <div *ngIf="getGroupId()">
+      <app-chat-feed></app-chat-feed>
     </div>
   </div>
 </div>
 
 <div class="chatFormWrapper">
-  <app-chat-form *ngIf="(groupId | async)"></app-chat-form>
+  <app-chat-form *ngIf="(getGroupId())"></app-chat-form>
 </div>

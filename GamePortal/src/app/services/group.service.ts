@@ -12,7 +12,7 @@ import { Subject } from 'rxjs/Subject';
 export class GroupService {
   // public user: Observable<firebase.User>;
   public curtUserId: string;
-  public curtGroupId = new Subject<any>();
+  public curtGroupId: string = null;
   public participants: Array<any>;
   public groupName: string;
 
@@ -24,16 +24,27 @@ export class GroupService {
     // });
   }
 
-  getObservable(): Observable<any> {
+  getGroupId() {
     // console.log('kai shi shi blank? ', this.curtGroupId.asObservable());
     // TODO: have to click twice two trigger feed, since on init, this returns an (empty) observable.
     // TODO: so, it could still pass the ngif.
-    return this.curtGroupId.asObservable();
+    return this.curtGroupId;
   }
 
+  getMessageHistory(): any {
+    // for showing feed
+    // test group id:
+    return this.af.list('gamePortal/groups/' + this.getGroupId() + '/messages', ref => {
+      return ref.limitToLast(20).orderByKey();
+    });
+    // if (!this.curtGroupId) {
+    //   return null;
+    // }
+  }
 
   setGroupID(gid) {
-    this.curtGroupId.next(gid);
+    console.log('setting group id: ', gid);
+    this.curtGroupId =(gid);
   }
 
   createGroupInfo(): any {
@@ -58,7 +69,7 @@ export class GroupService {
     this.groupName = groupName;
     console.log('creating group info: ');
     const groupid = this.createGroupInfo();
-    this.curtGroupId.next(groupid);
+    this.setGroupID(groupid);
     const timeStamp = firebase.database.ServerValue.TIMESTAMP;
     // for this user:
     this.af.database.ref('users/' + this.curtUserId + '/privateButAddable/groups/' + groupid).update(

@@ -10,37 +10,16 @@ import {GroupService} from '../services/group.service';
   templateUrl: './chat-feed.component.html',
   styleUrls: ['./chat-feed.component.css']
 })
-export class ChatFeedComponent implements OnInit, OnChanges {
+export class ChatFeedComponent {
 
-  @Input() groupId: Observable<any>;
-  feed: Observable<any>;
   // participants: any;
   // groupName: any;
   constructor(private chat: ChatService, private af: AngularFireDatabase, private groupService: GroupService) {
   }
 
-  ngOnInit() {
-    // this feed should be update whenever a new message gets posted
-    // console.log('diyigeyouma?dfasf?', this.groupId);
-    this.groupId.subscribe(gid => {
-      // console.log('diyigeyouma?', gid);
-      const message_observe = this.chat.getMessageHistory(gid);
-      this.feed = message_observe.valueChanges();
-      // this.groupName = this.af.database.ref('gamePortal/groups/' + gid + '/groupName').once(
-      //   'value').then( res => {
-      //     this.groupName = res.val();
-      // });
-      // // uid
-      // this.af.list('gamePortal/groups/' + gid + '/participants').valueChanges().subscribe(res => {
-      //   this.participants = res;
-      // });
-    });
+  getFeed() {
+    //return this.groupService.getMessageHistory().valueChanges();
+    return  null;
   }
-  ngOnChanges() {
-    // TODO: this function is async and always update feed?
-    this.groupId.subscribe(gid => {
-      const message_observe = this.chat.getMessageHistory(gid);
-      this.feed = message_observe.valueChanges();
-    });
-  }
+
 }
