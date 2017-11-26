@@ -74,7 +74,7 @@ export const firebaseConfig = {
     MatListModule,
     MatButtonToggleModule,
   ],
-  providers: [AuthService, WindowService, ChatService, GroupService],
+  providers: [GroupService,  AuthService, WindowService, ChatService],
   bootstrap: [AppComponent]
 })
 
