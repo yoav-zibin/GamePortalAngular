@@ -10,9 +10,15 @@ import {ChatService} from '../services/chat.service';
 export class UserItemComponent implements OnInit {
 
   @Input() user: any;
+  displayName: string;
   constructor(chat: ChatService) {
   }
 
   ngOnInit() {
+    if (this.user.displayName) {
+      this.displayName = this.user.displayName;
+    } else {
+      this.displayName = 'Anonymous user';
+    }
   }
 }
