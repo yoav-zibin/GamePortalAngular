@@ -34,7 +34,7 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     console.log('Fetching users...  ');
-    // let userIdSet: Set<string> = new Set<string>();
+    let userIdSet: Set<string> = new Set<string>();
     const snapUser = this.chatService.getUsers().valueChanges();
     snapUser.subscribe( users => {
       users.forEach(user => {
@@ -43,8 +43,8 @@ export class UserListComponent implements OnInit {
         // let user = {...action.payload.val()};
         const uid = user['userId'];
         console.log('userid???', uid);
-        // if (!userIdSet.has(uid)) {
-        //   userIdSet.add(uid);
+        if (!userIdSet.has(uid)) {
+          userIdSet.add(uid);
           // get corresponding displayname and isConnected for user:
           this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
             const dpname = result.val();
@@ -61,7 +61,7 @@ export class UserListComponent implements OnInit {
               }
             });
           });
-        // }
+        }
         return user;
       });
     });
