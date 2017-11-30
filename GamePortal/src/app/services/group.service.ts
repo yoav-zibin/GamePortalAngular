@@ -31,20 +31,21 @@ export class GroupService {
     return this.curtGroupId;
   }
 
-  getMessageHistory(): any {
-    // for showing feed
-    // test group id:
-    return this.af.list('gamePortal/groups/' + this.getGroupId() + '/messages', ref => {
-      return ref.limitToLast(20).orderByKey();
-    });
-    // if (!this.curtGroupId) {
-    //   return null;
-    // }
-  }
+  // getMessageHistory(): any {
+  //   // for showing feed
+  //   // test group id:
+  //   console.log('get message history for: ', this.getGroupId());
+  //   return this.af.list('gamePortal/groups/' + this.getGroupId() + '/messages', ref => {
+  //     return ref.limitToLast(20).orderByKey();
+  //   });
+  //   // if (!this.curtGroupId) {
+  //   //   return null;
+  //   // }
+  // }
 
   setGroupID(gid) {
     console.log('setting group id: ', gid);
-    this.curtGroupId =(gid);
+    this.curtGroupId = (gid);
   }
 
   createGroupInfo(): any {

@@ -10,16 +10,21 @@ import {GroupService} from '../services/group.service';
   templateUrl: './chat-feed.component.html',
   styleUrls: ['./chat-feed.component.css']
 })
-export class ChatFeedComponent {
-
+export class ChatFeedComponent implements OnInit, OnChanges {
   // participants: any;
   // groupName: any;
+  feed: Observable<any>;
+  @Input() gid: any;
   constructor(private chat: ChatService, private af: AngularFireDatabase, private groupService: GroupService) {
+
   }
 
-  getFeed() {
-    //return this.groupService.getMessageHistory().valueChanges();
-    return  null;
+  ngOnChanges(): void {
+    this.feed = this.chat.getMessageHistory(this.gid).valueChanges();
+  }
+
+  ngOnInit(): void {
+    this.feed = this.chat.getMessageHistory(this.gid).valueChanges();
   }
 
 }

@@ -19,7 +19,5 @@ export class GroupItemComponent implements OnInit {
     console.log('setting groupid:...');
     // set observable groupid in groupservice:
     this.groupService.setGroupID(this.group.groupId);
-    // set the scalar: groupid in chat service
-    this.chatService.setGroupID(this.group.groupId);
   }
 }

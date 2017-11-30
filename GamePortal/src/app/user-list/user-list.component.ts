@@ -30,17 +30,21 @@ export class UserListComponent implements OnInit {
     this.isChat = false;
     // display users and groups!!
     this.user = this.afAuth.authState;
+  }
 
-    let userIdSet: Set<string> = new Set<string>();
-    const snapUser = this.chatService.getUsers().snapshotChanges();
-    snapUser.subscribe( actions => {
-      actions.forEach(action => {
-        const size = actions.length;
+  ngOnInit() {
+    console.log('Fetching users...  ');
+    // let userIdSet: Set<string> = new Set<string>();
+    const snapUser = this.chatService.getUsers().valueChanges();
+    snapUser.subscribe( users => {
+      users.forEach(user => {
+        const size = users.length;
         console.log('size too big???', size);
-        let user = {...action.payload.val()};
-        const uid = user.userId;
-        if (!userIdSet.has(uid)) {
-          userIdSet.add(uid);
+        // let user = {...action.payload.val()};
+        const uid = user['userId'];
+        console.log('userid???', uid);
+        // if (!userIdSet.has(uid)) {
+        //   userIdSet.add(uid);
           // get corresponding displayname and isConnected for user:
           this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
             const dpname = result.val();
@@ -57,13 +61,11 @@ export class UserListComponent implements OnInit {
               }
             });
           });
-        }
+        // }
         return user;
       });
     });
-  }
 
-  ngOnInit() {
     console.log('Fetching groups...  ');
     const snapGroup = this.groupService.getGroupsForUser().snapshotChanges();
     // TODO: find out why snapshotchanges return a group info multiple times!!!
