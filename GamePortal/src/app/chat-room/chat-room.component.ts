@@ -13,11 +13,11 @@ export class ChatRoomComponent implements OnInit, AfterViewChecked {
   public user: any;
   participants: any;
   groupName: any;
-  constructor(private afAuth: AngularFireAuth, private af: AngularFireDatabase) {
+  constructor(private afAuth: AngularFireAuth, private af: AngularFireDatabase, private groupService: GroupService) {
     this.user = this.afAuth.authState;
   }
 
-  getGroupId() { return null; } //this.groupService.getGroupId(); }
+  getGroupId() { return this.groupService.getGroupId(); }
   scrollToBottom(): void {
     this.feedContainer.nativeElement.scrollTop
       = this.feedContainer.nativeElement.scrollHeight;

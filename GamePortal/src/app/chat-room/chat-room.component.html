@@ -14,7 +14,7 @@
   <!--</ul>-->
   <div #scroller class="feedWrapper">
     <div *ngIf="getGroupId()">
-      <app-chat-feed></app-chat-feed>
+      <app-chat-feed [gid]="getGroupId()"></app-chat-feed>
     </div>
   </div>
 </div>

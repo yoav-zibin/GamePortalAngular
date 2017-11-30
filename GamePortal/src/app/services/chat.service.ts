@@ -14,7 +14,6 @@ export class ChatService {
   // should have a group id:
   // when the current user select a group chat
   // open the corresponding chat room
-  curtGroupId: any;
   user: any;
   testGroupId = 'ttest';
   public curtUserId: string;
@@ -39,9 +38,9 @@ export class ChatService {
     // console.log('the current auth uid: ', this.curtUserId);
   }
 
-  setGroupID(gid) {
-   this.curtGroupId = gid;
-  }
+  // setGroupID(gid) {
+  //  this.curtGroupId = gid;
+  // }
 
   getUsers() {
     const path = '/gamePortal/recentlyConnected';
@@ -52,6 +51,7 @@ export class ChatService {
   getMessageHistory(gid): any {
     // for showing feed
     // test group id:
+    console.log('fetching history for: ', gid);
     return this.af.list('gamePortal/groups/' + gid + '/messages', ref => {
       return ref.limitToLast(20).orderByKey();
     });
@@ -66,7 +66,7 @@ export class ChatService {
     const TimeStamp = firebase.database.ServerValue.TIMESTAMP;
     // const senderuid = 'testuid';
     this.curtUserId = this.authService.curtUserId;
-    this.chatMessages = this.getMessageHistory(this.curtGroupId);
+    this.chatMessages = this.getMessageHistory(this.groupService.getGroupId());
     // console.log('list mei cuo');
     this.chatMessages.push({
       senderUid: this.curtUserId,

@@ -25,15 +25,15 @@ export class ParticipantListComponent implements OnInit {
                private router: Router,
                private authService: AuthService) {
     // display users and groups!!
-    const snap = this.chatService.getUsers().snapshotChanges();
-    snap.subscribe( actions => {
+    const snap = this.chatService.getUsers().valueChanges();
+    snap.subscribe( users => {
       // const $key = action.key;
       // const user = { userId: $key, ...action.payload.val() };
       // console.log(user);
       // return user;
-      actions.forEach(action => {
-        let user = {...action.payload.val()};
-        const uid = user.userId;
+      users.forEach(user => {
+        // let user = {...action.payload.val()};
+        const uid = user['userId'];
         // get corresponding displayname and isConnected for user:
         this.af.database.ref('users/' + uid + '/publicFields/displayName').once('value').then(result => {
           const dpname = result.val();
