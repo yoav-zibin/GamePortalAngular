@@ -1,0 +1,11 @@
+<!--wrapper component for spec-loader(board); chat-room; game-selector-->
+<div *ngIf="getSelectedSpec() as selected">
+  <app-spec-loader [spec]="selected"></app-spec-loader>
+</div>
+<div>
+  <app-group-wrapper>
+  <!--should have to tabs: chat-room and game-selector-->
+  </app-group-wrapper>
+</div>
+
+
