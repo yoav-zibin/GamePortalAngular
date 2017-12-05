@@ -4,13 +4,13 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AppComponent } from './app.component';
-import {FormsModule} from '@angular/forms';
-import {HttpModule} from '@angular/http';
-import {AuthService} from './services/auth.service';
-import {EmailLoginComponent } from './email-login/email-login.component';
+import { FormsModule } from '@angular/forms';
+import { HttpModule } from '@angular/http';
+import { AuthService } from './services/auth.service';
+import { EmailLoginComponent } from './email-login/email-login.component';
 import { PhoneLoginComponent } from './phone-login/phone-login.component';
-import {AppRoutingModule} from './app-routing.module';
-import {WindowService} from './window.service';
+import { AppRoutingModule } from './app-routing.module';
+import { WindowService } from './window.service';
 import { LoginIndexComponent } from './login-index/login-index.component';
 import { ChatFormComponent } from './chat-form/chat-form.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
@@ -19,14 +19,16 @@ import { MessageComponent } from './message/message.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { UserListComponent } from './user-list/user-list.component';
 import { UserItemComponent } from './user-item/user-item.component';
-import {ChatService} from './services/chat.service';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {NoopAnimationsModule} from '@angular/platform-browser/animations';
-import {GroupService} from './services/group.service';
+import { ChatService } from './services/chat.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { GroupService } from './services/group.service';
 import { GroupItemComponent } from './group-item/group-item.component';
 import { ParticipantListComponent } from './participant-list/participant-list.component';
-import {MatListModule} from '@angular/material';
-import {MatButtonToggleModule} from '@angular/material';
+import { MatListModule } from '@angular/material';
+import { MatButtonToggleModule } from '@angular/material';
+import { GameSelectorComponent } from './game-selector/game-selector.component';
+import { SpecService } from './services/spec.service';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -60,6 +62,7 @@ export const firebaseConfig = {
     UserItemComponent,
     GroupItemComponent,
     ParticipantListComponent,
+    GameSelectorComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,7 +77,7 @@ export const firebaseConfig = {
     MatListModule,
     MatButtonToggleModule,
   ],
-  providers: [GroupService,  AuthService, WindowService, ChatService],
+  providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]
 })
 

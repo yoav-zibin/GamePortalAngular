@@ -1,0 +1,37 @@
+<div class="container">
+  <!--<div id="scroller" class="loginCard">-->
+  <ul class="nav nav-tabs">
+    <li class="active">
+      <a data-toggle="tab" href="#newGame">New Game</a>
+    </li>
+    <li>
+      <a data-toggle="tab" href="#recentlyPlayed">Recently Palyed Matches</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="newGame" class="tab-pane fade in active">
+      <div class="form-group">
+        <select class="form-control" [(ngModel)]="selectedNewGame">
+          <option *ngFor="let game of gameSpecs" [ngValue]=game> {{game.gameName}} </option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn" (click)="startNewGame()">
+        Start New Game
+      </button>
+    </div>
+
+    <div id="recentlyPlayed" class="tab-pane fade">
+      <div class="form-group">
+        <select class="form-control" [(ngModel)]="selectedRecentMatch">
+          <option *ngFor="let match of recentMatchSpecs" [ngValue]=match> {{match.gameName}} </option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn" (click)="loadRecentmatch()">
+        Resume Recent Match
+      </button>
+    </div>
+  </div>
+</div>
