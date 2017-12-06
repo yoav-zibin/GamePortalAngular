@@ -116,7 +116,8 @@ export class GameSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.displayGameSpecs();
+    this.displayRecentMatchSpecs();
   }
 
 }
