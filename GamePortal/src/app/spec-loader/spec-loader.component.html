@@ -1,5 +1,7 @@
 <!--before we get into play arena, there should be an ngif spec, and bind spec in the play arena-->
 <div>
   PlayArena works!
-  <app-board [board] = board>
+  <div *ngIf="board && pieces.length > 0 && matchRef">
+    <app-board [board]="board" [pieces]="pieces" [selectedMatchRef]="matchRef"></app-board>
+  </div>
 </div>

@@ -2,14 +2,23 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class SpecService {
-  selectedSpec: any;
+  selectedSpecId: string;
+  matchId: string;
   constructor() { }
 
-  setSelectedSpec(spec) {
-    this.selectedSpec = spec;
+  setSelectedSpec(specId) {
+    this.selectedSpecId = specId;
   }
 
-  getSelectedSpec() {
-    return this.selectedSpec;
+  getSelectedSpecId() {
+    return this.selectedSpecId;
+  }
+
+  setMatchId(matchId) {
+    this.matchId = matchId;
+  }
+
+  getMatchId() {
+    return this.matchId;
   }
 }

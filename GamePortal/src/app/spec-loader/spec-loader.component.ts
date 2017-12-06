@@ -10,6 +10,7 @@ import {AngularFireDatabase} from 'angularfire2/database';
 })
 export class SpecLoaderComponent implements OnInit, OnChanges {
   @Input() spec: any;
+  @Input() matchRef: any;
   board: any;
   pieces: any;
   constructor(private specService: SpecService, private af: AngularFireDatabase) { }
@@ -62,7 +63,7 @@ export class SpecLoaderComponent implements OnInit, OnChanges {
             const url = imageInfo.val().downloadURL;
             newpiece.urls.push(url);
             if (piece.pieceImages.length === numImages) {
-              allPieces.push(piece);
+              allPieces.push(newpiece);
               if (allPieces.length === numPieces) {
                 this.pieces = allPieces;
               }

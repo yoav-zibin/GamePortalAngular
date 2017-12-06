@@ -1,3 +1,34 @@
-<p>
-  board works!
-</p>
+<div>
+  <Stage width={this.width} height={this.height}>
+    <Layer>
+      <CanvasImage height={this.height} width={this.height} src={this.board.src} />
+    </Layer>
+    <Layer ref='piecesCanvasesLayer'>
+      <CanvasImage
+        ref={'canvasImage' + index}
+        key={index}
+        draggable={piece.draggable || piece.kind === 'standard'}
+        onClick={()=>{
+        if(piece.kind === 'standard'){
+        //do nothing, just make it draggable
+        } else if(piece.kind === 'toggable'){
+        this.togglePiece('canvasImage'+index, index, piece);
+        } else if(piece.kind === 'dice'){
+        this.rollDice('canvasImage'+index, index, piece);
+        } else if(piece.kind === 'card'){
+        // TODO
+        } else if(piece.kind === 'cardsDeck'){
+        // TODO
+        } else if(piece.kind === 'piecesDeck'){
+        // TODO
+        }
+        }}
+        height={piece.height*self.height/self.board.height}
+        width={piece.width*self.width/self.board.width}
+        x={piece.x*self.width/100}
+        y={piece.y*self.height/100}
+        src={piece.pieceImages[self.pieceIndices[index]]}
+        onDragEnd={() => self.handleDragEnd(index)}/>
+    </Layer>
+  </Stage>
+</div>

@@ -13,7 +13,11 @@ export class PlaygroundComponent implements OnInit {
   ngOnInit() {
   }
 
-  getSelectedSpec() {
-    return this.specService.getSelectedSpec();
+  getSpec() {
+    return this.specService.getSpec();
+  }
+
+  getMatchRef() {
+    return this.specService.getMatchRef();
   }
 }
