@@ -30,9 +30,11 @@ import {MatButtonToggleModule} from '@angular/material';
 import {SpecLoaderComponent} from './spec-loader/spec-loader.component';
 import { PlaygroundComponent } from './playground/playground.component';
 import { GroupWrapperComponent } from './group-wrapper/group-wrapper.component';
-import { BoardComponent } from './board/board.component';
+import { GameComponent } from './game/game.component';
 import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { SpecService } from './services/spec.service';
+import { PieceComponent } from './piece/piece.component';
+import {KonvaModule} from 'ng2-konva';
 
 
 export const firebaseConfig = {
@@ -70,8 +72,9 @@ export const firebaseConfig = {
     SpecLoaderComponent,
     PlaygroundComponent,
     GroupWrapperComponent,
-    BoardComponent,
+    GameComponent,
     GameSelectorComponent,
+    PieceComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,6 +88,7 @@ export const firebaseConfig = {
     NoopAnimationsModule,
     MatListModule,
     MatButtonToggleModule,
+    KonvaModule
   ],
   providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]

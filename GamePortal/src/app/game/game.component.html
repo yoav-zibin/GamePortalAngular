@@ -1,5 +1,5 @@
 <div>
-  <Stage width={this.width} height={this.height}>
+  <ko-stage width={this.width} height={this.height}>
     <Layer>
       <CanvasImage height={this.height} width={this.height} src={this.board.src} />
     </Layer>
@@ -30,5 +30,5 @@
         src={piece.pieceImages[self.pieceIndices[index]]}
         onDragEnd={() => self.handleDragEnd(index)}/>
     </Layer>
-  </Stage>
+  </ko-stage>
 </div>
