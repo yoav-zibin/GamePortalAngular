@@ -25,10 +25,17 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupService } from './services/group.service';
 import { GroupItemComponent } from './group-item/group-item.component';
 import { ParticipantListComponent } from './participant-list/participant-list.component';
-import { MatListModule } from '@angular/material';
-import { MatButtonToggleModule } from '@angular/material';
+import {MatListModule} from '@angular/material';
+import {MatButtonToggleModule} from '@angular/material';
+import {SpecLoaderComponent} from './spec-loader/spec-loader.component';
+import { PlaygroundComponent } from './playground/playground.component';
+import { GroupWrapperComponent } from './group-wrapper/group-wrapper.component';
+import { GameComponent } from './game/game.component';
 import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { SpecService } from './services/spec.service';
+import { PieceComponent } from './piece/piece.component';
+import {KonvaModule} from 'ng2-konva';
+
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -62,7 +69,12 @@ export const firebaseConfig = {
     UserItemComponent,
     GroupItemComponent,
     ParticipantListComponent,
+    SpecLoaderComponent,
+    PlaygroundComponent,
+    GroupWrapperComponent,
+    GameComponent,
     GameSelectorComponent,
+    PieceComponent,
   ],
   imports: [
     BrowserModule,
@@ -76,6 +88,7 @@ export const firebaseConfig = {
     NoopAnimationsModule,
     MatListModule,
     MatButtonToggleModule,
+    KonvaModule
   ],
   providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]

@@ -102,13 +102,13 @@ export class GroupService {
   getGroupsForUser(): any {
     console.log('wo jin lai le getGroupsForUser');
     this.curtUserId = this.authService.curtUserId;
-    console.log('wo zai kan group service uid: ', this.curtUserId);
     if (!this.curtUserId) {
       return [];
     }
 
     // test user id:
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
+    console.log('wo zai kan group lujing: ', path);
     return this.af.list(path);
 
     //
