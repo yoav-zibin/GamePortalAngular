@@ -34,8 +34,9 @@ import { GameComponent } from './game/game.component';
 import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { SpecService } from './services/spec.service';
 import { PieceComponent } from './piece/piece.component';
-import {KonvaModule} from 'ng2-konva';
-
+import { BoardComponent } from './board/board.component';
+// import {KonvaModule} from 'ng2-konva';
+// import {KonvaModule} from 'ng2-konva';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -75,6 +76,7 @@ export const firebaseConfig = {
     GameComponent,
     GameSelectorComponent,
     PieceComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,
@@ -88,7 +90,7 @@ export const firebaseConfig = {
     NoopAnimationsModule,
     MatListModule,
     MatButtonToggleModule,
-    KonvaModule
+    // KonvaModule
   ],
   providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]

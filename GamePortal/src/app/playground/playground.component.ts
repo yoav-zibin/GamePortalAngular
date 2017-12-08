@@ -14,10 +14,10 @@ export class PlaygroundComponent implements OnInit {
   }
 
   getSpec() {
-    return this.specService.getSpec();
+    return this.specService.getSelectedSpec();
   }
 
   getMatchRef() {
-    return this.specService.getMatchRef();
+    return this.specService.getSelectedMatchRef();
   }
 }
