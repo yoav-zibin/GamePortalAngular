@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import * as Konva from 'konva';
 
 @Component({
   selector: 'app-piece',
@@ -6,25 +7,26 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./piece.component.css']
 })
 export class PieceComponent implements OnInit {
-
-  constructor() { }
-
-  ngOnInit() {
+  @Input() layer: Konva.Layer;
+  @Input() img: Konva.Image;
+  constructor() {
   }
 
-  updatePosition(newX, newY) {
-    this.image.to({
-      x: newX,
-      y: newY,
-      duration: 0.5
+  ngOnInit() {
+    console.log('im in piece component');
+  }
+
+  updateDisplayPosition(newX, newY) {
+    this.img.to({
+
     });
   }
 
-  updateImage(image) {
-    this.image.setImage(image);
-  }
-
-  updateZDepth(zDepth) {
-
-  }
+  // updateImage(image) {
+  //   this.image.setImage(image);
+  // }
+  //
+  // updateZDepth(zDepth) {
+  //
+  // }
 }
