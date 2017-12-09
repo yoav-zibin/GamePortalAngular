@@ -34,6 +34,7 @@ export class GameSelectorComponent implements OnInit {
 
     const path = '/gameBuilder/gameSpecs';
     const specsRef = this.af.database.ref(path);
+    const thiz = this;
     specsRef.on('value', function (snapshot) {
       const specs = snapshot.val();
       const specsList = [];
@@ -46,22 +47,23 @@ export class GameSelectorComponent implements OnInit {
           });
         }
       }
-      this.gameSpecs = specsList;
+      thiz.gameSpecs = specsList;
     });
   }
 
   // display recent matches for specific group
   displayRecentMatchSpecs() {
     console.log('Fetching recent matches from group...  ');
-    const path = '/gamePortal/groups/' + this.groupService.getGroupId + '/matches';
+    const path = '/gamePortal/groups/' + this.groupService.getGroupId() + '/matches';
     const matchesRef = this.af.database.ref(path);
+    const thiz = this;
     matchesRef.on('value', function (snapshot) {
       const matches = snapshot.val();
       const matchesList = [];
       for (const matchKey in matches) {
         if (matchKey) {
           const specId = matches[matchKey].gameSpecId;
-          const specRef = this.af.database.ref('/gameBuilder/gameSpecs/' + specId);
+          const specRef = thiz.af.database.ref('/gameBuilder/gameSpecs/' + specId);
           specRef.once('value').then((snap) => {
             matchesList.push({
               'matchId': matchKey,
@@ -72,25 +74,27 @@ export class GameSelectorComponent implements OnInit {
           });
         }
       }
-      this.recentMatchSpecs = matchesList;
+      thiz.recentMatchSpecs = matchesList;
     });
   }
 
   startNewGame() {
     if (this.selectedNewGame) {
       // create new match from the new game
-      const spec = this.selectedNewGame['spec'];
+      // user-defined game spec
+      const udSpec = this.selectedNewGame;
+      console.log('this is spec!!!', udSpec);
       const pieces = {};
-      spec.pieces.forEach((piece, index) => {
+      udSpec['spec'].pieces.forEach((piece, index) => {
         const res = {
           currentState: piece.initialState
         };
         pieces[index] = res;
       });
-      const path = '/gamePortal/groups/' + this.groupService.getGroupId + '/matches';
+      const path = '/gamePortal/groups/' + this.groupService.getGroupId() + '/matches';
       const matchesRef = this.af.database.ref(path);
       const newMatch = {
-        'gameSpecId': spec.specId,
+        'gameSpecId': udSpec['specId'],
         'createdOn': firebase.database.ServerValue.TIMESTAMP,
         'lastUpdatedOn': firebase.database.ServerValue.TIMESTAMP,
         'pieces': pieces
@@ -98,7 +102,7 @@ export class GameSelectorComponent implements OnInit {
       const matchRef = matchesRef.push(newMatch);
 
       // set spec and match in spec service
-      this.specService.setSpecAndMatchRef(spec, matchRef);
+      this.specService.setSpecAndMatchRef(udSpec['spec'], matchRef);
     } else {
       // TODO warn user to select a game first
     }
@@ -108,7 +112,8 @@ export class GameSelectorComponent implements OnInit {
     if (this.selectedRecentMatch) {
       const path = '/gamePortal/groups/' + this.groupService.getGroupId + '/matches/' + this.selectedRecentMatch.matchId;
       const matchRef = this.af.database.ref(path);
-      const spec = this.selectedRecentMatch.spec;
+      const udMatch = this.selectedRecentMatch;
+      const spec = udMatch.spec;
       this.specService.setSpecAndMatchRef(spec, matchRef);
     } else {
       // TODO warn user to select a match first

@@ -29,9 +29,9 @@ export class GameSpec {
             boolean;
           };
         };
-        rotatioDnegrees?: number;
+        rotatioDegrees?: number;
         drawing: {
-          $drwaingId?: {
+          $drawingId?: {
             userId?: string;
             timestamp?: number;
             color?: number;
