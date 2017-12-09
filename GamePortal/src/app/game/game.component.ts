@@ -3,7 +3,8 @@ import {PieceComponent} from '../piece/piece.component';
 import {Observable} from 'rxjs/Observable';
 import * as Konva from 'konva';
 
-// const Konva = require('konva');
+/// const Konva = require('konva');
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -71,7 +72,6 @@ import * as Konva from 'konva';
 //     }, 1000);
 //   }
 // }
-
 
 
 export class GameComponent implements OnInit, OnChanges, AfterViewInit {
