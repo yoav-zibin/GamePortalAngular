@@ -55,7 +55,7 @@ export class GameComponent implements AfterViewInit {
       //   width: 300,
       //   height: 300
       // });
-      rect.to({
+      (rect as any).to({
         x: 30,
         y: 50
       });
