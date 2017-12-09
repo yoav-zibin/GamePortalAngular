@@ -110,7 +110,7 @@ export class GameSelectorComponent implements OnInit {
 
   loadRecentMatch() {
     if (this.selectedRecentMatch) {
-      const path = '/gamePortal/groups/' + this.groupService.getGroupId + '/matches/' + this.selectedRecentMatch.matchId;
+      const path = '/gamePortal/groups/' + this.groupService.getGroupId() + '/matches/' + this.selectedRecentMatch.matchId;
       const matchRef = this.af.database.ref(path);
       const udMatch = this.selectedRecentMatch;
       const spec = udMatch.spec;

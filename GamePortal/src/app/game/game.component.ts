@@ -94,6 +94,7 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log('ngOnInit()');
     this.pieceImageIndices = new Array(this.pieces.length).fill(0);
     // TODO: not sure this fill works
     this.pieceImages = new Array(this.pieces.length).fill(new Konva.Image({
@@ -102,11 +103,14 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     }));
     this.boardImage = new Konva.Image({
       image: new Image(),
+      width: 600,
+      height: 600,
       draggable: false
     });
   }
 
   ngAfterViewInit(): void {
+    console.log('ngAfterViewInit()');
     this.stage = new Konva.Stage({
       container: 'stage',
       width: this.width,
@@ -119,6 +123,8 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     for (const image of this.pieceImages) {
       this.piecesLayer.add(image);
     }
+    this.stage.add(this.boardLayer);
+    this.stage.add(this.piecesLayer);
     this.setCurtState(this.matchRef);
     // this.startPieceListener(this.matchRef);
   }
@@ -127,12 +133,17 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   setCurtState(matchRef) {
     // load board image:
     const boardSrc = this.board.src;
-    const boardimg = new Image();
+    console.log('boardSrc: ', boardSrc);
+    const boardImgObj = new Image();
     const boardLayer = this.boardLayer;
-    boardimg.onload = function () {
+    const thiz = this;
+    boardImgObj.onload = function () {
+      (thiz.boardImage as any).setImage(boardImgObj);
+      console.log('Im in afterViewInit!! this.boardImage: ', thiz.boardImage);
       boardLayer.draw();
+      thiz.stage.draw();
     };
-    boardimg.src = boardSrc;
+    boardImgObj.src = boardSrc;
 
     // matchRef.child('pieces').once('value').then(snap => {
     //   if (snap.exists()) {
@@ -217,6 +228,39 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
 
   ngOnChanges(changes: SimpleChanges): void {
     // // TODO: different changes invoke different handlers
+    // TODO: have to first determine if the previous input props is null:
     // this.updateWhenChange();
+    console.log(changes);
+    // console.log('im in ngOnchanges');
+    // if (changes.pieces.previousValue !== null) {
+    //   console.log('pieces PREVIOUS VALUE!', changes.pieces.previousValue);
+    // }
+    // if (changes.pieces.previousValue !== changes.pieces.currentValue) {
+    //   console.log('pieces changed!');
+    // }
+    // if (changes.matchRef.previousValue !== changes.matchRef.currentValue) {
+    //   console.log('matchRef changed!');
+    // }
+    // if (changes.board.previousValue !== changes.board.currentValue) {
+    //   console.log('board changed!');
+    // }
+    if (!changes.board || changes.board.isFirstChange()) {
+      return;
+    }
+    if (changes.board) {
+      console.log('you board');
+    }
+    const boardSrc = this.board.src;
+    console.log('boardSrc: ', boardSrc);
+    const boardImgObj = new Image();
+    const boardLayer = this.boardLayer;
+    const thiz = this;
+    boardImgObj.onload = function () {
+      (thiz.boardImage as any).setImage(boardImgObj);
+      console.log('Im in onChanges!! this.boardImage: ', thiz.boardImage);
+      boardLayer.draw();
+      thiz.stage.draw();
+    };
+    boardImgObj.src = boardSrc;
   }
 }
