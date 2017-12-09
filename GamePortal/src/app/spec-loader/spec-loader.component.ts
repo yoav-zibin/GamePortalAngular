@@ -62,7 +62,7 @@ export class SpecLoaderComponent implements OnInit, OnChanges {
           imageRef.once('value').then(imageInfo => {
             const url = imageInfo.val().downloadURL;
             newpiece.urls.push(url);
-            if (piece.pieceImages.length === numImages) {
+            if (newpiece.urls.length === numImages) {
               allPieces.push(newpiece);
               if (allPieces.length === numPieces) {
                 this.pieces = allPieces;
