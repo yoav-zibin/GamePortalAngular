@@ -7,8 +7,8 @@ import * as Konva from 'konva';
   styleUrls: ['./piece.component.css']
 })
 export class PieceComponent implements OnInit {
-  @Input() layer: Konva.Layer;
-  @Input() img: Konva.Image;
+  @Input() layer: any;
+  @Input() img: any;
   constructor() {
   }
 
@@ -17,9 +17,9 @@ export class PieceComponent implements OnInit {
   }
 
   updateDisplayPosition(newX, newY) {
-    this.img.to({
-
-    });
+    // this.img.to({
+    //
+    // });
   }
 
   // updateImage(image) {
