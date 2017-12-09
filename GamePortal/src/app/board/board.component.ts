@@ -1,6 +1,5 @@
 ///<reference path="../../../node_modules/@angular/core/src/metadata/directives.d.ts"/>
 import {Component, Input, OnInit} from '@angular/core';
-import * as Konva from 'konva';
 
 @Component({
   selector: 'app-board',
@@ -8,7 +7,7 @@ import * as Konva from 'konva';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  @Input() image: Konva.Image;
+  // @Input() image: Konva.Image;
   constructor() { }
 
   ngOnInit() {

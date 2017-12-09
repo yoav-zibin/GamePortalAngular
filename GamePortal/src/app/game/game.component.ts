@@ -3,61 +3,70 @@ import {PieceComponent} from '../piece/piece.component';
 import {Observable} from 'rxjs/Observable';
 import * as Konva from 'konva';
 
+// const Konva = require('konva');
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-// export class GameComponent implements AfterViewInit {
-//   @Input() board: any;
-//   @Input() pieces: any;
-//   @Input() matchRef: any;
-//   ngAfterViewInit() {
-//     const width = window.innerWidth;
-//     const height = window.innerHeight;
-//     const stage = new Konva.Stage({
-//       container: 'container',
-//       width: width,
-//       height: height
-//     });
-//     const layer = new Konva.Layer();
-//     const rect = new Konva.Rect({
-//       x: 50,
-//       y: 50,
-//       width: 100,
-//       height: 50,
-//       fill: 'green',
-//       stroke: 'black',
-//       strokeWidth: 4
-//     });
-//
-//     const rect2 = new Konva.Rect({
-//       x: 100,
-//       y: 100,
-//       width: 100,
-//       height: 50,
-//       fill: 'green',
-//       stroke: 'black',
-//       strokeWidth: 4
-//     });
-//     // add the shape to the layer
-//     // add the layer to the stage
-//     stage.add(layer);
-//     layer.add(rect);
-//     stage.draw();
-//     setTimeout(() => {
-//       console.log('im in change rect');
-//       rect.setSize({
-//         width: 300,
-//         height: 300
-//       });
-//       console.log('im in changed rect');
-//       console.log('im drawing changed rect');
-//       layer.draw();
-//       stage.draw();
-//     }, 1000);
-//   }
-// }
+
+// Test:
+export class GameComponent implements AfterViewInit {
+  @Input() board: any;
+  @Input() pieces: any;
+  @Input() matchRef: any;
+  ngAfterViewInit() {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    const stage = new Konva.Stage({
+      container: 'container',
+      width: width,
+      height: height
+    });
+    const layer = new Konva.Layer();
+    const rect = new Konva.Rect({
+      x: 50,
+      y: 50,
+      width: 100,
+      height: 50,
+      fill: 'green',
+      stroke: 'black',
+      strokeWidth: 4
+    });
+
+    const rect2 = new Konva.Rect({
+      x: 100,
+      y: 100,
+      width: 100,
+      height: 50,
+      fill: 'green',
+      stroke: 'black',
+      strokeWidth: 4
+    });
+    // add the shape to the layer
+    // add the layer to the stage
+    stage.add(layer);
+    layer.add(rect);
+    stage.draw();
+    setTimeout(() => {
+      console.log('im in change rect');
+      // rect.setSize({
+      //   width: 300,
+      //   height: 300
+      // });
+      rect.to({
+        x: 30,
+        y: 50
+      });
+      console.log('im in changed rect');
+      console.log('im drawing changed rect');
+      layer.draw();
+      stage.draw();
+    }, 2000);
+  }
+}
+
+
 export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() board: any;
   @Input() pieces: any;
