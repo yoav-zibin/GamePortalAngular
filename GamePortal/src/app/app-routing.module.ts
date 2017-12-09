@@ -7,6 +7,7 @@ import {ChatRoomComponent} from './chat-room/chat-room.component';
 import {UserListComponent} from './user-list/user-list.component';
 import {ParticipantListComponent} from './participant-list/participant-list.component';
 import {GameComponent} from './game/game.component';
+import {PlaygroundComponent} from "./playground/playground.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -16,7 +17,8 @@ const routes: Routes = [
   { path: 'chat',  component: ChatRoomComponent },
   { path: 'users',  component: UserListComponent },
   {path: 'participant-list',  component: ParticipantListComponent},
-  {path: 'game',  component: GameComponent}
+  {path: 'game',  component: GameComponent},
+  {path: 'play/:groupId', component: PlaygroundComponent}
 ];
 
 @NgModule({
