@@ -88,8 +88,11 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   maxSize: number;
   boardHeight: number;
   boardWidth: number;
+  pieceMaxZDepth: number;
+  cardVisibility: {};
   constructor() {
     this.maxSize = 650;
+    this.pieceMaxZDepth = 0;
   }
 
   ngOnInit() {
@@ -101,7 +104,8 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     for (let i = 0; i < this.pieces.length; i++) {
       this.pieceImages[i] = new Konva.Image({
         image: new Image(),
-        draggable: true
+        draggable: true,
+        listening: true
         // remember to set the width and height later on!
       });
     }
@@ -129,7 +133,9 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     this.stage.add(this.boardLayer);
     this.stage.add(this.piecesLayer);
     this.setCurtState(this.matchRef);
-    // this.startPieceListener(this.matchRef);
+    // TODO: piece listener!
+    this.startPieceListener(this.matchRef);
+    // TODO: cardVisibility
   }
 
   updateBoardImage(boardKonvaImage, boardSrc, aspectRatio) {
@@ -187,6 +193,31 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     pieceImgObj.src = pieceSrc;
   }
 
+  // in both handler, we are dealing with ZDepth
+  handleDragStart(pieceKonvaImage) {
+    const pieceLayer = this.piecesLayer;
+    pieceKonvaImage.moveToTop();
+    this.pieceMaxZDepth = pieceKonvaImage.getZIndex();
+    pieceLayer.draw();
+  }
+
+  handleDragEnd(pieceKonvaImage, index) {
+    // will have to update position to database!
+    const position = pieceKonvaImage.getAbsolutePosition();
+    // TODO: need to consider cardVisibility
+
+    const newVals = {
+      x: position.x / this.boardWidth * 100,
+      y: position.y / this.boardHeight * 100,
+      zDepth: ++this.pieceMaxZDepth
+    };
+    const pieceRef = this.matchRef.child('pieces').child(index).child('currentState').update(newVals);
+  }
+
+  updateZDepth(pieceKonvaImage, ZDepth) {
+
+  }
+
   // TODO: make sure load from current state!
   setCurtState(matchRef) {
     // load board image:
@@ -198,12 +229,11 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
     // Load pieces
     // Load piece images:
+    const thiz = this;
     matchRef.child('pieces').once('value').then(snap => {
       if (snap.exists()) {
         const pieces = snap.val();
-        const thiz = this;
         pieces.forEach((piece, index) => {
-          // TODO: update position first or img first?
           const position = {
             // piece.currentState stores the percentage
             x: piece.currentState.x / 100 * this.boardWidth,
@@ -220,9 +250,16 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             // update position:;
             thiz.updatePiecePosition(pieceKonvaImage, position.x, position.y);
 
+            // add drag handler to pieceKonvaImage:
+            pieceKonvaImage.on('dragstart', () => {
+              thiz.handleDragStart(pieceKonvaImage);
+            });
+
+            pieceKonvaImage.on('dragend', () => {
+              thiz.handleDragEnd(pieceKonvaImage, index);
+            });
             // update image:
             if (thiz.pieceImageIndices[index] !== imageIndex) {
-              console.log('piece width!', piece.width);
               const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
               console.log('new width!', newWidth);
               const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
@@ -241,48 +278,59 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
+  startPieceListener(matchRef) {
+    // should update if the other player moves the piece
+    // TODO: could replace all the other snapshotchanges to this:
+    const boardTrueHeight = this.board.height;
+    const boardTrueWidth = this.board.width;
+    // Load pieces
+    // Load piece images:
+    const thiz = this;
+    matchRef.child('pieces').on('child_changed', snap => {
+      if (snap.exists()) {
+        const piece = snap.val();
+        const index = snap.key;
+        console.log('有吗？？？', piece);
+        const position = {
+          // piece.currentState stores the percentage
+          x: piece.currentState.x / 100 * this.boardWidth,
+          y: piece.currentState.y / 100 * this.boardHeight
+        };
+        const zDepth = piece.currentState.zDepth;
+        const imageIndex = piece.currentState.currentImageIndex;
+        if (index < this.pieces.length) {
+          const selfDfPiece = thiz.pieces[index];
+          const pieceSrc = selfDfPiece.urls[imageIndex];
+          const pieceKonvaImage = thiz.pieceImages[index];
+          // First: position; then image!
+
+          // update position:;
+          thiz.updatePiecePosition(pieceKonvaImage, position.x, position.y);
+
+          // update image:
+          if (thiz.pieceImageIndices[index] !== imageIndex) {
+            console.log('piece width!', piece.width);
+            const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
+            console.log('new width!', newWidth);
+            const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
+            console.log('new height!', newHeight);
+            thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
+            // update current image index
+            thiz.pieceImageIndices[index] = imageIndex;
+          }
+
+          // // update ZDepth
+          // curtPieceComp.updateZDepth(zDepth);
+        }
+        // TODO: decks no need to display???
+      }
+    });
+  }
+
+
   updateWhenChange() {
 
   }
-
-  // startPieceListener(matchRef) {
-  //   // should update if the other player moves the piece
-  //   // TODO: could replace all the other snapshotchanges to this:
-  //   matchRef.child('pieces').on('child_changed', snap => {
-  //     if (snap.exists()) {
-  //       // note this piece is the changed ne:
-  //       const index = snap.key;
-  //       const piece = snap.val();
-  //       const zDepth = piece.currentState.zDepth;
-  //       const position = {
-  //         x: piece.currentState.x / 100 * this.width,
-  //         y: piece.currentState.y / 100 * this.height
-  //       };
-  //       const imageIndex = piece.currentState.currentImageIndex;
-  //       if (index < this.pieceComponents.length) {
-  //         const curtPiece = this.pieceComponents[index];
-  //         // TODO: update the display of selected piece:
-  //         curtPiece.updatePosition(position.x, position.y);
-  //         this.pieceComponents[index].updatePosition(position.x, position.y);
-  //         if (this.pieceImageIndices[index] !== imageIndex) {
-  //           const src = this.pieces[index].pieceImages[imageIndex];
-  //           this.pieceComponents[index].updateImage(imageIndex, src);
-  //           const newImage = new Image();
-  //           newImage.onload = function() {
-  //             // we pass the image() object directly:
-  //             curtPiece.updateImage(newImage);
-  //             // TODO: need to call parent layer draw!!!
-  //             this.pieceCanvas.draw();
-  //           };
-  //           newImage.src = src;
-  //           // TODO: canvas layer draw:
-  //           this.pieceImageIndices[index] = imageIndex;
-  //         }
-  //         curtPiece.updateZDepth(zDepth);
-  //       }
-  //     }
-  //   });
-  // }
 
   ngOnChanges(changes: SimpleChanges): void {
     // // TODO: different changes invoke different handlers
