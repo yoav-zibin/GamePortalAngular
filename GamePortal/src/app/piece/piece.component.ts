@@ -17,16 +17,15 @@ export class PieceComponent implements OnInit {
   }
 
   updateDisplayPosition(newX, newY) {
-    // this.img.to({
-    //
-    // });
+    this.img.to({
+
+    });
   }
 
-  // updateImage(image) {
-  //   this.image.setImage(image);
-  // }
-  //
-  // updateZDepth(zDepth) {
-  //
-  // }
+  updateImage(image) {
+  }
+
+  updateZDepth(zDepth) {
+
+  }
 }

@@ -2,7 +2,6 @@ import {Component, AfterViewInit, Input, OnChanges, OnInit, QueryList, SimpleCha
 import {PieceComponent} from '../piece/piece.component';
 import {Observable} from 'rxjs/Observable';
 import * as Konva from 'konva';
-
 /// const Konva = require('konva');
 
 @Component({
@@ -78,43 +77,47 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() board: any;
   @Input() pieces: any;
   @Input() matchRef: any;
-  @ViewChildren(PieceComponent) pieceComponents: QueryList<PieceComponent>;
+  // dont need the piece component
+  // @ViewChildren(PieceComponent) pieceComponents: QueryList<PieceComponent>;
   pieceImageIndices: Array<any>;
   pieceImages: Array<Konva.Image>;
   boardImage: Konva.Image;
   stage: Konva.Stage;
   piecesLayer: Konva.Layer;
   boardLayer: Konva.Layer;
-  configStage;
-  width: number;
-  height: number;
+  maxSize: number;
+  boardHeight: number;
+  boardWidth: number;
   constructor() {
-    this.width  = 600;
-    this.height = 600;
+    this.maxSize = 650;
   }
 
   ngOnInit() {
-    console.log('ngOnInit()');
-    this.pieceImageIndices = new Array(this.pieces.length).fill(0);
+    this.pieceImageIndices = new Array(this.pieces.length).fill(-1);
     // TODO: not sure this fill works
-    this.pieceImages = new Array(this.pieces.length).fill(new Konva.Image({
-      image: new Image(),
-      draggable: true
-    }));
+    // each piece could have multiple images
+    // but only have one to display:
+    this.pieceImages = new Array(this.pieces.length);
+    for (let i = 0; i < this.pieces.length; i++) {
+      this.pieceImages[i] = new Konva.Image({
+        image: new Image(),
+        draggable: true
+        // remember to set the width and height later on!
+      });
+    }
     this.boardImage = new Konva.Image({
       image: new Image(),
-      width: 600,
-      height: 600,
+      width: this.maxSize,
+      height: this.maxSize,
       draggable: false
     });
   }
 
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit()');
     this.stage = new Konva.Stage({
       container: 'stage',
-      width: this.width,
-      height: this.height
+      width: this.maxSize,
+      height: this.maxSize
     });
     this.boardLayer = new Konva.Layer();
     this.piecesLayer = new Konva.Layer();
@@ -129,58 +132,113 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     // this.startPieceListener(this.matchRef);
   }
 
+  updateBoardImage(boardKonvaImage, boardSrc, aspectRatio) {
+    const boardImgObj = new Image();
+    const boardLayer = this.boardLayer;
+    let newHeight: number;
+    let newWidth: number;
+    if (aspectRatio > 1) {
+      newHeight = this.maxSize;
+      newWidth = this.maxSize / aspectRatio;
+    } else {
+      newWidth = this.maxSize;
+      newHeight = this.maxSize * aspectRatio;
+    }
+    this.boardHeight = newHeight;
+    this.boardWidth = newWidth;
+    boardImgObj.onload = function () {
+      // must set size before set image!
+      boardKonvaImage.setAttrs({
+        width: newWidth,
+        height: newHeight
+      });
+      (boardKonvaImage as any).setImage(boardImgObj);
+      boardLayer.draw();
+    };
+    boardImgObj.src = boardSrc;
+  }
+
+  // Note this is the display position!
+  updatePiecePosition(pieceKonvaImage, newX, newY) {
+    (pieceKonvaImage as any).to({
+      x: newX,
+      y: newY,
+      duration: 0.3
+    });
+  }
+
+  updatePieceImage(pieceKonvaImage, pieceSrc, newWidth?, newHeight?) {
+    const pieceImgObj = new Image();
+    const pieceLayer = this.piecesLayer;
+    console.log('setting new image!');
+    pieceImgObj.onload = function () {
+      console.log('setting new width!', newWidth);
+      console.log('setting new height!', newHeight);
+      if (newWidth && newHeight) {
+        console.log('setting new height!');
+        pieceKonvaImage.setAttrs({
+          width: newWidth,
+          height: newHeight
+        });
+      }
+      (pieceKonvaImage as any).setImage(pieceImgObj);
+      pieceLayer.draw();
+    };
+    pieceImgObj.src = pieceSrc;
+  }
+
   // TODO: make sure load from current state!
   setCurtState(matchRef) {
     // load board image:
+    const boardTrueHeight = this.board.height;
+    console.log('boardTrueHeight!', boardTrueHeight);
+    const boardTrueWidth = this.board.width;
+    console.log('boardTrueWidth!', boardTrueWidth);
     const boardSrc = this.board.src;
-    console.log('boardSrc: ', boardSrc);
-    const boardImgObj = new Image();
-    const boardLayer = this.boardLayer;
-    const thiz = this;
-    boardImgObj.onload = function () {
-      (thiz.boardImage as any).setImage(boardImgObj);
-      console.log('Im in afterViewInit!! this.boardImage: ', thiz.boardImage);
-      boardLayer.draw();
-      thiz.stage.draw();
-    };
-    boardImgObj.src = boardSrc;
+    this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
+    // Load pieces
+    // Load piece images:
+    matchRef.child('pieces').once('value').then(snap => {
+      if (snap.exists()) {
+        const pieces = snap.val();
+        const thiz = this;
+        pieces.forEach((piece, index) => {
+          // TODO: update position first or img first?
+          const position = {
+            // piece.currentState stores the percentage
+            x: piece.currentState.x / 100 * this.boardWidth,
+            y: piece.currentState.y / 100 * this.boardHeight
+          };
+          const zDepth = piece.currentState.zDepth;
+          const imageIndex = piece.currentState.currentImageIndex;
+          if (index < this.pieces.length) {
+            const selfDfPiece = thiz.pieces[index];
+            const pieceSrc = selfDfPiece.urls[imageIndex];
+            const pieceKonvaImage = thiz.pieceImages[index];
+            // First: position; then image!
 
-    // matchRef.child('pieces').once('value').then(snap => {
-    //   if (snap.exists()) {
-    //     const pieces = snap.val();
-    //     pieces.forEach((piece, index) => {
-    //       const position = {
-    //         // piece.currentState stores the percentage
-    //         x: piece.currentState.x / 100 * this.width,
-    //         y: piece.currentState.x / 100 * this.height
-    //       };
-    //       const zDepth = piece.currentState.zDepth;
-    //       const imageIndex = piece.currentState.currentImageIndex;
-    //       if (index < this.pieceComponents.length) {
-    //         const curtPiece = this.pieceComponents[index];
-    //         // TODO: update the display of selected piece:
-    //         curtPiece.updateDisplayPosition(position.x, position.y);
-    //         this.pieceComponents[index].updatePosition(position.x, position.y);
-    //         if (this.pieceImageIndices[index] !== imageIndex) {
-    //           const src = this.pieces[index].pieceImages[imageIndex];
-    //           this.pieceComponents[index].updateImage(imageIndex, src);
-    //           const newImage = new Image();
-    //           newImage.onload = function() {
-    //             // we pass the image() object directly:
-    //             curtPiece.updateImage(newImage);
-    //             // TODO: need to call parent layer draw!!!
-    //             this.pieceCanvas.draw();
-    //           };
-    //           newImage.src = src;
-    //           // TODO: canvas layer draw:
-    //           this.pieceImageIndices[index] = imageIndex;
-    //         }
-    //         curtPiece.updateZDepth(zDepth);
-    //       }
-    //       // TODO: decks no need to display???
-    //     });
-    //   }
-    // });
+            // update position:;
+            thiz.updatePiecePosition(pieceKonvaImage, position.x, position.y);
+
+            // update image:
+            if (thiz.pieceImageIndices[index] !== imageIndex) {
+              console.log('piece width!', piece.width);
+              const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
+              console.log('new width!', newWidth);
+              const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
+              console.log('new height!', newHeight);
+              thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
+              // update current image index
+              thiz.pieceImageIndices[index] = imageIndex;
+            }
+
+            // // update ZDepth
+            // curtPieceComp.updateZDepth(zDepth);
+          }
+          // TODO: decks no need to display???
+        });
+      }
+    });
   }
 
   updateWhenChange() {
