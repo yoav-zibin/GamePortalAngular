@@ -21,13 +21,18 @@ import { UserListComponent } from './user-list/user-list.component';
 import { UserItemComponent } from './user-item/user-item.component';
 import { ChatService } from './services/chat.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+// import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupService } from './services/group.service';
 import { GroupItemComponent } from './group-item/group-item.component';
 import { ParticipantListComponent } from './participant-list/participant-list.component';
-import {MatListModule} from '@angular/material';
-import {MatButtonToggleModule} from '@angular/material';
-import {SpecLoaderComponent} from './spec-loader/spec-loader.component';
+import { MatListModule,
+         MatButtonModule,
+         MatButtonToggleModule,
+         MatTabsModule,
+         MatFormFieldModule
+        } from '@angular/material';
+import { MatSelectModule } from '@angular/material/select'
+import { SpecLoaderComponent} from './spec-loader/spec-loader.component';
 import { PlaygroundComponent } from './playground/playground.component';
 import { GroupWrapperComponent } from './group-wrapper/group-wrapper.component';
 import { GameComponent } from './game/game.component';
@@ -35,8 +40,6 @@ import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { SpecService } from './services/spec.service';
 import { PieceComponent } from './piece/piece.component';
 import { BoardComponent } from './board/board.component';
-// import {KonvaModule} from 'ng2-konva';
-// import {KonvaModule} from 'ng2-konva';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -87,10 +90,13 @@ export const firebaseConfig = {
     AngularFireAuthModule,
     AppRoutingModule,
     BrowserAnimationsModule,
-    NoopAnimationsModule,
+    // NoopAnimationsModule,
     MatListModule,
+    MatButtonModule,
     MatButtonToggleModule,
-    // KonvaModule
+    MatTabsModule,
+    MatSelectModule,
+    MatFormFieldModule
   ],
   providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]

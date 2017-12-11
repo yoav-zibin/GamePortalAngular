@@ -1,37 +1,75 @@
-<div class="container">
-  <!--<div id="scroller" class="loginCard">-->
-  <ul class="nav nav-tabs">
-    <li>
-      <a data-toggle="tab" href="#newGame">New Game</a>
-    </li>
-    <li>
-      <a data-toggle="tab" href="#recentlyPlayed">Recently Palyed Matches</a>
-    </li>
-  </ul>
+<!--<div class="game-selector">-->
+  <!--&lt;!&ndash;<div id="scroller" class="loginCard">&ndash;&gt;-->
+  <!--<ul class="nav nav-tabs">-->
+    <!--<li>-->
+      <!--<a data-toggle="tab" href="#newGame">New Game</a>-->
+    <!--</li>-->
+    <!--<li>-->
+      <!--<a data-toggle="tab" href="#recentlyPlayed">Recently Played Matches</a>-->
+    <!--</li>-->
+  <!--</ul>-->
 
-  <div class="tab-content">
-    <div id="newGame" class="tab-pane fade in active">
-      <div class="form-group">
-        <select class="form-control" [(ngModel)]="selectedNewGame">
-          <option *ngFor="let game of gameSpecs" [ngValue]=game> {{game.gameName}} </option>
-        </select>
+  <!--<div class="tab-content">-->
+    <!--<div id="newGame" class="tab-pane fade in active">-->
+      <!--<div class="form-group">-->
+        <!--<select class="form-control" [(ngModel)]="selectedNewGame">-->
+          <!--<option *ngFor="let game of gameSpecs" [ngValue]=game> {{game.gameName}} </option>-->
+        <!--</select>-->
+      <!--</div>-->
+      <!--<div>-->
+      <!--<button type="submit" class="btn" (click)="startNewGame()">-->
+        <!--Start New Game-->
+      <!--</button>-->
+      <!--</div>-->
+    <!--</div>-->
+
+    <!--<div id="recentlyPlayed" class="tab-pane fade">-->
+      <!--<div class="form-group">-->
+        <!--<select class="form-control" [(ngModel)]="selectedRecentMatch">-->
+          <!--<option *ngFor="let match of recentMatchSpecs" [ngValue]=match> {{match.gameName}} </option>-->
+        <!--</select>-->
+      <!--</div>-->
+        <!--<button type="submit" class="btn" (click)="loadRecentMatch()">-->
+          <!--Resume Recent Match-->
+        <!--</button>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+<div id="game-selector">
+  <mat-tab-group class="tab-group">
+    <mat-tab label="New Game">
+
+      <div class="tab-content">
+        <div class="selector">
+          <mat-form-field>
+            <mat-select placeholder="Select Game" [(ngModel)]="selectedNewGame">
+              <mat-option *ngFor="let game of gameSpecs" [value]=game> {{game.gameName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="btn">
+          <button mat-button type="submit" (click)="startNewGame()">
+          Start New Game
+          </button>
+        </div>
       </div>
+    </mat-tab>
 
-      <button type="submit" class="btn" (click)="startNewGame()">
-        Start New Game
-      </button>
-    </div>
+    <mat-tab label="Recently Played Matches">
+      <div class="tab-content">
+        <mat-form-field>
+          <mat-select placeholder="Select Match" [(ngModel)]="selectedRecentMatch">
+            <mat-option *ngFor="let match of recentMatchSpecs" [value]=match> {{match.gameName}}</mat-option>
+          </mat-select>
+        </mat-form-field>
 
-    <div id="recentlyPlayed" class="tab-pane fade">
-      <div class="form-group">
-        <select class="form-control" [(ngModel)]="selectedRecentMatch">
-          <option *ngFor="let match of recentMatchSpecs" [ngValue]=match> {{match.gameName}} </option>
-        </select>
+        <button mat-button type="submit" (click)="loadRecentMatch()">
+          Resume Recent Match
+        </button>
       </div>
+    </mat-tab>
 
-      <button type="submit" class="btn" (click)="loadRecentMatch()">
-        Resume Recent Match
-      </button>
-    </div>
-  </div>
+  </mat-tab-group>
 </div>
