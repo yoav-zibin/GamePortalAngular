@@ -215,7 +215,32 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   updateZDepth(pieceKonvaImage, ZDepth) {
+    const pieceLayer = this.piecesLayer;
+    const zIndex = ZDepth ? ZDepth : this.pieceMaxZDepth;
+    this.pieceMaxZDepth = Math.max(zIndex, this.pieceMaxZDepth);
+    pieceKonvaImage.setZIndex(zIndex);
+    pieceLayer.draw();
+  }
 
+  toggle(pieceKonvaImage, index, selfDfPiece) {
+    // update to the next piece image:
+    this.pieceImageIndices[index] = (this.pieceImageIndices[index] + 1) % selfDfPiece.urls.length;
+    const nextImageIndex = this.pieceImageIndices[index];
+    const position = pieceKonvaImage.getAbsolutePosition();
+    const pieceImgObj = new Image();
+    const pieceLayer = this.piecesLayer;
+    const thiz = this;
+    pieceImgObj.onload = function () {
+      // note we dont have to rescale width and height
+      (pieceKonvaImage as any).setImage(pieceImgObj);
+      pieceLayer.draw();
+      const newVals = {
+        currentImageIndex: nextImageIndex,
+        zDepth: ++thiz.pieceMaxZDepth
+      };
+      thiz.matchRef.child('pieces').child(index).child('currentState').update(newVals);
+    };
+    pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
   }
 
   updatePieces(matchRef, boardTrueWidth, boardTrueHeight) {
@@ -234,6 +259,7 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
           if (index < this.pieces.length) {
             const selfDfPiece = thiz.pieces[index];
             const pieceSrc = selfDfPiece.urls[imageIndex];
+            const kind = selfDfPiece.kind;
             const pieceKonvaImage = thiz.pieceImages[index];
             // First: position; then image!
 
@@ -248,7 +274,16 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             pieceKonvaImage.on('dragend', () => {
               thiz.handleDragEnd(pieceKonvaImage, index);
             });
+
+            // if toggleble, add onClick handler
+            if (kind === 'toggable') {
+              pieceKonvaImage.on('click', () => {
+                thiz.toggle(pieceKonvaImage, index, selfDfPiece);
+              });
+            }
+
             // update image:
+            // TODO: update other kind og pieces, such as card
             if (thiz.pieceImageIndices[index] !== imageIndex) {
               const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
               console.log('new width!', newWidth);
@@ -259,8 +294,8 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
               thiz.pieceImageIndices[index] = imageIndex;
             }
 
-            // // update ZDepth
-            // curtPieceComp.updateZDepth(zDepth);
+            // update ZDepth
+            thiz.updateZDepth(pieceKonvaImage, zDepth);
           }
           // TODO: decks no need to display???
         });
