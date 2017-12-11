@@ -104,7 +104,6 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     for (let i = 0; i < this.pieces.length; i++) {
       this.pieceImages[i] = new Konva.Image({
         image: new Image(),
-        draggable: true,
         listening: true
         // remember to set the width and height later on!
       });
@@ -260,12 +259,23 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             const selfDfPiece = thiz.pieces[index];
             const pieceSrc = selfDfPiece.urls[imageIndex];
             const kind = selfDfPiece.kind;
+            const draggable = selfDfPiece.draggable;
             const pieceKonvaImage = thiz.pieceImages[index];
+            // update draggable:
+            if (draggable || kind === 'standard') {
+              pieceKonvaImage.setAttr('draggable', true);
+            } else {
+              pieceKonvaImage.setAttr('draggable', false);
+            }
             // First: position; then image!
-
             // update position:;
             thiz.updatePiecePosition(pieceKonvaImage, position.x, position.y);
 
+            // if deck, return
+            if (kind === 'cardsDeck' || kind === 'piecesDeck') {
+              // for deck, no event listener.
+              return;
+            }
             // add drag handler to pieceKonvaImage:
             pieceKonvaImage.on('dragstart', () => {
               thiz.handleDragStart(pieceKonvaImage);
