@@ -218,17 +218,7 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
 
   }
 
-  // TODO: make sure load from current state!
-  setCurtState(matchRef) {
-    // load board image:
-    const boardTrueHeight = this.board.height;
-    console.log('boardTrueHeight!', boardTrueHeight);
-    const boardTrueWidth = this.board.width;
-    console.log('boardTrueWidth!', boardTrueWidth);
-    const boardSrc = this.board.src;
-    this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
-    // Load pieces
-    // Load piece images:
+  updatePieces(matchRef, boardTrueWidth, boardTrueHeight) {
     const thiz = this;
     matchRef.child('pieces').once('value').then(snap => {
       if (snap.exists()) {
@@ -276,6 +266,20 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
         });
       }
     });
+  }
+
+  // TODO: make sure load from current state!
+  setCurtState(matchRef) {
+    // load board image:
+    const boardSrc = this.board.src;
+    const boardTrueHeight = this.board.height;
+    console.log('boardTrueHeight!', boardTrueHeight);
+    const boardTrueWidth = this.board.width;
+    console.log('boardTrueWidth!', boardTrueWidth);
+    this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
+    // Load pieces
+    // Load piece images:
+    this.updatePieces(this.matchRef, boardTrueWidth, boardTrueHeight);
   }
 
   startPieceListener(matchRef) {
@@ -327,46 +331,50 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     });
   }
 
-
-  updateWhenChange() {
-
+  removePieceListener(matchRef) {
+      matchRef.child('pieces').off();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    // // TODO: different changes invoke different handlers
+    // TODO: different changes invoke different handlers
     // TODO: have to first determine if the previous input props is null:
-    // this.updateWhenChange();
+    console.log('NgOnChanges!!!');
     console.log(changes);
-    // console.log('im in ngOnchanges');
-    // if (changes.pieces.previousValue !== null) {
-    //   console.log('pieces PREVIOUS VALUE!', changes.pieces.previousValue);
-    // }
-    // if (changes.pieces.previousValue !== changes.pieces.currentValue) {
-    //   console.log('pieces changed!');
-    // }
-    // if (changes.matchRef.previousValue !== changes.matchRef.currentValue) {
-    //   console.log('matchRef changed!');
-    // }
-    // if (changes.board.previousValue !== changes.board.currentValue) {
-    //   console.log('board changed!');
-    // }
-    if (!changes.board || changes.board.isFirstChange()) {
+    // from the log, we know that when input changes, the order is:
+    // matchRef -> board -> pieces
+    if (changes.matchRef && !changes.matchRef.isFirstChange()) {
+      // update board:
       return;
     }
-    if (changes.board) {
-      console.log('you board');
+    if (changes.board && !changes.board.isFirstChange()) {
+      // update board:
+      const boardTrueHeight = this.board.height;
+      const boardTrueWidth =  this.board.width;
+      console.log('boardTrueWidth!', boardTrueWidth);
+      const boardSrc = this.board.src;
+      this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
     }
-    const boardSrc = this.board.src;
-    console.log('boardSrc: ', boardSrc);
-    const boardImgObj = new Image();
-    const boardLayer = this.boardLayer;
-    const thiz = this;
-    boardImgObj.onload = function () {
-      (thiz.boardImage as any).setImage(boardImgObj);
-      console.log('Im in onChanges!! this.boardImage: ', thiz.boardImage);
-      boardLayer.draw();
-      thiz.stage.draw();
-    };
-    boardImgObj.src = boardSrc;
+
+    if (changes.pieces && !changes.pieces.isFirstChange()) {
+      this.removePieceListener(this.matchRef);
+      this.pieceImageIndices = new Array(this.pieces.length).fill(-1);
+      this.pieceImages = new Array(this.pieces.length);
+      for (let i = 0; i < this.pieces.length; i++) {
+        this.pieceImages[i] = new Konva.Image({
+          image: new Image(),
+          draggable: true,
+          listening: true
+          // remember to set the width and height later on!
+        });
+      }
+      this.piecesLayer.destroyChildren();
+      for (const image of this.pieceImages) {
+        this.piecesLayer.add(image);
+      }
+      const boardTrueHeight = this.board.height;
+      const boardTrueWidth =  this.board.width;
+      this.updatePieces(this.matchRef, boardTrueWidth, boardTrueHeight);
+      this.startPieceListener(this.matchRef);
+    }
   }
 }
