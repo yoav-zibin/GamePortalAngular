@@ -35,6 +35,7 @@ import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { SpecService } from './services/spec.service';
 import { PieceComponent } from './piece/piece.component';
 import { BoardComponent } from './board/board.component';
+import * as Material from '@angular/material';
 // import {KonvaModule} from 'ng2-konva';
 // import {KonvaModule} from 'ng2-konva';
 
