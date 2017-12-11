@@ -41,6 +41,10 @@
     <mat-tab label="New Game">
 
       <div class="tab-content">
+        <br>
+        <br>
+        <br>
+
         <div class="selector">
           <mat-form-field>
             <mat-select placeholder="Select Game" [(ngModel)]="selectedNewGame">
@@ -57,18 +61,27 @@
       </div>
     </mat-tab>
 
-    <mat-tab label="Recently Played Matches">
+    <mat-tab label="Recently Played">
       <div class="tab-content">
-        <mat-form-field>
-          <mat-select placeholder="Select Match" [(ngModel)]="selectedRecentMatch">
-            <mat-option *ngFor="let match of recentMatchSpecs" [value]=match> {{match.gameName}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <br>
+        <br>
+        <br>
 
-        <button mat-button type="submit" (click)="loadRecentMatch()">
-          Resume Recent Match
-        </button>
+        <div class="selector">
+          <mat-form-field>
+            <mat-select placeholder="Select Match" [(ngModel)]="selectedRecentMatch">
+              <mat-option *ngFor="let match of recentMatchSpecs" [value]=match> {{match.gameName}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div class="btn">
+          <button mat-button type="submit" (click)="loadRecentMatch()">
+            Resume Recent Match
+          </button>
+        </div>
       </div>
+
     </mat-tab>
 
   </mat-tab-group>

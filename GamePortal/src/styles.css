@@ -3,13 +3,13 @@
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 
 li{ list-style: none; }
-* {
-  height: 100%;
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
+/** {*/
+  /*height: 100%;*/
+  /*box-sizing: border-box;*/
+  /*margin: 0;*/
+  /*padding: 0;*/
+  /*border: 0;*/
+/*}*/
 
 body {
   width: 100%;

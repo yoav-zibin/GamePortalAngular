@@ -1,38 +1,5 @@
-/*.tab-group {*/
-  /*border: 1px solid #e8e8e8;*/
-/*}*/
+.tab-content {
+  margin:0 auto;
+}
 
-/*.tab-content {*/
-  /*padding: 16px;*/
-/*}*/
-
-/*.game-selector {*/
-  /*position: relative;*/
-  /*display: inline-block;*/
-  /*vertical-align: top;*/
-  /*margin: 0 auto;*/
-  /*width: 40%;*/
-  /*padding: 10px;*/
-  /*height: 100%;*/
-  /*overflow: auto;*/
-  /*float: left;*/
-/*}*/
-
-/*.nav nav-tabs {*/
-  /*position: relative;*/
-  /*display: inline-block;*/
-  /*width: 40px;*/
-  /*height: 20px;*/
-/*}*/
-
-/*.btn {*/
-  /*border : solid 2px #ffffff;*/
-  /*border-radius : 3px;*/
-  /*moz-border-radius : 3px;*/
-  /*font-size : 20px;*/
-  /*color : #ffffff;*/
-  /*padding : 1px 17px;*/
-  /*background-color : #0a66c9;*/
-
-/*}*/
 
