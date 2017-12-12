@@ -12,8 +12,8 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   @Input() board: any;
   @Input() pieces: any;
   @Input() matchRef: any;
-  // dont need the piece component
-  // @ViewChildren(PieceComponent) pieceComponents: QueryList<PieceComponent>;
+
+  // this keeps track of images "displayed"! It should be equal to currentImageIndex
   pieceImageIndices: Array<any>;
   pieceImages: Array<Konva.Image>;
   boardImage: Konva.Image;
@@ -168,20 +168,61 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
       // note we dont have to rescale width and height
       (pieceKonvaImage as any).setImage(pieceImgObj);
       pieceLayer.draw();
+    };
+    pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
+    const newVals = {
+      currentImageIndex: nextImageIndex,
+      zDepth: ++thiz.pieceMaxZDepth
+    };
+    thiz.matchRef.child('pieces').child(index).child('currentState').update(newVals);
+  }
+
+  rollDice(pieceKonvaImage, index, selfDfPiece, onlyAnim?) {
+    const position = pieceKonvaImage.getAbsolutePosition();
+    const tween = new Konva.Tween({
+      node: pieceKonvaImage,
+      rotation: 360,
+      easing: Konva.Easings.BounceEaseInOut,
+      duration: 0.5
+    });
+    tween.play();
+    setTimeout(function () {
+      tween.reverse();
+    }, 300);
+    // if it is not "this" player clicked but another player clicked
+    // then just display this change
+    if (onlyAnim) {
+      return;
+    }
+    const nextImageIndex = Math.floor(Math.random() * selfDfPiece.urls.length);
+    if (this.pieceImageIndices[index] === nextImageIndex) {
+      return;
+    } else {
+      const pieceLayer = this.piecesLayer;
+      const pieceImgObj = new Image();
+      const thiz = this;
+      pieceImgObj.onload = function () {
+        // note we dont have to rescale width and height
+        (pieceKonvaImage as any).setImage(pieceImgObj);
+        pieceLayer.draw();
+      };
+      pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
       const newVals = {
         currentImageIndex: nextImageIndex,
         zDepth: ++thiz.pieceMaxZDepth
       };
       thiz.matchRef.child('pieces').child(index).child('currentState').update(newVals);
-    };
-    pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
+      thiz.pieceImageIndices[index] = nextImageIndex;
+    }
   }
 
   updatePieces(matchRef, boardTrueWidth, boardTrueHeight) {
+    // this is only called by setCurtState!!! not in listener
     const thiz = this;
     matchRef.child('pieces').once('value').then(snap => {
       if (snap.exists()) {
         const pieces = snap.val();
+        console.log('pieces: ', pieces);
         pieces.forEach((piece, index) => {
           const position = {
             // piece.currentState stores the percentage
@@ -212,13 +253,15 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
               return;
             }
             // add drag handler to pieceKonvaImage:
-            pieceKonvaImage.on('dragstart', () => {
-              thiz.handleDragStart(pieceKonvaImage);
-            });
+            if (pieceKonvaImage.getAttr('draggable')) {
+              pieceKonvaImage.on('dragstart', () => {
+                thiz.handleDragStart(pieceKonvaImage);
+              });
 
-            pieceKonvaImage.on('dragend', () => {
-              thiz.handleDragEnd(pieceKonvaImage, index);
-            });
+              pieceKonvaImage.on('dragend', () => {
+                thiz.handleDragEnd(pieceKonvaImage, index);
+              });
+            }
 
             // if toggleble, add onClick handler
             if (kind === 'toggable') {
@@ -226,10 +269,16 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
                 thiz.toggle(pieceKonvaImage, index, selfDfPiece);
               });
             }
+            if (kind === 'dice') {
+              pieceKonvaImage.on('click', () => {
+                thiz.rollDice(pieceKonvaImage, index, selfDfPiece);
+              });
+            }
 
             // update image:
             // TODO: update other kind og pieces, such as card
             if (thiz.pieceImageIndices[index] !== imageIndex) {
+              // TODO: card and cardVisibility here
               const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
               console.log('new width!', newWidth);
               const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
@@ -298,6 +347,13 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             console.log('new width!', newWidth);
             const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
             console.log('new height!', newHeight);
+            const kind = selfDfPiece.kind;
+            if (kind === 'dice') {
+              // only update display
+              thiz.rollDice(pieceKonvaImage, index, selfDfPiece, true);
+            }
+            // Note: only update the display of current piece image
+            // did not write to the database!
             thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
             // update current image index
             thiz.pieceImageIndices[index] = imageIndex;
