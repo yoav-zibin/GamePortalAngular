@@ -25,6 +25,14 @@ export class AuthService {
     this.items = af.list('items');
   }
 
+  getCurtUid() {
+    return this.curtUserId;
+  }
+
+  getUserRef() {
+    return this.af.database.ref(`users/${this.curtUserId}`);
+  }
+
   public createUserInfo(user: any): any {
 
     const userInfo = {

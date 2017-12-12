@@ -1,4 +1,66 @@
-<div id="container">Hello World!</div>
+<!--{-->
+<!--this.state.showTooltip ?-->
+<!--<div className='my-tooltip'-->
+     <!--style={{-->
+     <!--left:this.state.tooltipPosition.x,-->
+     <!--top: this.state.tooltipPosition.y-->
+     <!--}}>-->
+  <!--{-->
+  <!--this.state.visibleTo.length > 0 ?-->
+  <!--<span style={{textDecoration:'underline'}}>Card is Visible to:</span> :-->
+  <!--'Card is visible to no one.'-->
+  <!--}-->
+  <!--<ul style={{padding:'0', listStyle:'none', margin:'0'}}>-->
+  <!--{this.state.visibleTo.map((name, index)=>{-->
+  <!--return (-->
+  <!--<li key={this.props.groupId+'tooltip'+index}-->
+      <!--style={{padding:'0', listStyle:'none', margin:'0'}}>-->
+  <!--{name}-->
+  <!--</li>-->
+  <!--);-->
+  <!--})}-->
+  <!--</ul>-->
+<!--</div> :-->
+<!--null-->
+<!--}-->
+<!--{-->
+<!--this.state.showCardOptions ?-->
+<!--<div className='my-card-options'-->
+     <!--style={{-->
+     <!--left:this.state.tooltipPosition.x,-->
+     <!--top: this.state.tooltipPosition.y-->
+     <!--}}>-->
+  <!--<div className='close-card-options'-->
+       <!--onClick={()=>{-->
+    <!--this.setState({-->
+    <!--showCardOptions: false-->
+    <!--});-->
+    <!--}}>-->
+    <!--x-->
+  <!--</div>-->
+  <!--<span style={{textDecoration:'underline', textAlign:'center'}}>OPTIONS:</span>-->
+  <!--<ul style={{padding:'0', listStyle:'none', margin:'0'}}>-->
+  <!--<li className='card-options-item'-->
+      <!--onClick={()=>{this.makeCardVisibleToSelf()}}>-->
+    <!--Make Visible To me-->
+  <!--</li>-->
+  <!--<li className='card-options-item'-->
+      <!--onClick={()=>{this.makeCardVisibleToAll()}}>-->
+    <!--Make Visible To Everyone-->
+  <!--</li>-->
+  <!--<li className='card-options-item'-->
+      <!--onClick={()=>{this.makeCardHiddedToAll()}}>-->
+    <!--Hide From Everyone-->
+  <!--</li>-->
+  <!--<li className='card-options-item'-->
+      <!--onClick={()=>{this.shuffleDeck()}}>-->
+    <!--Shuffle Deck-->
+  <!--</li>-->
+  <!--</ul>-->
+<!--</div> :-->
+<!--null-->
+<!--}-->
+
 <div id="stage">
   <div id="boardLayer">
     <!--may need a board component-->
