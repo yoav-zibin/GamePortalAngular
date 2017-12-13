@@ -29,8 +29,8 @@ export class AuthService {
     return this.curtUserId;
   }
 
-  getUserRef() {
-    return this.af.database.ref(`users/${this.curtUserId}`);
+  getUserRef(uid) {
+    return this.af.database.ref(`users/${uid}`);
   }
 
   public createUserInfo(user: any): any {

@@ -51,10 +51,11 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     const thiz = this;
     this.participantsRef.on('value', (snap) => {
       const participants = snap.val(); // dict{uid: participantIdx};
+      console.log('group members:', participants);
       thiz.userParticipantIdx = participants[this.auth.getCurtUid()].participantIndex;
       thiz.participantsNames = {};
       Object.keys(participants).forEach((uid) => {
-        const userRef = this.auth.getUserRef();
+        const userRef = this.auth.getUserRef(uid);
         const userNameRef = userRef.child('publicFields').child('displayName');
         userNameRef.once('value').then((userName) => {
           // Todo: this participantsNames is never used
@@ -183,7 +184,6 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   handleDragEnd(pieceKonvaImage, index) {
     // will have to update position to database!
     const position = pieceKonvaImage.getAbsolutePosition();
-    // TODO: need to consider cardVisibility
 
     const newVals = {
       x: position.x / this.boardWidth * 100,
@@ -270,10 +270,13 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
 // TODO: when mouse over a card, show tool tip
   showToolTip(cardKonvaImage, index, selfDfPiece) {
     let selfVisibleTo = [];
+    console.log('participant names: ', this.participantsNames);
     const selfCardVisibility = this.cardVisibility[index];
+    console.log('card visibility: ', selfCardVisibility);
     if (selfCardVisibility) {
       const thiz = this;
       Object.keys(selfCardVisibility).forEach((participantIdx) => {
+        console.log('card visible to: ', thiz.participantsNames[participantIdx]);
         selfVisibleTo.push(thiz.participantsNames[participantIdx]);
       });
     }
@@ -290,6 +293,10 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       position: tooltipPosition,
       visibleTo: selfVisibleTo
     };
+  }
+
+  getTooltipPosition() {
+    return this.tooltipInfo['position'];
   }
   // TODO: when click on a card, show options
   showOptions(cardKonvaImage, index, selfDfPiece) {
@@ -319,6 +326,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     Object.keys(this.participantsNames).forEach((participantIndex) => {
       const path = `pieces/${selectCardIndex}/currentState/cardVisibility/${participantIndex}`;
       const visibilityRef = thiz.matchRef.child(path);
+      console.log('setting all to true', participantIndex);
       visibilityRef.set(true);
     });
   }
@@ -464,9 +472,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
             const pieceSrc = selfDfPiece.urls[imageIndex];
             if (thiz.pieceImageIndices[index] !== imageIndex) {
               const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
-              console.log('new width!', newWidth);
               const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
-              console.log('new height!', newHeight);
               thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
 
               // update current image index
@@ -573,8 +579,6 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   ngOnChanges(changes: SimpleChanges): void {
     // TODO: different changes invoke different handlers
     // TODO: have to first determine if the previous input props is null:
-    console.log('NgOnChanges!!!');
-    console.log(changes);
     // from the log, we know that when input changes, the order is:
     // matchRef -> board -> pieces
     if (changes.matchRef && !changes.matchRef.isFirstChange()) {
