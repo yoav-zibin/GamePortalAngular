@@ -40,9 +40,11 @@ export class SpecLoaderComponent implements OnInit, OnChanges {
     for (const piece of pieceSpecs) {
       // this new piece contains all the info we wanna have!
       const newpiece = {
+        initialState: piece.initialState,
         x: piece.initialState.x,
         y: piece.initialState.y,
         zDepth: piece.initialState.zDepth,
+        deckPieceIndex: piece.deckPieceIndex,
         draggable: null,
         kind: null,
         height: null,

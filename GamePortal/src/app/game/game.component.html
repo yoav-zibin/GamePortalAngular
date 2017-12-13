@@ -1,73 +1,40 @@
-<!--{-->
-<!--this.state.showTooltip ?-->
-<!--<div className='my-tooltip'-->
-     <!--style={{-->
-     <!--left:this.state.tooltipPosition.x,-->
-     <!--top: this.state.tooltipPosition.y-->
-     <!--}}>-->
-  <!--{-->
-  <!--this.state.visibleTo.length > 0 ?-->
-  <!--<span style={{textDecoration:'underline'}}>Card is Visible to:</span> :-->
-  <!--'Card is visible to no one.'-->
-  <!--}-->
-  <!--<ul style={{padding:'0', listStyle:'none', margin:'0'}}>-->
-  <!--{this.state.visibleTo.map((name, index)=>{-->
-  <!--return (-->
-  <!--<li key={this.props.groupId+'tooltip'+index}-->
-      <!--style={{padding:'0', listStyle:'none', margin:'0'}}>-->
-  <!--{name}-->
-  <!--</li>-->
-  <!--);-->
-  <!--})}-->
-  <!--</ul>-->
-<!--</div> :-->
-<!--null-->
-<!--}-->
-<!--{-->
-<!--this.state.showCardOptions ?-->
-<!--<div className='my-card-options'-->
-     <!--style={{-->
-     <!--left:this.state.tooltipPosition.x,-->
-     <!--top: this.state.tooltipPosition.y-->
-     <!--}}>-->
-  <!--<div className='close-card-options'-->
-       <!--onClick={()=>{-->
-    <!--this.setState({-->
-    <!--showCardOptions: false-->
-    <!--});-->
-    <!--}}>-->
-    <!--x-->
-  <!--</div>-->
-  <!--<span style={{textDecoration:'underline', textAlign:'center'}}>OPTIONS:</span>-->
-  <!--<ul style={{padding:'0', listStyle:'none', margin:'0'}}>-->
-  <!--<li className='card-options-item'-->
-      <!--onClick={()=>{this.makeCardVisibleToSelf()}}>-->
-    <!--Make Visible To me-->
-  <!--</li>-->
-  <!--<li className='card-options-item'-->
-      <!--onClick={()=>{this.makeCardVisibleToAll()}}>-->
-    <!--Make Visible To Everyone-->
-  <!--</li>-->
-  <!--<li className='card-options-item'-->
-      <!--onClick={()=>{this.makeCardHiddedToAll()}}>-->
-    <!--Hide From Everyone-->
-  <!--</li>-->
-  <!--<li className='card-options-item'-->
-      <!--onClick={()=>{this.shuffleDeck()}}>-->
-    <!--Shuffle Deck-->
-  <!--</li>-->
-  <!--</ul>-->
-<!--</div> :-->
-<!--null-->
-<!--}-->
-
-<div id="stage">
-  <div id="boardLayer">
-    <!--may need a board component-->
+<div>
+  <div *ngIf="tooltipInfo && tooltipInfo['show']" class="tooltip"
+       style="left: {{tooltipInfo['position'].x}} top: {{tooltipInfo['position'].y}}">
+    <span style="text-decoration: underline">Card is Visible to:</span>
+    <ng-container *ngIf="tooltipInfo['visibleTo'].length > 0; else noVisible">
+      <ul style="padding: 0; list-style: none; margin: 0">
+        <li style="padding: 0; list-style: none; margin: 0"  *ngFor="let name of tooltipInfo['visibleTo']">
+        {{name}}
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noVisible> no one.</ng-template>
   </div>
-  <div id="piecesLayer">
-    <app-piece>
-      <!--dont need piece component-->
-    </app-piece>
+
+  <div *ngIf="showCardOptions" class="cardOptions"
+       style="left: {{tooltipInfo['position'].x}} top: {{tooltipInfo['position'].y}}">
+    <span style="text-decoration: underline; text-align: center">Please select option:</span>
+    <span>{{tooltipInfo['position'].x}}</span>
+    <span>{{tooltipInfo['position'].y}}</span>
+    <ul style="padding: 0; list-style: none; margin: 0">
+    <li class="card-options-item" (click)="visibleToSelf()">
+      Make Visible To me
+    </li>
+    <li class="card-options-item" (click)="visibleToAll()">
+      Make Visible To Everyone
+    </li>
+    <li class="card-options-item" (click)="hideToAll()">
+      Hide From Everyone
+    </li>
+    <li class="card-options-item" (click)="shuffle()">
+      Shuffle Deck
+    </li>
+    </ul>
+  </div>
+
+  <div #container>
+    <div id="stage">
+    </div>
   </div>
 </div>
