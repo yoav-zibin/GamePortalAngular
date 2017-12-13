@@ -29,8 +29,11 @@ import { MatListModule,
          MatButtonModule,
          MatButtonToggleModule,
          MatTabsModule,
-         MatFormFieldModule
-        } from '@angular/material';
+         MatFormFieldModule,
+         MatCardModule,
+         MatInputModule,
+         MatIconModule
+} from '@angular/material';
 import { MatSelectModule } from '@angular/material/select'
 import { SpecLoaderComponent} from './spec-loader/spec-loader.component';
 import { PlaygroundComponent } from './playground/playground.component';
@@ -96,7 +99,10 @@ export const firebaseConfig = {
     MatButtonToggleModule,
     MatTabsModule,
     MatSelectModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatCardModule,
+    MatInputModule,
+    MatIconModule
   ],
   providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]
