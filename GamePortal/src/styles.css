@@ -38,10 +38,10 @@ app-chat-form{
   overflow: unset;
 }
 
-.message {
-  display: block;
-  height: auto;
-}
+/*.message {*/
+  /*display: block;*/
+  /*height: auto;*/
+/*}*/
 
 /*button {*/
   /*background:#008FEF;*/

@@ -1,13 +1,13 @@
 <!--wrapper component for spec-loader(game); chat-room; game-selector-->
 
 <div *ngIf="(user | async)?.uid" class="mainContent">
-  <mat-grid-list cols="22" rowHeight="fit" style="height: 100%">
+  <mat-grid-list cols="23" rowHeight="fit" style="height: 100%">
     <mat-grid-tile [colspan]="5">
       <app-chat-room>
       </app-chat-room>
     </mat-grid-tile>
 
-    <mat-grid-tile [colspan]="11">
+    <mat-grid-tile [colspan]="12">
       <div *ngIf="getSpec()&& getMatchRef()">
         <app-spec-loader [spec]="getSpec()" [matchRef]="getMatchRef()"></app-spec-loader>
       </div>
