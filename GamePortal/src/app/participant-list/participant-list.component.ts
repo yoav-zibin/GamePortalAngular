@@ -1,4 +1,3 @@
-///<reference path="../../../node_modules/@angular/core/src/metadata/directives.d.ts"/>
 import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {GroupService} from '../services/group.service';
@@ -7,7 +6,6 @@ import {MatListModule} from '@angular/material';
 import {AngularFireDatabase} from 'angularfire2/database';
 import {AuthService} from '../services/auth.service';
 // import {SelectModule} from 'ng-select';
-
 @Component({
   selector: 'app-participant-list',
   templateUrl: './participant-list.component.html',
@@ -20,10 +18,10 @@ export class ParticipantListComponent implements OnInit {
   selectedUsers: any;
 
   constructor(private chatService: ChatService,
-               private af: AngularFireDatabase,
-               private groupService: GroupService,
-               private router: Router,
-               private authService: AuthService) {
+              private af: AngularFireDatabase,
+              private groupService: GroupService,
+              private router: Router,
+              private authService: AuthService) {
     // display users and groups!!
     const snap = this.chatService.getUsers().valueChanges();
     snap.subscribe( users => {

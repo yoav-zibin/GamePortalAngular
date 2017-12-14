@@ -14,7 +14,7 @@ import {AngularFireAuth} from 'angularfire2/auth';
   styleUrls: ['./user-list.component.css']
 })
 export class UserListComponent implements OnInit {
-@Input() isChat: boolean;
+  @Input() isChat: boolean;
   // users: Array<any> = [];
   onlineUsers: Array<any> = [];
   offlineUsers: Array<any> = [];
