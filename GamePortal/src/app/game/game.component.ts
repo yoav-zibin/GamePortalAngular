@@ -25,8 +25,10 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   pieceImages: Array<Konva.Image>;
   boardImage: Konva.Image;
   stage: Konva.Stage;
+  tooltip: Konva.Label;
   piecesLayer: Konva.Layer;
   boardLayer: Konva.Layer;
+  tooltipLayer: Konva.Layer; // TODO: may want to try Konva.Label as tooltip
   maxSize: number;
   boardHeight: number;
   boardWidth: number;
@@ -82,6 +84,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       height: this.maxSize,
       draggable: false
     });
+    // this.tooltip = new Konva.Label({});
     this.showCardOptions = false;
     this.tooltipInfo = null;
     this.clickCardIndex = -1;
@@ -95,17 +98,19 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     });
     this.boardLayer = new Konva.Layer();
     this.piecesLayer = new Konva.Layer();
+    // this.tooltipLayer = new Konva.Layer();
     // add board image and piece images to both layers
     this.boardLayer.add(this.boardImage);
     for (const image of this.pieceImages) {
       this.piecesLayer.add(image);
     }
+    // this.tooltipLayer.add(this.tooltip);
     this.stage.add(this.boardLayer);
     this.stage.add(this.piecesLayer);
+    // this.stage.add(this.tooltipLayer);
     this.initCardVisibility();
     this.setCurtState(this.matchRef);
     this.startPieceListener(this.matchRef);
-    // TODO: cardVisibility
   }
 
   initCardVisibility() {
@@ -269,6 +274,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
 
 // TODO: when mouse over a card, show tool tip
   showToolTip(cardKonvaImage, index, selfDfPiece) {
+    // this.tooltipLayer.destroyChildren();
     let selfVisibleTo = [];
     console.log('participant names: ', this.participantsNames);
     const selfCardVisibility = this.cardVisibility[index];
@@ -287,6 +293,36 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       x: cardPosition.x + cardWidth + canvasContainerX,
       y: cardPosition.y
     };
+//     this.tooltip = new Konva.Label({
+//       x: tooltipPosition.x,
+//       y: tooltipPosition.y,
+//       opacity: 0.75,
+//       visible: true
+//     });
+//
+// // add a tag to the label
+//     this.tooltip.add(new Konva.Tag({
+//       fill: 'black',
+//       pointerDirection: 'down',
+//       pointerWidth: 10,
+//       pointerHeight: 10,
+//       lineJoin: 'round',
+//       shadowColor: 'black',
+//       shadowBlur: 10,
+//       shadowOpacity: 0.5
+//     }));
+//     this.tooltip.add(new Konva.Text({
+//       text: selfVisibleTo.toString(),
+//       fontFamily: 'Calibri',
+//       fontSize: 18,
+//       padding: 5,
+//       fill: 'white'
+//     }));
+    // console.log(this.tooltip.getAttr('visible'));
+    // console.log('im in tooltip!!!', this.tooltip);
+    // this.tooltipLayer.add(this.tooltip);
+    // this.tooltip.show();
+    // this.tooltipLayer.draw();
     this.tooltipInfo = {
       selectCardIndex: index,
       show: true,
@@ -308,6 +344,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     } else {
       this.showCardOptions = !this.showCardOptions;
     }
+    // this.tooltip.setAttr('visible', false);
     this.tooltipInfo['show'] = false;
   }
 
@@ -380,6 +417,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
 
   // TODO: when mouse out a card, hide tool tip
   hideToolTipandOptions() {
+    // this.tooltip.setAttr('visible', false);
     this.tooltipInfo['show'] = false;
   }
 

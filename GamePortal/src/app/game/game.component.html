@@ -1,7 +1,7 @@
 <div>
   <div *ngIf="tooltipInfo && tooltipInfo['show']"
        [ngStyle]="{left: getTooltipPosition().x, top: getTooltipPosition().y}">
-    <span [style.text-decoration] = "underline">Card is Visible to:</span>
+    <span style="text-decoration: underline; text-align: center">Card is Visible to: </span>
     <ng-container *ngIf="tooltipInfo['visibleTo'].length > 0; else noVisible">
       <ul style="padding: 0; list-style: none; margin: 0">
         <li style="padding: 0; list-style: none; margin: 0"  *ngFor="let name of tooltipInfo['visibleTo']">
@@ -9,14 +9,14 @@
         </li>
       </ul>
     </ng-container>
-    <ng-template #noVisible> no one.</ng-template>
+    <ng-template #noVisible>no one.</ng-template>
   </div>
 
   <div *ngIf="showCardOptions"
        [ngStyle]="{left: getTooltipPosition().x, top: getTooltipPosition().y}">
     <span style="text-decoration: underline; text-align: center">Please select option:</span>
-    <span>{{tooltipInfo['position'].x}}</span>
-    <span>{{tooltipInfo['position'].y}}</span>
+    <!--<span>{{tooltipInfo['position'].x}}</span>-->
+    <!--<span>{{tooltipInfo['position'].y}}</span>-->
     <ul style="padding: 0; list-style: none; margin: 0">
     <li class="card-options-item" (click)="visibleToSelf()">
       Make Visible To me
