@@ -351,6 +351,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   // TODO: implement 4 options:
   visibleToSelf() {
     console.log('making visible to self...');
+    this.hideToAll();
     const selectCardIndex = this.clickCardIndex;
     const path = `pieces/${selectCardIndex}/currentState/cardVisibility/${this.userParticipantIdx}`;
     const visibilityRef = this.matchRef.child(path);
@@ -500,7 +501,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
             // update image:
             // TODO: update other kind og pieces, such as card
             if (kind === 'card') {
-              if (thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.userParticipantIdx]) {
+              if (thiz.cardVisibility[index] && (thiz.cardVisibility[index][thiz.userParticipantIdx] !== null)) {
                 // in case in the database, cardVisibility and imageIndex are inconsistent
                 imageIndex = 1;
               } else {
