@@ -1,12 +1,13 @@
 <!--<div style="text-align:center">-->
   <!--<h1> Welcome to {{title}}!</h1>-->
 <!--</div>-->
-<div class="chatRoom">
-  <div class="chatHeaderWrapper">
+<div class="mainContent">
+  <div class="navBarWrapper">
     <!--put login buttons on the rightmost-->
     <!--<button (click)="signUporLogin()" *ngIf="!(this.afAuth.authState | async)?.uid">Sign Up or Login</button>-->
     <!--<button (click)="logOut()" *ngIf="(this.afAuth.authState | async)?.uid">Log out</button>-->
     <app-navbar></app-navbar>
   </div>
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
+
 </div>
