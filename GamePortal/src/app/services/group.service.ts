@@ -15,6 +15,7 @@ export class GroupService {
   public curtGroupId: string = null;
   public participants: Array<any>;
   public groupName: string;
+  public isCreateNewGroup: boolean = false;
 
   constructor(public authService: AuthService, public af: AngularFireDatabase, private router: Router) {
     this.curtUserId = this.authService.curtUserId; // undefined at first
@@ -46,6 +47,14 @@ export class GroupService {
   setGroupID(gid) {
     console.log('setting group id: ', gid);
     this.curtGroupId = (gid);
+  }
+
+  getIsCreateNewGroup() {
+    return this.isCreateNewGroup;
+  }
+
+  setIsCreateNewGroup(b: boolean) {
+    this.isCreateNewGroup = b;
   }
 
   createGroupInfo(): any {

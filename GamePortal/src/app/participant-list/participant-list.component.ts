@@ -16,6 +16,7 @@ export class ParticipantListComponent implements OnInit {
   groupName: string;
   // usernameList: Array<string>;
   selectedUsers: any;
+  isCreateNewGroup: boolean;
 
   constructor(private chatService: ChatService,
               private af: AngularFireDatabase,
@@ -62,6 +63,6 @@ export class ParticipantListComponent implements OnInit {
   submit() {
     console.log(this.selectedUsers[0]);
     this.groupService.addGroupToDatabase(this.groupName, this.selectedUsers);
-    this.router.navigate(['/chat']);
+    this.groupService.setIsCreateNewGroup(false);
   }
 }

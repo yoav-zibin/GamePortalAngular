@@ -1,0 +1,10 @@
+<div #scroller class="userListWrapper">
+  <br>
+  <a data-toggle="collapse" href="#groupItemWrapper">My Groups</a>
+  <div id="groupItemWrapper" class="panel-collapse collapse">
+    <app-group-item
+      [group]=group *ngFor="let group of groups"><br>
+    </app-group-item>
+  </div>
+
+</div>

@@ -8,6 +8,7 @@ import {UserListComponent} from './user-list/user-list.component';
 import {ParticipantListComponent} from './participant-list/participant-list.component';
 import {GameComponent} from './game/game.component';
 import {PlaygroundComponent} from "./playground/playground.component";
+import {GroupsCenterComponent} from "./groups-center/groups-center.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -18,7 +19,8 @@ const routes: Routes = [
   { path: 'users',  component: UserListComponent },
   {path: 'participant-list',  component: ParticipantListComponent},
   {path: 'game',  component: GameComponent},
-  {path: 'play/:groupId', component: PlaygroundComponent}
+  {path: 'play/:groupId', component: PlaygroundComponent},
+  {path: 'center', component: GroupsCenterComponent}
 ];
 
 @NgModule({

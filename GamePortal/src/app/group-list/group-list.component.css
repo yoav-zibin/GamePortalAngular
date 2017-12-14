@@ -1,13 +1,14 @@
 .userListWrapper {
   /*background-color: #2A2845;*/
   color: #fff;
-  display: inline-block;
+  /*display: inline-block;*/
+  width: 100%;
   font-family: "Open Sans", sans-serif;
   font-size: 1.2em;
   flex: 1;
   order: 1;
   text-align: center;
-  overflow-y: scroll;
+  /*overflow-y: scroll;*/
   height: 100vh;
 }
 
