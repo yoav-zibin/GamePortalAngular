@@ -5,7 +5,7 @@
   background-color: #eee;
   color: #000;
   transition: 0.1s ease-out;
-  padding-left: 80px;
+  /*padding-left: 80px;*/
   height: auto;
   width: 40%;
   /*margin-bottom: auto;*/
@@ -18,7 +18,7 @@
 }
 
 .sendButton {
-  width: 20px;
+  width: auto;
 }
 
 /*.sendButton{*/
