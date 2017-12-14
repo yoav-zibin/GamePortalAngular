@@ -1,6 +1,11 @@
-import {Component, AfterViewInit, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren} from '@angular/core';
+import {
+  Component, AfterViewInit, Input, OnChanges, OnInit, QueryList, SimpleChanges, ViewChild, ViewChildren,
+  OnDestroy, ElementRef
+} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
 import * as Konva from 'konva';
+import {GroupService} from '../services/group.service';
+import {AuthService} from '../services/auth.service';
 
 @Component({
   selector: 'app-game',
@@ -8,12 +13,14 @@ import * as Konva from 'konva';
   styleUrls: ['./game.component.css']
 })
 
-export class GameComponent implements OnInit, OnChanges, AfterViewInit {
+// TODO: implement tooltip and options for card!!!
+export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() board: any;
   @Input() pieces: any;
   @Input() matchRef: any;
-  // dont need the piece component
-  // @ViewChildren(PieceComponent) pieceComponents: QueryList<PieceComponent>;
+  @ViewChild('container') canvasContainer: ElementRef;
+
+  // this keeps track of images "displayed"! It should be equal to currentImageIndex
   pieceImageIndices: Array<any>;
   pieceImages: Array<Konva.Image>;
   boardImage: Konva.Image;
@@ -24,13 +31,39 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   boardHeight: number;
   boardWidth: number;
   pieceMaxZDepth: number;
-  cardVisibility: {};
-  constructor() {
+  participantsRef: any;
+  userParticipantIdx: number;
+  participantsNames: {}; // dict{participantIdx: displayname};
+  cardVisibility: {}; // {pieceIdx: {participantIdx: true}}
+  tooltipInfo: {};
+  showCardOptions: boolean;
+  clickCardIndex: number;
+  clickDeckIndex: number;
+  constructor(private auth: AuthService, private group: GroupService) {
     this.maxSize = 650;
     this.pieceMaxZDepth = 0;
   }
 
   ngOnInit() {
+    // grab the info for participants of this match
+    const groupRef = this.group.getGroupRef();
+    this.participantsRef = groupRef.child('participants');
+    const thiz = this;
+    this.participantsRef.on('value', (snap) => {
+      const participants = snap.val(); // dict{uid: participantIdx};
+      console.log('group members:', participants);
+      thiz.userParticipantIdx = participants[this.auth.getCurtUid()].participantIndex;
+      thiz.participantsNames = {};
+      Object.keys(participants).forEach((uid) => {
+        const userRef = this.auth.getUserRef(uid);
+        const userNameRef = userRef.child('publicFields').child('displayName');
+        userNameRef.once('value').then((userName) => {
+          // Todo: this participantsNames is never used
+          thiz.participantsNames[participants[uid].participantIndex] = userName.val();
+        });
+      });
+    });
+
     this.pieceImageIndices = new Array(this.pieces.length).fill(-1);
     // TODO: not sure this fill works
     // each piece could have multiple images
@@ -49,6 +82,9 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
       height: this.maxSize,
       draggable: false
     });
+    this.showCardOptions = false;
+    this.tooltipInfo = null;
+    this.clickCardIndex = -1;
   }
 
   ngAfterViewInit(): void {
@@ -66,10 +102,20 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     }
     this.stage.add(this.boardLayer);
     this.stage.add(this.piecesLayer);
+    this.initCardVisibility();
     this.setCurtState(this.matchRef);
-    // TODO: piece listener!
     this.startPieceListener(this.matchRef);
     // TODO: cardVisibility
+  }
+
+  initCardVisibility() {
+    const thiz = this;
+    thiz.cardVisibility = {};
+    thiz.pieces.forEach((piece, index) => {
+      if (piece.kind === 'card') {
+        thiz.cardVisibility[index] = null;
+      }
+    });
   }
 
   updateBoardImage(boardKonvaImage, boardSrc, aspectRatio) {
@@ -138,7 +184,6 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   handleDragEnd(pieceKonvaImage, index) {
     // will have to update position to database!
     const position = pieceKonvaImage.getAbsolutePosition();
-    // TODO: need to consider cardVisibility
 
     const newVals = {
       x: position.x / this.boardWidth * 100,
@@ -149,8 +194,14 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   updateZDepth(pieceKonvaImage, ZDepth) {
+    console.log('updating zDepth...');
     const pieceLayer = this.piecesLayer;
-    const zIndex = ZDepth ? ZDepth : this.pieceMaxZDepth;
+    let zIndex;
+    if (ZDepth) {
+      zIndex = ZDepth;
+    } else {
+      zIndex = this.pieceMaxZDepth;
+    }
     this.pieceMaxZDepth = Math.max(zIndex, this.pieceMaxZDepth);
     pieceKonvaImage.setZIndex(zIndex);
     pieceLayer.draw();
@@ -168,20 +219,177 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
       // note we dont have to rescale width and height
       (pieceKonvaImage as any).setImage(pieceImgObj);
       pieceLayer.draw();
+    };
+    pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
+    const newVals = {
+      currentImageIndex: nextImageIndex,
+      zDepth: ++thiz.pieceMaxZDepth
+    };
+    thiz.matchRef.child('pieces').child(index).child('currentState').update(newVals);
+  }
+
+  rollDice(pieceKonvaImage, index, selfDfPiece, onlyAnim?) {
+    const position = pieceKonvaImage.getAbsolutePosition();
+    const tween = new Konva.Tween({
+      node: pieceKonvaImage,
+      rotation: 360,
+      easing: Konva.Easings.BounceEaseInOut,
+      duration: 0.5
+    });
+    tween.play();
+    setTimeout(function () {
+      tween.reverse();
+    }, 300);
+    // if it is not "this" player clicked but another player clicked
+    // then just display this change
+    if (onlyAnim) {
+      return;
+    }
+    const nextImageIndex = Math.floor(Math.random() * selfDfPiece.urls.length);
+    if (this.pieceImageIndices[index] === nextImageIndex) {
+      return;
+    } else {
+      const pieceLayer = this.piecesLayer;
+      const pieceImgObj = new Image();
+      const thiz = this;
+      pieceImgObj.onload = function () {
+        // note we dont have to rescale width and height
+        (pieceKonvaImage as any).setImage(pieceImgObj);
+        pieceLayer.draw();
+      };
+      pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
       const newVals = {
         currentImageIndex: nextImageIndex,
         zDepth: ++thiz.pieceMaxZDepth
       };
       thiz.matchRef.child('pieces').child(index).child('currentState').update(newVals);
-    };
-    pieceImgObj.src = selfDfPiece.urls[nextImageIndex];
+      thiz.pieceImageIndices[index] = nextImageIndex;
+    }
   }
 
-  updatePieces(matchRef, boardTrueWidth, boardTrueHeight) {
+// TODO: when mouse over a card, show tool tip
+  showToolTip(cardKonvaImage, index, selfDfPiece) {
+    let selfVisibleTo = [];
+    console.log('participant names: ', this.participantsNames);
+    const selfCardVisibility = this.cardVisibility[index];
+    console.log('card visibility: ', selfCardVisibility);
+    if (selfCardVisibility) {
+      const thiz = this;
+      Object.keys(selfCardVisibility).forEach((participantIdx) => {
+        console.log('card visible to: ', thiz.participantsNames[participantIdx]);
+        selfVisibleTo.push(thiz.participantsNames[participantIdx]);
+      });
+    }
+    const cardPosition = cardKonvaImage.getAbsolutePosition();
+    const cardWidth = cardKonvaImage.getAttr('width');
+    const canvasContainerX = this.canvasContainer.nativeElement.getBoundingClientRect().x;
+    const tooltipPosition = {
+      x: cardPosition.x + cardWidth + canvasContainerX,
+      y: cardPosition.y
+    };
+    this.tooltipInfo = {
+      selectCardIndex: index,
+      show: true,
+      position: tooltipPosition,
+      visibleTo: selfVisibleTo
+    };
+  }
+
+  getTooltipPosition() {
+    return this.tooltipInfo['position'];
+  }
+  // TODO: when click on a card, show options
+  showOptions(cardKonvaImage, index, selfDfPiece) {
+    this.clickDeckIndex = selfDfPiece.deckPieceIndex;
+    console.log('clicked: ', this.clickDeckIndex);
+    if (this.clickCardIndex !== index) {
+      this.showCardOptions = true; // html would do most work
+      this.clickCardIndex = index;
+    } else {
+      this.showCardOptions = !this.showCardOptions;
+    }
+    this.tooltipInfo['show'] = false;
+  }
+
+  // TODO: implement 4 options:
+  visibleToSelf() {
+    console.log('making visible to self...');
+    const selectCardIndex = this.clickCardIndex;
+    const path = `pieces/${selectCardIndex}/currentState/cardVisibility/${this.userParticipantIdx}`;
+    const visibilityRef = this.matchRef.child(path);
+    visibilityRef.set(true);
+  }
+
+  visibleToAll() {
+    const selectCardIndex = this.clickCardIndex;
+    const thiz = this;
+    Object.keys(this.participantsNames).forEach((participantIndex) => {
+      const path = `pieces/${selectCardIndex}/currentState/cardVisibility/${participantIndex}`;
+      const visibilityRef = thiz.matchRef.child(path);
+      console.log('setting all to true', participantIndex);
+      visibilityRef.set(true);
+    });
+  }
+
+  hideToAll() {
+    const selectCardIndex = this.clickCardIndex;
+    const path = `pieces/${selectCardIndex}/currentState/cardVisibility`;
+    const visibilityRef = this.matchRef.child(path);
+    visibilityRef.set(null);
+  }
+
+  shuffle() {
+    console.log('shuffling');
+    // Note: only shuffle cards which belongs to deckPieceIndex
+    const deckPieceIndex = this.clickDeckIndex;
+    console.log('ready to shuffle: ', deckPieceIndex);
+    if (deckPieceIndex !== null) {
+      console.log('hello');
+      let zIndicesArr = new Array(this.pieces.length);
+      for (let i = 0; i < zIndicesArr.length; i++) {
+        zIndicesArr[i] = i + 1;
+      }
+      // ref: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+      let currentIndex = zIndicesArr.length;
+      let temporaryValue, randomIndex;
+
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+        // randomly pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+
+        // swap it with the current element.
+        temporaryValue = zIndicesArr[currentIndex];
+        zIndicesArr[currentIndex] = zIndicesArr[randomIndex];
+        zIndicesArr[randomIndex] = temporaryValue;
+      }
+      console.log(this.pieces);
+      this.pieces.forEach((piece, index) => {
+        console.log(piece);
+        if (piece.deckPieceIndex === deckPieceIndex) {
+          console.log('sfasafdsfasfasfasf');
+          const backtoInitState = piece.initialState;
+          const newzDepth = zIndicesArr[index];
+          backtoInitState['zDepth'] = newzDepth;
+          this.matchRef.child(`pieces/${index}/currentState`).set(backtoInitState);
+        }
+      });
+    }
+  }
+
+  // TODO: when mouse out a card, hide tool tip
+  hideToolTipandOptions() {
+    this.tooltipInfo['show'] = false;
+  }
+
+  updateInitialPieces(matchRef, boardTrueWidth, boardTrueHeight) {
+    // this is only called by setCurtState!!! not in listener
     const thiz = this;
     matchRef.child('pieces').once('value').then(snap => {
       if (snap.exists()) {
         const pieces = snap.val();
+        console.log('pieces: ', pieces);
         pieces.forEach((piece, index) => {
           const position = {
             // piece.currentState stores the percentage
@@ -189,10 +397,9 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             y: piece.currentState.y / 100 * this.boardHeight
           };
           const zDepth = piece.currentState.zDepth;
-          const imageIndex = piece.currentState.currentImageIndex;
+          let imageIndex = piece.currentState.currentImageIndex;
           if (index < this.pieces.length) {
             const selfDfPiece = thiz.pieces[index];
-            const pieceSrc = selfDfPiece.urls[imageIndex];
             const kind = selfDfPiece.kind;
             const draggable = selfDfPiece.draggable;
             const pieceKonvaImage = thiz.pieceImages[index];
@@ -209,32 +416,65 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             // if deck, return
             if (kind === 'cardsDeck' || kind === 'piecesDeck') {
               // for deck, no event listener.
+              // note: in shuffle deck, kind === card
               return;
             }
             // add drag handler to pieceKonvaImage:
-            pieceKonvaImage.on('dragstart', () => {
-              thiz.handleDragStart(pieceKonvaImage);
-            });
+            if (pieceKonvaImage.getAttr('draggable')) {
+              // drag start
+              pieceKonvaImage.on('dragstart', () => {
+                thiz.handleDragStart(pieceKonvaImage);
+              });
+              // drag end
+              pieceKonvaImage.on('dragend', () => {
+                thiz.handleDragEnd(pieceKonvaImage, index);
+              });
+            }
 
-            pieceKonvaImage.on('dragend', () => {
-              thiz.handleDragEnd(pieceKonvaImage, index);
-            });
-
-            // if toggleble, add onClick handler
-            if (kind === 'toggable') {
+            // add event handler:
+            if (kind === 'card') {
+              const cardVisibility = piece.currentState.cardVisibility;
+              thiz.cardVisibility[index] = cardVisibility;
+              // for card, mouse over, mouse out and click
+              pieceKonvaImage.on('mouseover', () => {
+                // TODO:
+                thiz.showToolTip(pieceKonvaImage, index, selfDfPiece);
+              });
+              pieceKonvaImage.on('mouseout', () => {
+                // TODO:
+                thiz.hideToolTipandOptions();
+              });
+              pieceKonvaImage.on('click', () => {
+                thiz.showOptions(pieceKonvaImage, index, selfDfPiece);
+              });
+            } else if (kind === 'toggable') {
+              // click
               pieceKonvaImage.on('click', () => {
                 thiz.toggle(pieceKonvaImage, index, selfDfPiece);
+              });
+            } else if (kind === 'dice') {
+              // click
+              pieceKonvaImage.on('click', () => {
+                thiz.rollDice(pieceKonvaImage, index, selfDfPiece);
               });
             }
 
             // update image:
             // TODO: update other kind og pieces, such as card
+            if (kind === 'card') {
+              if (thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.userParticipantIdx]) {
+                // in case in the database, cardVisibility and imageIndex are inconsistent
+                imageIndex = 1;
+              } else {
+                imageIndex = 0;
+              }
+            }
+            const pieceSrc = selfDfPiece.urls[imageIndex];
             if (thiz.pieceImageIndices[index] !== imageIndex) {
               const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
-              console.log('new width!', newWidth);
               const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
-              console.log('new height!', newHeight);
               thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
+
               // update current image index
               thiz.pieceImageIndices[index] = imageIndex;
             }
@@ -242,7 +482,6 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
             // update ZDepth
             thiz.updateZDepth(pieceKonvaImage, zDepth);
           }
-          // TODO: decks no need to display???
         });
       }
     });
@@ -259,7 +498,7 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
     this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
     // Load pieces
     // Load piece images:
-    this.updatePieces(this.matchRef, boardTrueWidth, boardTrueHeight);
+    this.updateInitialPieces(this.matchRef, boardTrueWidth, boardTrueHeight);
   }
 
   startPieceListener(matchRef) {
@@ -281,32 +520,54 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
           y: piece.currentState.y / 100 * this.boardHeight
         };
         const zDepth = piece.currentState.zDepth;
-        const imageIndex = piece.currentState.currentImageIndex;
+        let imageIndex = piece.currentState.currentImageIndex;
         if (index < this.pieces.length) {
           const selfDfPiece = thiz.pieces[index];
-          const pieceSrc = selfDfPiece.urls[imageIndex];
+          const kind = selfDfPiece.kind;
           const pieceKonvaImage = thiz.pieceImages[index];
           // First: position; then image!
 
           // update position:;
           thiz.updatePiecePosition(pieceKonvaImage, position.x, position.y);
 
+          if (kind === 'cardsDeck' || kind === 'piecesDeck') {
+            // for deck, no event listener.
+            return;
+          }
+
+          // for card, we believe in visibility, since when user clicked, we change the visibility immediately
+          if (kind === 'card') {
+            const cardVisibility = piece.currentState.cardVisibility;
+            thiz.cardVisibility[index] = cardVisibility;
+            if (thiz.cardVisibility[index] && thiz.cardVisibility[index][thiz.userParticipantIdx]) {
+              // in case in the database, cardVisibility and imageIndex are inconsistent
+              imageIndex = 1;
+            } else {
+              imageIndex = 0;
+            }
+          }
           // update image:
+          const pieceSrc = selfDfPiece.urls[imageIndex];
           if (thiz.pieceImageIndices[index] !== imageIndex) {
             console.log('piece width!', piece.width);
             const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
             console.log('new width!', newWidth);
             const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
             console.log('new height!', newHeight);
+            if (kind === 'dice') {
+              // only show an animation
+              thiz.rollDice(pieceKonvaImage, index, selfDfPiece, true);
+            }
+            // Note: only update the display of current piece image
+            // did not write to the database!
             thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
             // update current image index
             thiz.pieceImageIndices[index] = imageIndex;
           }
 
-          // // update ZDepth
-          // curtPieceComp.updateZDepth(zDepth);
+          // update ZDepth if shuffled or dragged
+          thiz.updateZDepth(pieceKonvaImage, zDepth);
         }
-        // TODO: decks no need to display???
       }
     });
   }
@@ -318,8 +579,6 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
   ngOnChanges(changes: SimpleChanges): void {
     // TODO: different changes invoke different handlers
     // TODO: have to first determine if the previous input props is null:
-    console.log('NgOnChanges!!!');
-    console.log(changes);
     // from the log, we know that when input changes, the order is:
     // matchRef -> board -> pieces
     if (changes.matchRef && !changes.matchRef.isFirstChange()) {
@@ -337,6 +596,7 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
 
     if (changes.pieces && !changes.pieces.isFirstChange()) {
       this.removePieceListener(this.matchRef);
+      this.initCardVisibility();
       this.pieceImageIndices = new Array(this.pieces.length).fill(-1);
       this.pieceImages = new Array(this.pieces.length);
       for (let i = 0; i < this.pieces.length; i++) {
@@ -353,8 +613,14 @@ export class GameComponent implements OnInit, OnChanges, AfterViewInit {
       }
       const boardTrueHeight = this.board.height;
       const boardTrueWidth =  this.board.width;
-      this.updatePieces(this.matchRef, boardTrueWidth, boardTrueHeight);
+      this.updateInitialPieces(this.matchRef, boardTrueWidth, boardTrueHeight);
       this.startPieceListener(this.matchRef);
     }
+  }
+
+  // on destroy
+  ngOnDestroy(): void {
+    this.participantsRef.off();
+    this.matchRef.off();
   }
 }

@@ -58,6 +58,7 @@ export class GroupService {
   }
 
   createGroupInfo(): any {
+    // we make sure we have authService.curtUserId
     this.curtUserId = this.authService.curtUserId;
     console.log('im in create group info, the user id is: ', this.curtUserId);
     let owner = {};
@@ -114,8 +115,6 @@ export class GroupService {
     if (!this.curtUserId) {
       return [];
     }
-
-    // test user id:
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
     console.log('wo zai kan group lujing: ', path);
     return this.af.list(path);
@@ -133,6 +132,10 @@ export class GroupService {
     //   }
     //   return groupList;
     // });
+  }
+
+  getGroupRef() {
+    return this.af.database.ref(`gamePortal/groups/${this.curtGroupId}`);
   }
 }
 

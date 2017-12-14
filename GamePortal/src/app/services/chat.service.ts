@@ -30,7 +30,6 @@ export class ChatService {
   //     }
   //   });
   // }
-
   constructor(private authService: AuthService,
               private af: AngularFireDatabase,
               private groupService: GroupService) {
@@ -41,7 +40,6 @@ export class ChatService {
   // setGroupID(gid) {
   //  this.curtGroupId = gid;
   // }
-
   getUsers() {
     const path = '/gamePortal/recentlyConnected';
     console.log('ready to fetch users');
