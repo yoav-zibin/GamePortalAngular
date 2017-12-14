@@ -18,7 +18,6 @@ export class UserListComponent implements OnInit {
   // users: Array<any> = [];
   onlineUsers: Array<any> = [];
   offlineUsers: Array<any> = [];
-  groups: Array<any> = [];
   public authState: any;
   user: any;
 
@@ -34,7 +33,7 @@ export class UserListComponent implements OnInit {
 
   ngOnInit() {
     console.log('Fetching users...  ');
-    let userIdSet: Set<string> = new Set<string>();
+    const userIdSet: Set<string> = new Set<string>();
     const snapUser = this.chatService.getUsers().valueChanges();
     snapUser.subscribe( users => {
       users.forEach(user => {
@@ -65,36 +64,5 @@ export class UserListComponent implements OnInit {
         return user;
       });
     });
-
-    console.log('Fetching groups...  ');
-    const snapGroup = this.groupService.getGroupsForUser().snapshotChanges();
-    // TODO: find out why snapshotchanges return a group info multiple times!!!
-    let groupIdSet: Set<string> = new Set<string>();
-    snapGroup.subscribe(actions => {
-      const size = actions.length;
-      // console.log('size too big???', size);
-      actions.forEach( action => {
-        const groupid = action.key;
-        // console.log('Group ID: ', groupid);
-        if (!groupIdSet.has(groupid)) {
-          groupIdSet.add(groupid);
-          this.af.database.ref('gamePortal/groups/' + groupid + '/groupName').once('value').then(result => {
-            this.groups.push({
-              groupId: groupid,
-              groupName: result.val()
-            });
-            // console.log(this.groups[0]);
-            // if (this.groups.length === size) {
-            //   return groupList;
-            // }
-          });
-        }
-        return groupid;
-      });
-    });
-  }
-
-  startChat() {
-    this.router.navigate(['/participant-list']);
   }
 }
