@@ -35,7 +35,7 @@ input#message {
   width:100%;
 }
 
-#details-container p {
+#details-container {
   background:#fff;
   padding:1.4em;
   color:#696969;

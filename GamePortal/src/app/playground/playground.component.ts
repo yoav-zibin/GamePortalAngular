@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {SpecService} from '../services/spec.service';
+import {AngularFireAuth} from 'angularfire2/auth';
 
 @Component({
   selector: 'app-playground',
@@ -7,8 +8,10 @@ import {SpecService} from '../services/spec.service';
   styleUrls: ['./playground.component.css']
 })
 export class PlaygroundComponent implements OnInit {
-
-  constructor(private specService: SpecService) { }
+  public user: any;
+  constructor(private specService: SpecService, private afAuth: AngularFireAuth) {
+    this.user = this.afAuth.authState;
+  }
 
   ngOnInit() {
   }

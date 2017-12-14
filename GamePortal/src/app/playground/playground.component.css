@@ -1,7 +1,13 @@
 
 app-game-selector {
   position: relative;
-  width: 27%;
+  width: 100%;
   height: 100%;
   float: right;
+  text-align: center;
+}
+
+.mainContent{
+  width: 100%;
+  height: 100vh;
 }

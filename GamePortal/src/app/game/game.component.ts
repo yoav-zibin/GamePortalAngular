@@ -40,7 +40,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   clickCardIndex: number;
   clickDeckIndex: number;
   constructor(private auth: AuthService, private group: GroupService) {
-    this.maxSize = 650;
+    this.maxSize = 600;
     this.pieceMaxZDepth = 0;
   }
 

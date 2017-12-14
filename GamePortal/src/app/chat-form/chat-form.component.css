@@ -7,7 +7,8 @@
   transition: 0.1s ease-out;
   padding-left: 80px;
   height: auto;
-  width: 50%;
+  width: 40%;
+  /*margin-bottom: auto;*/
 }
 
 .chatInput:focus{
@@ -16,17 +17,17 @@
   transition: 0.2s ease-in;
 }
 
-.sendButton{
-  flex: 1;
-  padding: 8px 24px;
-  font-size: 1.3em;
-  font-family: 'Droid Sans', sans-serif;
-  background-color: #2A2845;
-  color: white;
-  transition: 0.2s ease-out;
-  min-width: 50px;
+.sendButton {
+  width: 20px;
 }
 
-.sendButton:hover{
-  background-color: #444;
-}
+/*.sendButton{*/
+  /*flex: 1;*/
+  /*padding: 8px 24px;*/
+  /*font-size: 1.3em;*/
+  /*font-family: 'Droid Sans', sans-serif;*/
+  /*background-color: #2A2845;*/
+  /*color: white;*/
+  /*transition: 0.2s ease-out;*/
+  /*min-width: 20px;*/
+/*}*/

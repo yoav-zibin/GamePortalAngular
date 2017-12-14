@@ -1,10 +1,6 @@
 <div class="mainContent">
-  <!--<div *ngIf="(user | async)?.uid" class="users">-->
-    <!--<app-user-list [isChat] = true></app-user-list>-->
-  <!--</div>-->
 
   <!--TODO Used to be chat field-->
-  <div>
     <div #scroller class="feedWrapper">
       <div *ngIf="getGroupId()">
         <app-chat-feed [gid]="getGroupId()"></app-chat-feed>
@@ -14,7 +10,6 @@
     <div class="chatFormWrapper">
       <app-chat-form *ngIf="(getGroupId())"></app-chat-form>
     </div>
-  </div>
 </div>
 
 
