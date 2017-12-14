@@ -18,17 +18,17 @@
     <!--<span>{{tooltipInfo['position'].x}}</span>-->
     <!--<span>{{tooltipInfo['position'].y}}</span>-->
     <ul style="padding: 0; list-style: none; margin: 0">
-    <li class="card-options-item" (click)="visibleToSelf()">
-      Make Visible To me
+    <li class="card-options-item" >
+      <a (click)="visibleToSelf()">Visible To me</a>
     </li>
-    <li class="card-options-item" (click)="visibleToAll()">
-      Make Visible To Everyone
+    <li class="card-options-item">
+      <a (click)="visibleToAll()">Visible To Everyone</a>
     </li>
-    <li class="card-options-item" (click)="hideToAll()">
-      Hide From Everyone
+    <li class="card-options-item">
+      <a  (click)="hideToAll()">Hide From Everyone</a>
     </li>
-    <li class="card-options-item" (click)="shuffle()">
-      Shuffle Deck
+    <li class="card-options-item">
+      <a (click)="shuffle()">Shuffle Deck</a>
     </li>
     </ul>
   </div>
