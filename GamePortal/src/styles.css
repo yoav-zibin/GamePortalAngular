@@ -31,12 +31,12 @@ app-navbar{
   width: 100%;
 }
 
-/*app-chat-form{*/
-  /*width: 100%;*/
-  /*display: flex;*/
-  /*white-space: nowrap;*/
-  /*overflow: unset;*/
-/*}*/
+app-chat-form{
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+  overflow: unset;
+}
 
 .message {
   display: block;
