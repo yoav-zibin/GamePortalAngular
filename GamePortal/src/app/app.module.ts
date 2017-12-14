@@ -32,7 +32,8 @@ import { MatListModule,
          MatFormFieldModule,
          MatCardModule,
          MatInputModule,
-         MatIconModule
+         MatIconModule,
+         MatGridListModule
 } from '@angular/material';
 import { MatSelectModule } from '@angular/material/select'
 import { SpecLoaderComponent} from './spec-loader/spec-loader.component';
@@ -43,6 +44,8 @@ import { GameSelectorComponent } from './game-selector/game-selector.component';
 import { SpecService } from './services/spec.service';
 import { PieceComponent } from './piece/piece.component';
 import { BoardComponent } from './board/board.component';
+import { GroupListComponent } from './group-list/group-list.component';
+import { GroupsCenterComponent } from './groups-center/groups-center.component';
 
 export const firebaseConfig = {
   apiKey: 'AIzaSyDA5tCzxNzykHgaSv1640GanShQze3UK-M',
@@ -83,6 +86,8 @@ export const firebaseConfig = {
     GameSelectorComponent,
     PieceComponent,
     BoardComponent,
+    GroupListComponent,
+    GroupsCenterComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,7 +107,8 @@ export const firebaseConfig = {
     MatFormFieldModule,
     MatCardModule,
     MatInputModule,
-    MatIconModule
+    MatIconModule,
+    MatGridListModule
   ],
   providers: [GroupService, AuthService, WindowService, ChatService, SpecService],
   bootstrap: [AppComponent]

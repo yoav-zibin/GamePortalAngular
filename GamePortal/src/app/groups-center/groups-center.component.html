@@ -1,0 +1,60 @@
+<!--<div class="mainContent">-->
+  <!--<div *ngIf="(user | async)?.uid" class="users">-->
+    <!--<app-user-list [isChat] = true></app-user-list>-->
+  <!--</div>-->
+
+
+  <!--<div *ngIf="(user | async)?.uid" id="groups">-->
+    <!--<app-group-list></app-group-list>-->
+  <!--</div>-->
+<!--</div>-->
+
+<div *ngIf="(user | async)?.uid" class="mainContent">
+  <mat-grid-list cols="4" rowHeight="fit" style="height: 100%">
+    <mat-grid-tile [colspan]="1">
+      <!--TODO add auth service in groups center-->
+      <!--<div *ngIf="(user | async)?.uid" class="users">-->
+        <app-user-list></app-user-list>
+      <!--</div>-->
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="2">
+      <div *ngIf="getIsCreateNewGroup()===false">
+        <h2 style="font-family: Open Sans, sans-serif"> Welcome to Game Portal!</h2>
+        <br>
+        <br>
+        <br>
+
+        <div style="text-align:center; font-size:18px">
+          <span> Please Select An Existing Group</span>
+          <br>
+          <br>
+
+          <span> Or </span>
+          <br>
+          <br>
+
+          <button mat-button style="font-size:16px" class="btn-chat" (click)="createGroup()">
+            Create A New One
+          </button>
+
+          <br>
+          <br>
+
+          <span>To Start Playing Games</span>
+          <br>
+          <br>
+        </div>
+      </div>
+
+
+      <div *ngIf="getIsCreateNewGroup()===true">
+        <app-participant-list></app-participant-list>
+      </div>
+
+    </mat-grid-tile>
+    <mat-grid-tile [colspan]="1">
+      <app-group-list></app-group-list>
+    </mat-grid-tile>
+
+  </mat-grid-list>
+</div>
