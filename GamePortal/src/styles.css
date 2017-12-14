@@ -24,18 +24,19 @@ app-chat-room {
   display: flex;
   flex-direction: column;
   height: 100%;
+  width: 100%;
 }
 
 app-navbar{
   width: 100%;
 }
 
-app-chat-form{
-  width: 100%;
-  display: flex;
-  white-space: nowrap;
-  overflow: unset;
-}
+/*app-chat-form{*/
+  /*width: 100%;*/
+  /*display: flex;*/
+  /*white-space: nowrap;*/
+  /*overflow: unset;*/
+/*}*/
 
 .message {
   display: block;
