@@ -1,14 +1,3 @@
-<!--<div class="mainContent">-->
-  <!--<div *ngIf="(user | async)?.uid" class="users">-->
-    <!--<app-user-list [isChat] = true></app-user-list>-->
-  <!--</div>-->
-
-
-  <!--<div *ngIf="(user | async)?.uid" id="groups">-->
-    <!--<app-group-list></app-group-list>-->
-  <!--</div>-->
-<!--</div>-->
-
 <div *ngIf="(user | async)?.uid" class="mainContent">
   <mat-grid-list cols="4" rowHeight="fit" style="height: 100%">
     <mat-grid-tile [colspan]="1">
