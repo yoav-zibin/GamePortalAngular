@@ -1,4 +1,4 @@
-.userListWrapper {
+.listWrapper {
   /*background-color: #2A2845;*/
   color: #fff;
   /*display: inline-block;*/
@@ -10,12 +10,4 @@
   text-align: center;
   /*overflow-y: scroll;*/
   height: 100vh;
-}
-
-.panel-collapse {
-  height:auto;
-}
-
-.collapse {
-  height:auto;
 }

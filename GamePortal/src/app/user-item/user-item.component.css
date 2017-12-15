@@ -1,7 +1,7 @@
 .userItem{
   height: auto;
   padding: 6px;
-  width: 250px;
+  width: 200px;
   margin-top: 8px;
   border-radius: 1px;
   align-items: flex-start;
@@ -12,9 +12,6 @@
   transition: ease-in 0.2s;
   text-align: left;
   font-size: 15px;
-  /*display: inline-block;*/
-  /*float: none;*/
-
 }
 
 .userItem:hover{
