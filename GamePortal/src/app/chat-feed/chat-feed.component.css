@@ -6,4 +6,5 @@
 .message{
   flex-direction: column;
   margin: 6px 0;
+  margin-left: 30px;
 }
