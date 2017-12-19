@@ -18,7 +18,7 @@ export class GroupItemComponent implements OnInit {
   }
 
   setCurtGroupId() {
-    console.log('setting groupid:...');
+    // console.log('setting groupid:...');
     // set observable groupid in groupservice:
     this.groupService.setGroupID(this.group.groupId);
     this.router.navigate(['/play/' + this.group.groupId]);

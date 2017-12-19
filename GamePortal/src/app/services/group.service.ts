@@ -19,10 +19,6 @@ export class GroupService {
 
   constructor(public authService: AuthService, public af: AngularFireDatabase, private router: Router) {
     this.curtUserId = this.authService.curtUserId; // undefined at first
-    // console.log('undefined??no no no', this.curtUserId);
-    // this.curtGroupId.subscribe(res => {
-    //   console.log('you ma?', res);
-    // });
   }
 
   getGroupId() {
@@ -32,20 +28,8 @@ export class GroupService {
     return this.curtGroupId;
   }
 
-  // getMessageHistory(): any {
-  //   // for showing feed
-  //   // test group id:
-  //   console.log('get message history for: ', this.getGroupId());
-  //   return this.af.list('gamePortal/groups/' + this.getGroupId() + '/messages', ref => {
-  //     return ref.limitToLast(20).orderByKey();
-  //   });
-  //   // if (!this.curtGroupId) {
-  //   //   return null;
-  //   // }
-  // }
-
   setGroupID(gid) {
-    console.log('setting group id: ', gid);
+    // console.log('setting group id: ', gid);
     this.curtGroupId = (gid);
   }
 
@@ -60,7 +44,7 @@ export class GroupService {
   createGroupInfo(): any {
     // we make sure we have authService.curtUserId
     this.curtUserId = this.authService.curtUserId;
-    console.log('im in create group info, the user id is: ', this.curtUserId);
+    // console.log('im in create group info, the user id is: ', this.curtUserId);
     let owner = {};
     owner[this.curtUserId] = {participantIndex: 0};
     const groupInfo = {
@@ -71,14 +55,14 @@ export class GroupService {
       matches: null
     };
     const groupref = firebase.database().ref('gamePortal/groups').push(groupInfo);
-    console.log('the key for this group is: ', groupref.key);
+    // console.log('the key for this group is: ', groupref.key);
     return groupref.key;
   }
 
   addGroupToDatabase(groupName: string, participants: Array<any>) {
     this.participants = participants;
     this.groupName = groupName;
-    console.log('creating group info: ');
+    // console.log('creating group info: ');
     const groupid = this.createGroupInfo();
     this.setGroupID(groupid);
     const timeStamp = firebase.database.ServerValue.TIMESTAMP;
@@ -92,7 +76,7 @@ export class GroupService {
     let index = 1;
     // push participants:
     for (const partici of this.participants) {
-      console.log('participant::::::    ', partici);
+      // console.log('participant::::::    ', partici);
       const userid = partici;
       this.af.database.ref('gamePortal/groups/' + groupid + '/participants/' + userid).update(
         {
@@ -110,28 +94,14 @@ export class GroupService {
   }
 
   getGroupsForUser(): any {
-    console.log('wo jin lai le getGroupsForUser');
+    // console.log('wo jin lai le getGroupsForUser');
     this.curtUserId = this.authService.curtUserId;
     if (!this.curtUserId) {
       return [];
     }
     const path = 'users/' + this.curtUserId + '/privateButAddable/groups';
-    console.log('wo zai kan group lujing: ', path);
+    // console.log('wo zai kan group lujing: ', path);
     return this.af.list(path);
-
-    //
-    // this.af.list(path).valueChanges().subscribe(groups => {
-    //   groupsInUsers = groups; // group list in users/userid/...
-    //   console.log('groupsInUSERS: ', groupsInUsers);
-    //   const groupList = []; // group list in groups/...
-    //   for (const groupInUser of groupsInUsers) {
-    //     const groupid = groupInUser.$memberOfGroupId;
-    //     const groupObj = this.af.object('gamePortal/groups/' + groupid).valueChanges().subscribe( result => {
-    //       groupList.push(result);
-    //     });
-    //   }
-    //   return groupList;
-    // });
   }
 
   getGroupRef() {

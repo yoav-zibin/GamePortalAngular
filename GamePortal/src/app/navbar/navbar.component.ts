@@ -15,7 +15,6 @@ export class NavbarComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.afAuth.authState;
-    console.log('auth test: ', this.user);
       // TODO: might not have a displayname
     this.user.subscribe(user => {
       if (user) {

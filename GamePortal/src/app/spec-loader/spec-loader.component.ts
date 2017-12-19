@@ -34,10 +34,11 @@ export class SpecLoaderComponent implements OnInit, OnChanges {
 
   loadPieces() {
     const pieceSpecs = this.spec.pieces;
-    const allPieces = [];
+    const allPieces = {};
     const numPieces = pieceSpecs.length;
 
-    for (const piece of pieceSpecs) {
+    for (let index = 0; index < pieceSpecs.length; index++) {
+      const piece = pieceSpecs[index];
       // this new piece contains all the info we wanna have!
       const newpiece = {
         initialState: piece.initialState,
@@ -65,14 +66,27 @@ export class SpecLoaderComponent implements OnInit, OnChanges {
             const url = imageInfo.val().downloadURL;
             newpiece.urls.push(url);
             if (newpiece.urls.length === numImages) {
-              allPieces.push(newpiece);
-              if (allPieces.length === numPieces) {
+              console.log('index: ', index, 'urls: ', newpiece.urls);
+              allPieces[index] = newpiece;
+              if (Object.keys(allPieces).length === numPieces) {
                 this.pieces = allPieces;
+                console.log('all self defined Pieces', this.pieces);
               }
             }
           });
         });
       });
+    }
+  }
+
+  piecesIsEmpty() {
+    if (!this.pieces) {
+      return false;
+    }
+    if (Object.keys(this.pieces).length > 0) {
+      return true;
+    } else {
+      return false;
     }
   }
   // I think when spec changes, this.loadSpec would automatically be called again.

@@ -84,13 +84,21 @@ export class GameSelectorComponent implements OnInit {
       // user-defined game spec
       const udSpec = this.selectedNewGame;
       console.log('this is spec!!!', udSpec);
-      const pieces = {};
-      udSpec['spec'].pieces.forEach((piece, index) => {
+      const specPieces = udSpec['spec'].pieces;
+      const len = specPieces.length;
+      const pieces = new Array(len);
+      for (let i = 0; i < len; i++) {
         const res = {
-          currentState: piece.initialState
+          currentState: specPieces[i].initialState
         };
-        pieces[index] = res;
-      });
+        pieces[i] = res;
+      }
+      // udSpec['spec'].pieces.forEach((piece, index) => {
+      //   const res = {
+      //     currentState: piece.initialState
+      //   };
+      //   pieces[index] = res;
+      // });
       const path = '/gamePortal/groups/' + this.groupService.getGroupId() + '/matches';
       const matchesRef = this.af.database.ref(path);
       const newMatch = {
@@ -114,6 +122,7 @@ export class GameSelectorComponent implements OnInit {
       const matchRef = this.af.database.ref(path);
       const udMatch = this.selectedRecentMatch;
       const spec = udMatch.spec;
+      console.log('match ID: ', udMatch.matchId);
       this.specService.setSpecAndMatchRef(spec, matchRef);
     } else {
       // TODO warn user to select a match first

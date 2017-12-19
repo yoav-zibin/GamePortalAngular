@@ -72,7 +72,7 @@ export class AuthService {
         }
       );
       // console.log(result.user.uid);
-      console.log('success login using google');
+      // console.log('success login using google');
       this.router.navigate(['/']);
     }).catch(error => {
       console.log(error);
@@ -122,11 +122,6 @@ export class AuthService {
   public updateOnDisconnect() {
     // console.log('calling onDisconnect');
     this.af.object('users/' + this.curtUserId + '/publicFields').update({isConnected: false});
-    // const ref = firebase.database().ref(`users/${this.curtUserId}/publicFields/isConnected`);
-    // ref.once('value').then(function(snapshot) {
-    //   console.log(snapshot.val());
-    // });
-    // console.log('called...');
   }
 
   // TODO: refactor to use onDisconnect()

@@ -18,18 +18,6 @@ export class ChatService {
   testGroupId = 'ttest';
   public curtUserId: string;
   chatMessages: AngularFireList<ChatMessage>;
-
-  // constructor(private af: AngularFireDatabase,
-  //             private afAuth: AngularFireAuth,
-  //             private group: GroupService) {
-  //   this.afAuth.authState.subscribe((auth) => {
-  //     if (auth !== undefined && auth !== null) {
-  //       this.user = auth;
-  //       this.curtUserId = auth.uid;
-  //       console.log('Im in auth, the current auth uid: ', this.curtUserId);
-  //     }
-  //   });
-  // }
   constructor(private authService: AuthService,
               private af: AngularFireDatabase,
               private groupService: GroupService) {
@@ -37,19 +25,16 @@ export class ChatService {
     // console.log('the current auth uid: ', this.curtUserId);
   }
 
-  // setGroupID(gid) {
-  //  this.curtGroupId = gid;
-  // }
   getUsers() {
     const path = '/gamePortal/recentlyConnected';
-    console.log('ready to fetch users');
+    // console.log('ready to fetch users');
     return this.af.list(path);
   }
 
   getMessageHistory(gid): any {
     // for showing feed
     // test group id:
-    console.log('fetching history for: ', gid);
+    // console.log('fetching history for: ', gid);
     return this.af.list('gamePortal/groups/' + gid + '/messages', ref => {
       return ref.limitToLast(20).orderByKey();
     });

@@ -30,16 +30,16 @@ export class UserListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Fetching users...  ');
+    // console.log('Fetching users...  ');
     const userIdSet: Set<string> = new Set<string>();
     const snapUser = this.chatService.getUsers().valueChanges();
     snapUser.subscribe( users => {
       users.forEach(user => {
         const size = users.length;
-        console.log('size too big???', size);
+        // console.log('size too big???', size);
         // let user = {...action.payload.val()};
         const uid = user['userId'];
-        console.log('userid???', uid);
+        // console.log('userid???', uid);
         if (!userIdSet.has(uid)) {
           userIdSet.add(uid);
           // get corresponding displayname and isConnected for user:

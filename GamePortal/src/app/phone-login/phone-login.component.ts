@@ -60,7 +60,7 @@ export class PhoneLoginComponent implements OnInit {
             timestamp: firebase.database.ServerValue.TIMESTAMP,
           }
         );
-        console.log('success');
+        // console.log('success');
         this.router.navigate(['/']);
       })
       .catch( error => console.log(error, 'Incorrect code entered?'));

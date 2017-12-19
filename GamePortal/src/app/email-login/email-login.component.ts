@@ -35,7 +35,7 @@ export class EmailLoginComponent implements OnInit {
         // note in this callback function, result is actually user!!!
         this.authState = result;
         const userInfo = this.authservice.createUserInfo(result);
-        console.log('Email user info: ', userInfo);
+        // console.log('Email user info: ', userInfo);
         // this.af.database.ref('users/' + result.uid).update(userInfo);
         firebase.database().ref('users/' + result.uid).update(userInfo); // permission denied!
         this.af.list('gamePortal/recentlyConnected').push(
@@ -44,7 +44,7 @@ export class EmailLoginComponent implements OnInit {
             timestamp: firebase.database.ServerValue.TIMESTAMP,
           }
         );
-        console.log('success');
+        // console.log('success');
         this.router.navigate(['/']);
       })
       .catch(error => {
@@ -53,16 +53,16 @@ export class EmailLoginComponent implements OnInit {
       });
   }
   signIn() {
-    console.log('ready to sign in...');
+    // console.log('ready to sign in...');
     this.afAuth.auth.signInWithEmailAndPassword(this.email, this.password)
       .then((result) => {
-        console.log('success');
+        // console.log('success');
         this.router.navigate(['/']);
       })
       .catch(error => {
         console.log(error);
         this.errMessage = error.message;
       });
-    console.log('sign in success...');
+    // console.log('sign in success...');
   }
 }

@@ -65,4 +65,8 @@ export class ParticipantListComponent implements OnInit {
     this.groupService.addGroupToDatabase(this.groupName, this.selectedUsers);
     this.groupService.setIsCreateNewGroup(false);
   }
+
+  cancel() {
+    this.groupService.setIsCreateNewGroup(false);
+  }
 }

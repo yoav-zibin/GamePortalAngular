@@ -16,7 +16,7 @@ import {AuthService} from '../services/auth.service';
 // TODO: implement tooltip and options for card!!!
 export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewInit {
   @Input() board: any;
-  @Input() pieces: any;
+  @Input() pieces: {};
   @Input() matchRef: any;
   @ViewChild('container') canvasContainer: ElementRef;
 
@@ -66,12 +66,13 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       });
     });
 
-    this.pieceImageIndices = new Array(this.pieces.length).fill(-1);
+    this.pieceImageIndices = new Array(Object.keys(this.pieces).length).fill(-1);
     // TODO: not sure this fill works
     // each piece could have multiple images
     // but only have one to display:
-    this.pieceImages = new Array(this.pieces.length);
-    for (let i = 0; i < this.pieces.length; i++) {
+    this.pieceImages = new Array(Object.keys(this.pieces).length);
+    console.log('pieces', this.pieces);
+    for (let i = 0; i < Object.keys(this.pieces).length; i++) {
       this.pieceImages[i] = new Konva.Image({
         image: new Image(),
         listening: true
@@ -116,7 +117,8 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   initCardVisibility() {
     const thiz = this;
     thiz.cardVisibility = {};
-    thiz.pieces.forEach((piece, index) => {
+    Object.keys(thiz.pieces).forEach(index => {
+      const piece = thiz.pieces[index];
       if (piece.kind === 'card') {
         thiz.cardVisibility[index] = null;
       }
@@ -162,6 +164,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     const pieceImgObj = new Image();
     const pieceLayer = this.piecesLayer;
     console.log('setting new image!');
+    console.log('piece image Src: ', pieceSrc);
     pieceImgObj.onload = function () {
       console.log('setting new width!', newWidth);
       console.log('setting new height!', newHeight);
@@ -199,7 +202,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   }
 
   updateZDepth(pieceKonvaImage, ZDepth) {
-    console.log('updating zDepth...');
+    // console.log('updating zDepth...');
     const pieceLayer = this.piecesLayer;
     let zIndex;
     if (ZDepth) {
@@ -383,7 +386,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     console.log('ready to shuffle: ', deckPieceIndex);
     if (deckPieceIndex !== null) {
       console.log('hello');
-      let zIndicesArr = new Array(this.pieces.length);
+      let zIndicesArr = new Array(Object.keys(this.pieces).length);
       for (let i = 0; i < zIndicesArr.length; i++) {
         zIndicesArr[i] = i + 1;
       }
@@ -403,8 +406,8 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
         zIndicesArr[randomIndex] = temporaryValue;
       }
       console.log(this.pieces);
-      this.pieces.forEach((piece, index) => {
-        console.log(piece);
+      Object.keys(this.pieces).forEach(index => {
+        const piece = this.pieces[index];
         if (piece.deckPieceIndex === deckPieceIndex) {
           console.log('sfasafdsfasfasfasf');
           const backtoInitState = piece.initialState;
@@ -429,7 +432,13 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       if (snap.exists()) {
         const pieces = snap.val();
         console.log('pieces: ', pieces);
-        pieces.forEach((piece, index) => {
+        const len = pieces.length;
+        for (let index = 0; index < len; index++) {
+          const piece = pieces[index];
+          if (piece.currentState.x < 0 || piece.currentState.y < 0) {
+            console.log('error piece: index ', index);
+            continue;
+          }
           const position = {
             // piece.currentState stores the percentage
             x: piece.currentState.x / 100 * this.boardWidth,
@@ -437,7 +446,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
           };
           const zDepth = piece.currentState.zDepth;
           let imageIndex = piece.currentState.currentImageIndex;
-          if (index < this.pieces.length) {
+          if (index < Object.keys(this.pieces).length) {
             const selfDfPiece = thiz.pieces[index];
             const kind = selfDfPiece.kind;
             const draggable = selfDfPiece.draggable;
@@ -512,6 +521,9 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
             if (thiz.pieceImageIndices[index] !== imageIndex) {
               const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
               const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
+              console.log('updating piece image for index: ', index);
+              console.log('piece kind: ', kind);
+              console.log('imageIndex is: ', imageIndex);
               thiz.updatePieceImage(pieceKonvaImage, pieceSrc, newWidth, newHeight);
 
               // update current image index
@@ -521,7 +533,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
             // update ZDepth
             thiz.updateZDepth(pieceKonvaImage, zDepth);
           }
-        });
+        }
       }
     });
   }
@@ -531,9 +543,9 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     // load board image:
     const boardSrc = this.board.src;
     const boardTrueHeight = this.board.height;
-    console.log('boardTrueHeight!', boardTrueHeight);
+    // console.log('boardTrueHeight!', boardTrueHeight);
     const boardTrueWidth = this.board.width;
-    console.log('boardTrueWidth!', boardTrueWidth);
+    // console.log('boardTrueWidth!', boardTrueWidth);
     this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
     // Load pieces
     // Load piece images:
@@ -560,7 +572,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
         };
         const zDepth = piece.currentState.zDepth;
         let imageIndex = piece.currentState.currentImageIndex;
-        if (index < this.pieces.length) {
+        if (index < Object.keys(this.pieces).length) {
           const selfDfPiece = thiz.pieces[index];
           const kind = selfDfPiece.kind;
           const pieceKonvaImage = thiz.pieceImages[index];
@@ -636,9 +648,9 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     if (changes.pieces && !changes.pieces.isFirstChange()) {
       this.removePieceListener(this.matchRef);
       this.initCardVisibility();
-      this.pieceImageIndices = new Array(this.pieces.length).fill(-1);
-      this.pieceImages = new Array(this.pieces.length);
-      for (let i = 0; i < this.pieces.length; i++) {
+      this.pieceImageIndices = new Array(Object.keys(this.pieces).length).fill(-1);
+      this.pieceImages = new Array(Object.keys(this.pieces).length);
+      for (let i = 0; i < Object.keys(this.pieces).length; i++) {
         this.pieceImages[i] = new Konva.Image({
           image: new Image(),
           draggable: true,

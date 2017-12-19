@@ -23,7 +23,7 @@ export class GroupListComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('Fetching groups...  ');
+    // console.log('Fetching groups...  ');
     const snapGroup = this.groupService.getGroupsForUser().snapshotChanges();
     // TODO: find out why snapshotchanges return a group info multiple times!!!
     const groupIdSet: Set<string> = new Set<string>();

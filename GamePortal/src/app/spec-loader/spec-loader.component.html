@@ -1,6 +1,6 @@
 <!--before we get into play arena, there should be an ngif spec, and bind spec in the play arena-->
 <div>
-  <div *ngIf="board && pieces && pieces.length > 0 && matchRef">
+  <div *ngIf="board && piecesIsEmpty() && matchRef">
     <app-game [board]="board" [pieces]="pieces" [matchRef]="matchRef"></app-game>
   </div>
 </div>
