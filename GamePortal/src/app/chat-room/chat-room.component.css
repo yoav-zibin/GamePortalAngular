@@ -11,10 +11,10 @@
 }
 
 .feedWrapper {
-    background-color: #fff;
+    /*background-color: #fff;*/
 
-    background:
-        linear-gradient(181deg, rgba(220, 220, 220, 0.9), rgba(100,200,255,0.6));
+    /*background:*/
+        /*linear-gradient(181deg, rgba(220, 220, 220, 0.9), rgba(100,200,255,0.6));*/
         /*url('../../assets/img/chat-bg-1.png') center center no-repeat;*/
     font-family: "Open Sans", sans-serif;
     font-size: 1.2em;

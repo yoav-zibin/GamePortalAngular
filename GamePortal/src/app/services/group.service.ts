@@ -107,5 +107,42 @@ export class GroupService {
   getGroupRef() {
     return this.af.database.ref(`gamePortal/groups/${this.curtGroupId}`);
   }
+
+  // getGroupName() {
+  //   const groupRef = this.getGroupRef();
+  //   groupRef.child('/groupName').once('value').then(res => {
+  //     return res.val();
+  //   });
+  // }
+
+  getParticipants() {
+    const groupRef = this.getGroupRef();
+    const participantsRef = groupRef.child('participants');
+    const thiz = this;
+    participantsRef.on('value', (snap) => {
+      const participants = snap.val(); // dict{uid: participantIdx};
+      const len = participants.length;
+      const participantsInfo = [];
+      Object.keys(participants).forEach((uid) => {
+        const userRef = this.af.database.ref(`users/${uid}`);
+        const userNameRef = userRef.child('publicFields').child('displayName');
+        userNameRef.once('value').then((userName) => {
+          const dpName = userName.val();
+          const isConnectedRef = userRef.child('publicFields').child('isConnected');
+          isConnectedRef.once('value').then( isConnected => {
+            const connected = isConnected.val();
+            const participant = {
+              displayName: dpName,
+              isConnected: connected
+            };
+            participantsInfo.push(participant);
+            if (participantsInfo.length === len) {
+              return participantsInfo;
+            }
+          });
+        });
+      });
+    });
+  }
 }
 

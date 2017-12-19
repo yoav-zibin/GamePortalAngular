@@ -24,7 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 // import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GroupService } from './services/group.service';
 import { GroupItemComponent } from './group-item/group-item.component';
-import { ParticipantListComponent } from './participant-list/participant-list.component';
+import { CreateGroupComponent } from './create-group/create-group.component';
 import { MatListModule,
          MatButtonModule,
          MatButtonToggleModule,
@@ -78,7 +78,7 @@ export const firebaseConfig = {
     UserListComponent,
     UserItemComponent,
     GroupItemComponent,
-    ParticipantListComponent,
+    CreateGroupComponent,
     SpecLoaderComponent,
     PlaygroundComponent,
     GroupWrapperComponent,

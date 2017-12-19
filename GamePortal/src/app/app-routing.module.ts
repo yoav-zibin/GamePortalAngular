@@ -5,10 +5,10 @@ import {PhoneLoginComponent} from './phone-login/phone-login.component';
 import {LoginIndexComponent} from './login-index/login-index.component';
 import {ChatRoomComponent} from './chat-room/chat-room.component';
 import {UserListComponent} from './user-list/user-list.component';
-import {ParticipantListComponent} from './participant-list/participant-list.component';
+import {CreateGroupComponent} from './create-group/create-group.component';
 import {GameComponent} from './game/game.component';
-import {PlaygroundComponent} from "./playground/playground.component";
-import {GroupsCenterComponent} from "./groups-center/groups-center.component";
+import {PlaygroundComponent} from './playground/playground.component';
+import {GroupsCenterComponent} from './groups-center/groups-center.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '', pathMatch: 'full' },
@@ -17,7 +17,7 @@ const routes: Routes = [
   { path: 'phonelogin',  component: PhoneLoginComponent },
   { path: 'chat',  component: ChatRoomComponent },
   { path: 'users',  component: UserListComponent },
-  {path: 'participant-list',  component: ParticipantListComponent},
+  {path: 'creategroup',  component: CreateGroupComponent},
   {path: 'game',  component: GameComponent},
   {path: 'play/:groupId', component: PlaygroundComponent},
   {path: 'center', component: GroupsCenterComponent}

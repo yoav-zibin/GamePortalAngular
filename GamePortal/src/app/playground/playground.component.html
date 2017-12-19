@@ -3,8 +3,23 @@
 <div *ngIf="(user | async)?.uid" class="mainContent">
   <mat-grid-list cols="23" rowHeight="fit" style="height: 100%">
     <mat-grid-tile [colspan]="5">
-      <app-chat-room>
-      </app-chat-room>
+      <mat-tab-group style="height: 100%">
+        <mat-tab *ngIf="groupParticipants && groupParticipants.length > 0" label="{{groupName}} ({{groupParticipants.length}})">
+          <app-chat-room>
+          </app-chat-room>
+        </mat-tab>
+        <mat-tab label="Participants">
+          <div>
+            <mat-list>
+              <mat-list-item *ngFor="let participant of groupParticipants">
+                <app-user-item
+                  [user]=participant ><br>
+                </app-user-item>
+              </mat-list-item>
+            </mat-list>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
     </mat-grid-tile>
 
     <mat-grid-tile [colspan]="12">

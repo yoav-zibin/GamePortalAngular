@@ -6,7 +6,7 @@
   border-radius: 5px;
   align-items: stretch;
   background-color: #eee;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.26), 0 3px 6px rgba(0,0,0,0.23);
+  box-shadow: 0 3px 6px rgba(68, 68, 68, 0.52), 0 3px 6px rgba(86, 86, 86, 0.56);
 }
 
 .isOwnMessageContainer{

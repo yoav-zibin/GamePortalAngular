@@ -7,11 +7,11 @@ import {AngularFireDatabase} from 'angularfire2/database';
 import {AuthService} from '../services/auth.service';
 // import {SelectModule} from 'ng-select';
 @Component({
-  selector: 'app-participant-list',
-  templateUrl: './participant-list.component.html',
-  styleUrls: ['./participant-list.component.css']
+  selector: 'app-create-group',
+  templateUrl: './create-group.component.html',
+  styleUrls: ['./create-group.component.css']
 })
-export class ParticipantListComponent implements OnInit {
+export class CreateGroupComponent implements OnInit {
   users: Array<any> = [];
   groupName: string;
   // usernameList: Array<string>;
