@@ -20,7 +20,7 @@
     font-size: 1.2em;
     flex: 5;
     order: 2;
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     padding:8px 0px 0px 8px;
     position: relative;
     width: 100%
@@ -32,12 +32,27 @@
   /*display: flex;*/
   /*flex-direction: row;*/
   height: 40px;
-  background-color: #eee;
   /*z-index: 3;*/
   position: fixed;
   /*left: 0;*/
   /*right: 0;*/
   bottom: 0px;
+  padding-left: 25px;
+}
+
+
+app-chat-room {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+app-chat-form{
+  width: 100%;
+  display: flex;
+  white-space: nowrap;
+  overflow: unset;
 }
 
 /*#scroller::-webkit-scrollbar-track*/
