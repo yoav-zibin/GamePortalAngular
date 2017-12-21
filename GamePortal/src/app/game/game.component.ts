@@ -92,8 +92,8 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   ngAfterViewInit(): void {
     this.stage = new Konva.Stage({
       container: 'stage',
-      width: this.maxSize + 50,
-      height: this.maxSize + 50
+      width: this.maxSize * 1.05,
+      height: this.maxSize * 1.05
     });
     this.boardLayer = new Konva.Layer();
     this.piecesLayer = new Konva.Layer();
@@ -617,6 +617,9 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     // matchRef -> board -> pieces
     if (changes.matchRef && !changes.matchRef.isFirstChange()) {
       // update board:
+      this.showCardOptions = false;
+      this.tooltipInfo = null;
+      this.clickCardIndex = -1;
       return;
     }
     if (changes.board && !changes.board.isFirstChange()) {
