@@ -92,8 +92,8 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
   ngAfterViewInit(): void {
     this.stage = new Konva.Stage({
       container: 'stage',
-      width: this.maxSize,
-      height: this.maxSize
+      width: this.maxSize + 50,
+      height: this.maxSize + 50
     });
     this.boardLayer = new Konva.Layer();
     this.piecesLayer = new Konva.Layer();
