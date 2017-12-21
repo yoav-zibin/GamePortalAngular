@@ -28,3 +28,10 @@ app-game-selector {
   overflow-y: scroll;
   height: 100vh;
 }
+
+app-chat-room {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
