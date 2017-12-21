@@ -29,7 +29,7 @@ export class GameSelectorComponent implements OnInit {
 
   // fetching game specs from builder
   displayGameSpecs() {
-    console.log('Fetching gameSpecs from builder...  ');
+    // console.log('Fetching gameSpecs from builder...  ');
     // const specIdSet: Set<string> = new Set<string>();
 
     const path = '/gameBuilder/gameSpecs';
@@ -53,7 +53,7 @@ export class GameSelectorComponent implements OnInit {
 
   // display recent matches for specific group
   displayRecentMatchSpecs() {
-    console.log('Fetching recent matches from group...  ');
+    // console.log('Fetching recent matches from group...  ');
     const path = '/gamePortal/groups/' + this.groupService.getGroupId() + '/matches';
     const matchesRef = this.af.database.ref(path);
     const thiz = this;
@@ -83,7 +83,7 @@ export class GameSelectorComponent implements OnInit {
       // create new match from the new game
       // user-defined game spec
       const udSpec = this.selectedNewGame;
-      console.log('this is spec!!!', udSpec);
+      // console.log('this is spec!!!', udSpec);
       const specPieces = udSpec['spec'].pieces;
       const len = specPieces.length;
       const pieces = new Array(len);
@@ -122,7 +122,7 @@ export class GameSelectorComponent implements OnInit {
       const matchRef = this.af.database.ref(path);
       const udMatch = this.selectedRecentMatch;
       const spec = udMatch.spec;
-      console.log('match ID: ', udMatch.matchId);
+      // console.log('match ID: ', udMatch.matchId);
       this.specService.setSpecAndMatchRef(spec, matchRef);
     } else {
       // TODO warn user to select a match first

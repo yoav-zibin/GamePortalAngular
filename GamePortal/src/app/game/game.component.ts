@@ -162,10 +162,10 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
     const pieceImgObj = new Image();
     const pieceLayer = this.piecesLayer;
     pieceImgObj.onload = function () {
-      console.log('setting new width!', newWidth);
-      console.log('setting new height!', newHeight);
+      // console.log('setting new width!', newWidth);
+      // console.log('setting new height!', newHeight);
       if (newWidth && newHeight) {
-        console.log('setting new height!');
+        // console.log('setting new height!');
         pieceKonvaImage.setAttrs({
           width: newWidth,
           height: newHeight
@@ -547,7 +547,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       if (snap.exists()) {
         const piece = snap.val();
         const index = snap.key;
-        console.log('有吗？？？', piece);
+        // console.log('有吗？？？', piece);
         const position = {
           // piece.currentState stores the percentage
           x: piece.currentState.x / 100 * this.boardWidth,
@@ -583,11 +583,11 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
           // update image:
           const pieceSrc = selfDfPiece.urls[imageIndex];
           if (thiz.pieceImageIndices[index] !== imageIndex) {
-            console.log('piece width!', piece.width);
+            // console.log('piece width!', piece.width);
             const newWidth = selfDfPiece.width / boardTrueWidth * thiz.boardWidth;
-            console.log('new width!', newWidth);
+            // console.log('new width!', newWidth);
             const newHeight = selfDfPiece.height / boardTrueHeight * thiz.boardHeight;
-            console.log('new height!', newHeight);
+            // console.log('new height!', newHeight);
             if (kind === 'dice') {
               // only show an animation
               thiz.rollDice(pieceKonvaImage, index, selfDfPiece, true);
@@ -623,7 +623,7 @@ export class GameComponent implements OnInit, OnChanges, OnDestroy, AfterViewIni
       // update board:
       const boardTrueHeight = this.board.height;
       const boardTrueWidth =  this.board.width;
-      console.log('boardTrueWidth!', boardTrueWidth);
+      // console.log('boardTrueWidth!', boardTrueWidth);
       const boardSrc = this.board.src;
       this.updateBoardImage(this.boardImage, boardSrc, boardTrueHeight / boardTrueWidth);
     }

@@ -66,11 +66,11 @@ export class SpecLoaderComponent implements OnInit, OnChanges {
             const url = imageInfo.val().downloadURL;
             newpiece.urls.push(url);
             if (newpiece.urls.length === numImages) {
-              console.log('index: ', index, 'urls: ', newpiece.urls);
+              // console.log('index: ', index, 'urls: ', newpiece.urls);
               allPieces[index] = newpiece;
               if (Object.keys(allPieces).length === numPieces) {
                 this.pieces = allPieces;
-                console.log('all self defined Pieces', this.pieces);
+                // console.log('all self defined Pieces', this.pieces);
               }
             }
           });
